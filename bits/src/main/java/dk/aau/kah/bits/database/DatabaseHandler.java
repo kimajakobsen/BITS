@@ -51,6 +51,7 @@ public class DatabaseHandler {
 			Model supplier = RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/supplier.ttl") ;
 			Model ontology = RDFDataMgr.loadModel("src/main/resources/onto/tpc-h-qb4o-delivered-version.ttl") ;
 		
+			
 
 			// add logic for the other configs
 			// TODO
