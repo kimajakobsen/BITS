@@ -4,4 +4,6 @@
 *.dat
 *.idn
 *.jrnl
-src/main/resources/tdb/*
+tdb/
+TPCH/
+TPCDS/
