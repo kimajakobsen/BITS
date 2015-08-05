@@ -107,6 +107,14 @@ public class DatabaseConfig {
 		return TDBFile;
 	}
 	
+	@Override
+	public String toString () {
+		String filepath = getTDBPath();
+		
+		return filepath.substring(23);
+		
+	}
+	
 
 
 }
