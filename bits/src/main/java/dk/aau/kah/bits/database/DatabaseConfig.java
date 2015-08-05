@@ -82,13 +82,13 @@ public class DatabaseConfig {
 		String dimModelNumber;
 		String factModelNumber;
 		
-		factModelNumber = (ontologyModelName == factModelName ?  "0" : "1" ); 
+		factModelNumber = (ontologyModelName.equals(factModelName) ?  "0" : "1" ); 
 		
 		// reasoning about what number the dimension model corresponds to in the TDB naming system
-		if (ontologyModelName == dimensionModelName) {
+		if (ontologyModelName.equals(dimensionModelName)) {
 			dimModelNumber = ontoModelNumber;
 		}
-		else if (dimensionModelName == factModelName ) {
+		else if (dimensionModelName.equals(factModelName) ) {
 			dimModelNumber = ontoModelNumber; 
 		}
 		else {
