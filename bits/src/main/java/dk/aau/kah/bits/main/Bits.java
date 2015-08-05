@@ -26,17 +26,18 @@ public class Bits {
 		databaseConfig.setOntologyStorageModel("st");
 		databaseConfig.setScaleFactor("0.0001");
 		
+		
 		DatabaseHandler DBHandler;
 		try {
 			DBHandler = new DatabaseHandler(databaseConfig);
-			Model defaultModel = DBHandler.getDefaultModel();
+			Model defaultModel = DBHandler.getFactModel();
 			PrintHelper.printModel(defaultModel);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
-		System.out.println("test");
+
 		//Query database
 		
 		//display/save results

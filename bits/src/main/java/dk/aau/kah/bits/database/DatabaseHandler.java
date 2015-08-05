@@ -13,7 +13,10 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.tdb.TDB;
 import org.apache.jena.tdb.TDBFactory;
+
+import dk.aau.kah.bits.helpers.PrintHelper;
 
 public class DatabaseHandler {
 
@@ -31,13 +34,14 @@ public class DatabaseHandler {
 		this.databaseConfig = databaseConfig;
 		
 		if (doesDatabaseExist() == false) {
-			clearTDBDatabase();
+			//clearTDBDatabase();
 			InitilizeAndLoadTDBDatabase();
 		}
 	}
 	
 	private Dataset InitilizeAndLoadTDBDatabase() {
-		Dataset dataset = TDBFactory.createDataset(databaseConfig.getTDBPath());
+		String directory = databaseConfig.getTDBPath() ;
+		Dataset dataset = TDBFactory.createDataset(directory);
 		dataset.begin(ReadWrite.WRITE) ;
 		
 		try {
@@ -66,13 +70,14 @@ public class DatabaseHandler {
 			model.add(region);
 			model.add(supplier);
 			model.add(ontology);
-			
-			
 			dataset.addNamedModel(databaseConfig.getDimensionModelName(), model);
-			
 			dataset.commit();
-		} finally {
+			TDB.sync(dataset);
+			model.close();
 			dataset.end();
+			
+		} finally {
+			dataset.close();
 		}
 		
 		
@@ -80,28 +85,28 @@ public class DatabaseHandler {
 		return dataset;
 	}
 
-	public Model getDefaultModel() {
-		return getDataSet("default");
-	}
+	//public Model getDefaultModel() {
+	//	return getDataSet(databaseConfig.);
+	//}
 	
 	public Model getOntologyModel() {
-		return getDataSet("ontology");
+		return getDataset(databaseConfig.getOntologyModelName());
 	}
 	
 	public Model getFactModel() {
-		return getDataSet("fact");
+		return getDataset(databaseConfig.getFactModelName());
 	}
 	
 	public Model getDimensionModel() {
-		return getDataSet("dimension");
+		return getDataset(databaseConfig.getDimensionModelName());
 	}
 	
 	
 	
 	
-	private Model getDataSet(String modelType) {
+	private Model getDataset(String modelType) {
 		String path = databaseConfig.getTDBPath();
-		System.out.println(path);
+
 		Dataset dataset = TDBFactory.createDataset(path);
 		
 		Model model;
