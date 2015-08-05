@@ -74,14 +74,41 @@ public class DatabaseConfig {
 		this.experimentDataset = experimentset;
 	}
 
-	public boolean validate() throws InvalidDatabaseConfig {
+	public void validate() throws InvalidDatabaseConfig {
+		
+		if (experimentDataset == null){
+			throw new InvalidDatabaseConfig("experimentDataset is not set, config is not valid");
+		}
+		if (ontologyModelName == null){
+			throw new InvalidDatabaseConfig("ontologyModelName is not set, config is not valid");
+		}
+		if (ontologyStorageModel == null){
+			throw new InvalidDatabaseConfig("ontologyStorageModel is not set, config is not valid");
+		}
+		if (dimensionModelName == null){
+			throw new InvalidDatabaseConfig("dimensionModelName is not set, config is not valid");
+		}
+		if (dimensionStorageModel == null){
+			throw new InvalidDatabaseConfig("dimensionStorageModel is not set, config is not valid");
+		}
+		if (factModelName == null){
+			throw new InvalidDatabaseConfig("factModelName is not set, config is not valid");
+		}
+		if (factStorageModel == null){
+			throw new InvalidDatabaseConfig("factStorageModel is not set, config is not valid");
+		}
+		if (experimentDataset.equals("TPCH")){
+			if (scaleFactor == null) {
+				throw new InvalidDatabaseConfig("The scalefactor is not set, it needs to be specified when using TPCH");
+			}
+		}
 		// TODO
 		// Der er et minimum af hvad der skal sætter, fact, dim, onto. Dette skal tjekkes.
 		if (false) {
 			
 			throw new InvalidDatabaseConfig("Some message TODO");
 		}
-		return true;
+
 	}
 	
 	public String getTDBPath()
