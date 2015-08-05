@@ -4,35 +4,28 @@ import java.io.IOException;
 
 import org.apache.jena.rdf.model.Model;
 
+import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
+import dk.aau.kah.bits.helpers.ConfigurationLoader;
 import dk.aau.kah.bits.helpers.PrintHelper;
 
 
 public class Bits {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		// Parse input parameters
-		
-		//get or create database
-		DatabaseConfig databaseConfig = new DatabaseConfig();
-		databaseConfig.setDimensionModelName("all");
-		databaseConfig.setDimensionStorageModel("st");
-		databaseConfig.setFactModelName("all");
-		databaseConfig.setFactStorageModel("st");
-		databaseConfig.setOntologyModelName("all");
-		databaseConfig.setOntologyStorageModel("st");
-		databaseConfig.setScaleFactor("0.0001");
-		
-		
-		DatabaseHandler DBHandler;
+	public static void main(String[] args) {	
+		DatabaseHandler databaseHandler;
+		DatabaseConfig databaseConfig;
+	
 		try {
-			DBHandler = new DatabaseHandler(databaseConfig);
-			Model defaultModel = DBHandler.getFactModel();
+			databaseConfig = ConfigurationLoader.load("onto0st-fact0st-dim0st.json");
+			databaseHandler = new DatabaseHandler(databaseConfig);
+			Model defaultModel = databaseHandler.getFactModel();
 			PrintHelper.printModel(defaultModel);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidDatabaseConfig e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 

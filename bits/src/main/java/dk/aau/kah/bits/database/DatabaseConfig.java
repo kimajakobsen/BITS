@@ -10,8 +10,9 @@ import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseConfig {
 	
-	File TDBFile;
+	private File TDBFile;
 	
+	private String experimentDataset;
 	private String scaleFactor;
 	private String ontologyModelName;
 	private String ontologyStorageModel;
@@ -19,6 +20,7 @@ public class DatabaseConfig {
 	private String dimensionStorageModel;
 	private String factModelName;
 	private String factStorageModel;
+	private boolean freshLoad;
 
 	public String getScaleFactor() {
 		return scaleFactor;
@@ -64,6 +66,12 @@ public class DatabaseConfig {
 	}
 	public void setFactStorageModel(String factStorageModel) {
 		this.factStorageModel = factStorageModel;
+	}
+	public String getExperimentDataset() {
+		return experimentDataset;
+	}
+	public void setExperimentDataset(String experimentset) {
+		this.experimentDataset = experimentset;
 	}
 
 	public boolean validate() throws InvalidDatabaseConfig {
@@ -113,6 +121,12 @@ public class DatabaseConfig {
 		
 		return filepath.substring(23);
 		
+	}
+	public boolean doFreshLoad() {
+		return freshLoad;
+	}
+	public void setFreshLoad(boolean freshLoad) {
+		this.freshLoad = freshLoad;
 	}
 	
 
