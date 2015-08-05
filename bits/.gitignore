@@ -1,1 +1,7 @@
 /target/
+*.ttl
+*.lock
+*.dat
+*.idn
+*.jrnl
+src/main/resources/tdb/*
