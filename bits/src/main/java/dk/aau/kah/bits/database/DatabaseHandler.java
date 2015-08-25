@@ -1,23 +1,15 @@
 package dk.aau.kah.bits.database;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-
 import org.apache.commons.io.FileUtils;
-import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.tdb.TDB;
 import org.apache.jena.tdb.TDBFactory;
 
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
-import dk.aau.kah.bits.helpers.PrintHelper;
 
 public class DatabaseHandler {
 
@@ -34,60 +26,66 @@ public class DatabaseHandler {
 			clearTDBDatabase();
 		}
 		
-		if (this.databaseConfig.getExperimentDataset().equals("TPCH-H")) {
+		if (this.databaseConfig.getExperimentDataset().equals("TPC-H")) {
 			loadTPCHExperimentalDataset();
 		}
-		else if (this.databaseConfig.getExperimentDataset().equals("TPCH-DS")) {
+		else if (this.databaseConfig.getExperimentDataset().equals("TPC-DS")) {
 			//TODO
 		}
-			
-		
+		else {
+			throw new InvalidDatabaseConfig("The Experiment Dataset "+this.databaseConfig.getExperimentDataset()+" is not known, implementation is missing.");
+		}
 	}
 	
 	private void loadTPCHExperimentalDataset() {
 		String directory = databaseConfig.getTDBPath() ;
 		this.dataset = TDBFactory.createDataset(directory);
 		
-		loadTDBIntoSingleModel();
+		this.dataset.begin(ReadWrite.WRITE) ;
+		try {
+			
+			Model ontology = ModelFactory.createDefaultModel();
+			Model dimensions = ModelFactory.createDefaultModel();
+			Model facts = ModelFactory.createDefaultModel();
+			
+			ontology.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getExperimentDataset()+"/onto/tpc-h-qb4o-delivered-version.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/customer.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/nation.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/orders.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/part.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/partsupp.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/region.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/supplier.ttl"));
+			facts.add(RDFDataMgr.loadModel(getTPCHPath()+"/lineitem.ttl"));
+			
+			//Concatenate the model with the existing model and add it to the named graph. 
+			dataset.addNamedModel(databaseConfig.getOntologyModelURL(), ontology.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
+			dataset.addNamedModel(databaseConfig.getDimensionModelURL(), dimensions.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
+			dataset.addNamedModel(databaseConfig.getFactModelURL(), facts.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
 
+
+		
+		dataset.commit();
+		
+		} finally {
+			dataset.end();
+		}
 	}
 	
-	
-	private void loadTDBIntoSingleModel() {
-		this.dataset.begin(ReadWrite.WRITE) ;
-		
-		try {
-			Model model = ModelFactory.createDefaultModel();
-			model.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/lineitem.ttl")) ;
-			model.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/customer.ttl")) ;
-			model.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/nation.ttl")) ;
-			model.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/orders.ttl")) ;
-			model.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/part.ttl")) ;
-			model.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/partsupp.ttl")) ;
-			model.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/region.ttl")) ;
-			model.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getScaleFactorString()+"/supplier.ttl")) ;
-			model.add(RDFDataMgr.loadModel("src/main/resources/onto/tpc-h-qb4o-delivered-version.ttl")) ;
-			
-			dataset.addNamedModel(databaseConfig.getDimensionModelName(), model);
-			dataset.commit();
-			TDB.sync(dataset);
-			dataset.end();
-			
-		} finally {
-			dataset.close();
-		}
+	private String getTPCHPath(){
+		return "src/main/resources/"+databaseConfig.getExperimentDataset()+"/"+databaseConfig.getScaleFactorString();
 	}
 
 	public Model getOntologyModel() {
-		return getDataset(databaseConfig.getOntologyModelName());
+		return getDataset(databaseConfig.getOntologyModelURL());
 	}
 	
 	public Model getFactModel() {
-		return getDataset(databaseConfig.getFactModelName());
+		return getDataset(databaseConfig.getFactModelURL());
 	}
 	
 	public Model getDimensionModel() {
-		return getDataset(databaseConfig.getDimensionModelName());
+		return getDataset(databaseConfig.getDimensionModelURL());
 	}
 	
 	private Model getDataset(String modelType) {
