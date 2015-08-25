@@ -20,7 +20,7 @@ public class DatabaseConfig {
 	private String dimensionStorageModel;
 	private String factModelName;
 	private String factStorageModel;
-	private boolean freshLoad;
+	private boolean freshLoad = false;
 
 	public String getScaleFactor() {
 		return scaleFactor;
@@ -31,11 +31,17 @@ public class DatabaseConfig {
 	public String getOntologyModelName() {
 		return ontologyModelName;
 	}
+	public String getOntologyModelURL() {
+		return addURLToModelName(ontologyModelName);
+	}
 	public String getOntologyStorageModel() {
 		return ontologyStorageModel;
 	}
 	public String getDimensionModelName() {
 		return dimensionModelName;
+	}
+	public String getDimensionModelURL() {
+		return addURLToModelName(dimensionModelName);
 	}
 	public String getDimensionStorageModel() {
 		return dimensionStorageModel;
@@ -45,6 +51,9 @@ public class DatabaseConfig {
 	}
 	public String getFactStorageModel() {
 		return factStorageModel;
+	}
+	public String getFactModelURL() {
+		return addURLToModelName(factModelName);
 	}
 	public void setScaleFactor(String d) {
 		this.scaleFactor = d;
@@ -97,7 +106,7 @@ public class DatabaseConfig {
 		if (factStorageModel == null){
 			throw new InvalidDatabaseConfig("factStorageModel is not set, config is not valid");
 		}
-		if (experimentDataset.equals("TPCH")){
+		if (experimentDataset.equals("TPC-H")){
 			if (scaleFactor == null) {
 				throw new InvalidDatabaseConfig("The scalefactor is not set, it needs to be specified when using TPCH");
 			}
@@ -154,6 +163,11 @@ public class DatabaseConfig {
 	}
 	public void setFreshLoad(boolean freshLoad) {
 		this.freshLoad = freshLoad;
+	}
+	
+	private String addURLToModelName(String modelName)
+	{
+		return "http://example.org/"+modelName;
 	}
 	
 
