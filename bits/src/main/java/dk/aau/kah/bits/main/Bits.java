@@ -20,13 +20,11 @@ public class Bits {
 		try {
 			databaseConfig = ConfigurationLoader.load("onto0st-fact0st-dim0st.json");
 			databaseHandler = new DatabaseHandler(databaseConfig);
-			Model defaultModel = databaseHandler.getFactModel();
-			PrintHelper.printModel(defaultModel);
+			Model factModel = databaseHandler.getFactModel();
+			PrintHelper.printModel(factModel);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidDatabaseConfig e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
