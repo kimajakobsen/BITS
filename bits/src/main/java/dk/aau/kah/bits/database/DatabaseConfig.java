@@ -21,7 +21,17 @@ public class DatabaseConfig {
 	private String factModelName;
 	private String factStorageModel;
 	private boolean freshLoad = false;
+	private boolean trashDimension = false;
 
+	public boolean isFreshLoad() {
+		return freshLoad;
+	}
+	public boolean isTrashDimension() {
+		return trashDimension;
+	}
+	public void setTrashDimension(boolean trashDimension) {
+		this.trashDimension = trashDimension;
+	}
 	public String getScaleFactor() {
 		return scaleFactor;
 	}
@@ -157,9 +167,6 @@ public class DatabaseConfig {
 		
 		return filepath.substring(23);
 		
-	}
-	public boolean doFreshLoad() {
-		return freshLoad;
 	}
 	public void setFreshLoad(boolean freshLoad) {
 		this.freshLoad = freshLoad;
