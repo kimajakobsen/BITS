@@ -506,26 +506,26 @@ ltpch:lineitemCube a qb:DataSet ;
 ##################################################################
 # Part Supplier Data Cube
 ##################################################################
-ltpch:partSupplierStructure a qb:DataStructureDefinition ;
-  qb:component [ qb4o:level ltpch:ps_has_part ; qb:order 1 ] ;
-  qb:component [ qb4o:level ltpch:ps_has_supplier ; qb:order 2 ] ;
-  qb:component [ qb:measure ltpch:ps_availqty ; 
-                 qb4o:hasAggregateFunction qb4o:sum ] ;
-  qb:component [ qb:measure ltpch:sp_supplycost ; 
-                 qb4o:hasAggregateFunction qb4o:sum ] .
-
-ltpch:partSupplierCube a qb:DataSet ;
-  qb:structure ltpch:partSupplierStructure ;
-  rdf:label "Part Supplier Cube" .
+#ltpch:partSupplierStructure a qb:DataStructureDefinition ;
+#  qb:component [ qb4o:level ltpch:ps_has_part ; qb:order 1 ] ;
+#  qb:component [ qb4o:level ltpch:ps_has_supplier ; qb:order 2 ] ;
+#  qb:component [ qb:measure ltpch:ps_availqty ; 
+#                 qb4o:hasAggregateFunction qb4o:sum ] ;
+#  qb:component [ qb:measure ltpch:sp_supplycost ; 
+#                 qb4o:hasAggregateFunction qb4o:sum ] .
+#
+#ltpch:partSupplierCube a qb:DataSet ;
+#  qb:structure ltpch:partSupplierStructure ;
+#  rdf:label "Part Supplier Cube" .
 
 ##################################################################
 # Orders Data Cube
 ##################################################################
-ltpch:ordersStructure a qb:DataStructureDefinition ;
-  qb:component [ qb4o:level ltpch:o_has_customer ; qb:order 1 ] ;
-  qb:component [ qb:measure ltpch:o_totalprice ; 
-                 qb4o:hasAggregateFunction qb4o:sum ] .
-
-ltpch:ordersCube a qb:DataSet ;
-  qb:structure ltpch:ordersStructure ;
-  rdf:label "Orders Cube" .
+#ltpch:ordersStructure a qb:DataStructureDefinition ;
+#  qb:component [ qb4o:level ltpch:o_has_customer ; qb:order 1 ] ;
+#  qb:component [ qb:measure ltpch:o_totalprice ; 
+#                 qb4o:hasAggregateFunction qb4o:sum ] .
+#
+#ltpch:ordersCube a qb:DataSet ;
+#  qb:structure ltpch:ordersStructure ;
+#  rdf:label "Orders Cube" .
