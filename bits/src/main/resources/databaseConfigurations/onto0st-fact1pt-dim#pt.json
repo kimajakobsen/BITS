@@ -1,0 +1,12 @@
+{
+	"scaleFactor":"0.0001",
+	"ontologyModelName":"all",
+	"ontologyStorageModel":"st",
+	"dimensionModelName":"#",
+	"dimensionStorageModel":"pt",
+	"factModelName":"fact",
+	"factStorageModel":"pt",
+	"freshLoad":true,
+	"experimentDataset":"TPC-H",
+	"trashDimension":"false"
+}
