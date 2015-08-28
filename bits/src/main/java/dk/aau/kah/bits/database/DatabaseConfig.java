@@ -9,9 +9,8 @@ import org.apache.commons.io.FileUtils;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseConfig {
-	
-	private File TDBFile;
-	
+	private String TDBFilePath;
+	private String TDBFileName;
 	private String experimentDataset;
 	private String scaleFactor;
 	private String ontologyModelName;
@@ -23,6 +22,19 @@ public class DatabaseConfig {
 	private boolean freshLoad = false;
 	private boolean trashDimension = false;
 
+	public String getTDBFilePath() {
+		return TDBFilePath;
+	}
+	public void setTDBFilePath(String tDBFilePath) {
+		TDBFilePath = tDBFilePath;
+	}
+	
+	public String getTDBFileName() {
+		return TDBFileName;
+	}
+	public void setTDBFileName(String tDBFilePath) {
+		TDBFileName = tDBFilePath;
+	}
 	public boolean isFreshLoad() {
 		return freshLoad;
 	}
@@ -130,42 +142,9 @@ public class DatabaseConfig {
 
 	}
 	
-	public String getTDBPath()
-	{
-		String ontoModelNumber = "0";
-		String dimModelNumber;
-		String factModelNumber;
-		
-		factModelNumber = (ontologyModelName.equals(factModelName) ?  "0" : "1" ); 
-		
-		// reasoning about what number the dimension model corresponds to in the TDB naming system
-		if (ontologyModelName.equals(dimensionModelName)) {
-			dimModelNumber = ontoModelNumber;
-		}
-		else if (dimensionModelName.equals(factModelName) ) {
-			dimModelNumber = ontoModelNumber; 
-		}
-		else {
-			dimModelNumber = "2";
-		}
-		
-		return "src/main/resources/tdb/"+"onto"+ontoModelNumber+ontologyStorageModel+"-"+"fact"+
-			factModelNumber+factStorageModel+"-"+"dim"+dimModelNumber+dimensionStorageModel+"/";
-	}
-	
-	public File getTDBPathFile()
-	{
-		if (TDBFile == null) {
-			return new File(getTDBPath());
-		}
-		return TDBFile;
-	}
-	
 	@Override
 	public String toString () {
-		String filepath = getTDBPath();
-		
-		return filepath.substring(23);
+		return this.TDBFilePath;
 		
 	}
 	public void setFreshLoad(boolean freshLoad) {
@@ -176,6 +155,7 @@ public class DatabaseConfig {
 	{
 		return "http://example.org/"+modelName;
 	}
+
 	
 
 

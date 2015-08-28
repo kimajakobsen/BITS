@@ -11,9 +11,13 @@ import dk.aau.kah.bits.database.DatabaseConfig;
 public class ConfigurationLoader {
 
 	public static DatabaseConfig load(String JSONFile) throws FileNotFoundException {
-		BufferedReader configuration = new BufferedReader(new FileReader("src/main/resources/databaseConfigurations/"+JSONFile));
+		String path = "src/main/resources/databaseConfigurations/";
+		BufferedReader configuration = new BufferedReader(new FileReader(path+JSONFile));
 		Gson gson = new Gson();	
-		return gson.fromJson(configuration, DatabaseConfig.class);
+		DatabaseConfig config = gson.fromJson(configuration, DatabaseConfig.class);
+		config.setTDBFileName(JSONFile);
+		config.setTDBFilePath(path+JSONFile);
+		return config;
 		
 	}
 }
