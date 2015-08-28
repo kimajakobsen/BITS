@@ -493,11 +493,20 @@ ltpch:ps_has_supplier a qb4o:LevelProperty ;
 ltpch:lineitemStructure a qb:DataStructureDefinition ;
   qb:component [ qb4o:level ltpch:l_has_order ; qb:order 1 ] ;
   qb:component [ qb4o:level ltpch:l_has_partsupplier ; qb:order 2 ] ;
-  qb:component [ qb:measure ltpch:l_quantity ; qb:hasAggregateFunction qb4o:sum ] ;
-  qb:component [ qb:measure ltpch:l_extendedprice ; 
+  qb:component [ qb:measure ltpch:l_linequantity ; qb:hasAggregateFunction qb4o:sum ] ;
+  qb:component [ qb:measure ltpch:l_lineextendedprice ; 
                  qb4o:hasAggregateFunction qb4o:sum ] ;
-  qb:component [ qb:measure ltpch:l_discount ; qb4o:hasAggregateFunction qb4o:avg ] ;
-  qb:component [ qb:measure ltpch:l_tax ; qb4o:hasAggregateFunction qb4o:avg ] .
+  qb:component [ qb:measure ltpch:l_linediscount ; qb4o:hasAggregateFunction qb4o:avg ] ;
+  qb:component [ qb:measure ltpch:l_linetax ; qb4o:hasAggregateFunction qb4o:avg ] .
+  qb:component [ qb:attribute rdfh:l_linenumber ].
+  qb:component [ qb:attribute rdfh:l_returnflag ]. 
+  qb:component [ qb:attribute rdfh:l_linestatus ]. 
+  qb:component [ qb:attribute rdfh:l_shipdate ]. 
+  qb:component [ qb:attribute rdfh:l_commitdate ]. 
+  qb:component [ qb:attribute rdfh:l_receiptdate ]. 
+  qb:component [ qb:attribute rdfh:l_shipinstruct ]. 
+  qb:component [ qb:attribute rdfh:l_shipmode ]. 
+  qb:component [ qb:attribute rdfh:l_comment ]. 
 
 ltpch:lineitemCube a qb:DataSet ;
   qb:structure ltpch:lineitemStructure ;
