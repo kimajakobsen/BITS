@@ -48,7 +48,7 @@ public class DatabaseHandler {
 	}
 	
 	private void loadTPCHDataset() {
-		String directory = databaseConfig.getTDBFilePath() ;
+		String directory = getTPCHPath() ;
 		this.dataset = TDBFactory.createDataset(directory);
 		
 		this.dataset.begin(ReadWrite.WRITE) ;
@@ -141,8 +141,8 @@ public class DatabaseHandler {
 	}
 		
 	public void clearTDBDatabase() throws IOException {
-
-			FileUtils.cleanDirectory(new File(databaseConfig.getTDBFilePath()));
+		System.out.println(getTPCHPath());
+		FileUtils.cleanDirectory(new File(getTPCHPath()));
 
 	}
 }
