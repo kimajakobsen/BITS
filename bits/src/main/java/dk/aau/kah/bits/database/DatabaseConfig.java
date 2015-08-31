@@ -1,16 +1,11 @@
 package dk.aau.kah.bits.database;
 
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseConfig {
-	private String TDBFilePath;
-	private String TDBFileName;
+	private String TDBDatasetPath;
+	private String configFileName;
 	private String experimentDataset;
 	private String scaleFactor;
 	private String ontologyModelName;
@@ -22,18 +17,17 @@ public class DatabaseConfig {
 	private boolean freshLoad = false;
 	private boolean trashDimension = false;
 
-	public String getTDBFilePath() {
-		return TDBFilePath;
+	public String getTDBDatasetPath() {
+		return TDBDatasetPath;
 	}
-	public void setTDBFilePath(String tDBFilePath) {
-		TDBFilePath = tDBFilePath;
+	public void setTDBDatasetPath(String TDBDatasetFilePath) {
+		this.TDBDatasetPath = TDBDatasetFilePath;
 	}
-	
-	public String getTDBFileName() {
-		return TDBFileName;
+	public String getConfigFileName() {
+		return configFileName;
 	}
-	public void setTDBFileName(String tDBFilePath) {
-		TDBFileName = tDBFilePath;
+	public void setConfigFileName(String ConfigFileName) {
+		this.configFileName = ConfigFileName;
 	}
 	public boolean isFreshLoad() {
 		return freshLoad;
@@ -144,7 +138,7 @@ public class DatabaseConfig {
 	
 	@Override
 	public String toString () {
-		return this.TDBFilePath;
+		return this.TDBDatasetPath;
 		
 	}
 	public void setFreshLoad(boolean freshLoad) {
