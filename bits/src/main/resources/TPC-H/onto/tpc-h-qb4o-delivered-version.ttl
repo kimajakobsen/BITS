@@ -4,8 +4,7 @@
 @prefix qb:             <http://purl.org/linked-data/cube#> .
 @prefix qb4o:           <http://publishing-multidimensional-data.googlecode.com/git/index.html#ref_qbplus_> .
 @prefix dcterms:        <http://purl.org/dc/terms/> .
-@prefix rdfh:          <http://extbi.lab.aau.dk/ontology/rdfh/> .
-@prefix rdfh-inst:     <http://extbi.lab.aau.dk/resource/rdfh/> .
+@prefix rdfh:           <http://lod2.eu/schemas/rdfh#> .
 @prefix geonames:       <http://www.geonames.org/ontology#> .
 @prefix owl:            <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -493,6 +492,8 @@ rdfh:ps_has_supplier a qb4o:LevelProperty ;
 rdfh:lineitemStructure a qb:DataStructureDefinition ;
   qb:component [ qb4o:level rdfh:l_has_order ; qb:order 1 ] ;
   qb:component [ qb4o:level rdfh:l_has_partsupplier ; qb:order 2 ] ;
+  qb:component [ qb4o:level rdfh:l_has_supplier ; qb:order 3 ] ;	
+  qb:component [ qb4o:level rdfh:l_has_part ; qb:order 4 ] ;	
   qb:component [ qb:measure rdfh:l_linequantity ; qb:hasAggregateFunction qb4o:sum ] ;
   qb:component [ qb:measure rdfh:l_lineextendedprice ; 
                  qb4o:hasAggregateFunction qb4o:sum ] ;
