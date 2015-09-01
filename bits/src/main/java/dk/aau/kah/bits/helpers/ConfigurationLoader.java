@@ -15,8 +15,8 @@ public class ConfigurationLoader {
 		BufferedReader configuration = new BufferedReader(new FileReader(path+JSONFile));
 		Gson gson = new Gson();	
 		DatabaseConfig config = gson.fromJson(configuration, DatabaseConfig.class);
-		config.setTDBFileName(JSONFile);
-		config.setTDBFilePath(path+JSONFile);
+		config.setConfigFileName(JSONFile);
+		config.setTDBDatasetPath("src/main/resources/tdb/"+JSONFile.substring(0, JSONFile.length()-5)+"/");
 		return config;
 		
 	}
