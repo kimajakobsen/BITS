@@ -2,24 +2,17 @@ package dk.aau.kah.bits.database;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.jena.propertytable.PropertyTable;
 import org.apache.jena.query.Dataset;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ReadWrite;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.tdb.TDBFactory;
 
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
+import da.aau.kah.bits.physical_storage.QB4OLAPFactPropertyTable;
 
 public class DatabaseHandler {
 
@@ -31,6 +24,8 @@ public class DatabaseHandler {
 		
 		databaseConfig.validate();
 		this.databaseConfig = databaseConfig;
+		
+		createTDBDirectoryIfNotExist();
 		
 		if (this.databaseConfig.isFreshLoad()) {
 			clearTDBDatabase();
@@ -47,8 +42,22 @@ public class DatabaseHandler {
 		}
 	}
 	
-	private void loadTPCHDataset() {
-		String directory = getTPCHPath() ;
+	private void createTDBDirectoryIfNotExist() {
+		File theDir = new File(databaseConfig.getTDBDatasetPath());
+
+		// if the directory does not exist, create it
+		if (!theDir.exists()) {
+		    try{
+		        theDir.mkdir();
+		    } 
+		    catch(SecurityException se){
+		    	se.printStackTrace();
+		    }        
+		}
+	}
+
+	private void loadTPCHDataset() throws IOException {
+		String directory = databaseConfig.getTDBDatasetPath() ;
 		this.dataset = TDBFactory.createDataset(directory);
 		
 		this.dataset.begin(ReadWrite.WRITE) ;
@@ -58,26 +67,25 @@ public class DatabaseHandler {
 			Model dimensions = ModelFactory.createDefaultModel();
 			Model facts = ModelFactory.createDefaultModel();
 			
-			
 			ontology.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getExperimentDataset()+"/onto/tpc-h-qb4o-delivered-version.ttl"));
 	
-			if (databaseConfig.getDimensionModelName().equals("st")) {
-				dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/customer.ttl"));
-				dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/nation.ttl"));
-				dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/orders.ttl"));
-				dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/part.ttl"));
-				dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/partsupp.ttl"));
-				dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/region.ttl"));
-				dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/supplier.ttl"));
-			} else if (databaseConfig.getDimensionModelName().equals("pt")) {
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/customer.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/nation.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/orders.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/part.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/partsupp.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/region.ttl"));
+			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/supplier.ttl"));
+			if (databaseConfig.getDimensionModelName().equals("pt")) {
 				//PropertyTable customerPropertyTable = initilizePropertyTable(ontology,getTPCHPath()+"/customer.ttl");
 				//TODO
 			}
 
-			if (databaseConfig.getFactModelName().equals("st")) {
-				facts.add(RDFDataMgr.loadModel(getTPCHPath()+"/lineitem.ttl"));
-			} else if (databaseConfig.getFactModelName().equals("pt")) {
-				PropertyTable factPropertyTable = initilizePropertyTable(ontology,getTPCHPath()+"/lineitem.ttl");
+			
+			facts.add(RDFDataMgr.loadModel(getTPCHPath()+"/lineitem.ttl"));
+			if (databaseConfig.getFactStorageModel().equals("pt")) {
+				QB4OLAPFactPropertyTable factTable = new QB4OLAPFactPropertyTable(ontology,facts); 
+				facts = factTable.getModel();
 			}
 			
 			
@@ -92,21 +100,6 @@ public class DatabaseHandler {
 		}
 	}
 	
-
-	
-	private PropertyTable initilizePropertyTable(Model ontology, String path) {
-		List<String> destinctProperties;
-		String sparql = "select distinct ?b where {?a ?b ?c}";
-
-		Query qry = QueryFactory.create(sparql);
-		QueryExecution qe = QueryExecutionFactory.create(qry, ontology);
-		ResultSet rs = qe.execSelect();
-		
-		ResultSetFormatter.out(System.out, rs, qry) ;
-		
-		
-		return null;
-	}
 
 	private String getTPCHPath(){
 		return "src/main/resources/"+databaseConfig.getExperimentDataset()+"/"+databaseConfig.getScaleFactorString();
@@ -137,12 +130,9 @@ public class DatabaseHandler {
 			this.dataset.end() ;
 		}
 		return model;
-		
 	}
 		
 	public void clearTDBDatabase() throws IOException {
-		System.out.println(getTPCHPath());
-		FileUtils.cleanDirectory(new File(getTPCHPath()));
-
+		FileUtils.cleanDirectory(new File(databaseConfig.getTDBDatasetPath()));
 	}
 }
