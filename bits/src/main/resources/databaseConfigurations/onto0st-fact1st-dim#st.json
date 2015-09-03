@@ -1,0 +1,13 @@
+{
+	"scaleFactor":"0.0001",
+	"ontologyModelName":"onto",
+	"ontologyStorageModel":"st",
+	"dimensionModelName":"#",
+	"dimensionStorageModel":"st",
+	"factModelName":"fact",
+	"factStorageModel":"st",
+	"freshLoad":true,
+	"experimentDataset":"TPC-H",
+	"trashDimension":"false",
+	"prefix":"www.example.org/"
+}
