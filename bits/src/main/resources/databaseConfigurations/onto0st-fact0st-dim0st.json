@@ -8,5 +8,6 @@
 	"factStorageModel":"st",
 	"freshLoad":true,
 	"experimentDataset":"TPC-H",
-	"trashDimension":"false"
+	"trashDimension":"false",
+	"prefix":"www.example.org/"
 }

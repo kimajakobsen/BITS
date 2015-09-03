@@ -16,6 +16,7 @@ public class DatabaseConfig {
 	private String factStorageModel;
 	private boolean freshLoad = false;
 	private boolean trashDimension = false;
+	private String prefix = "http://example.org/";
 
 	public String getTDBDatasetPath() {
 		return TDBDatasetPath;
@@ -147,7 +148,13 @@ public class DatabaseConfig {
 	
 	private String addURLToModelName(String modelName)
 	{
-		return "http://example.org/"+modelName;
+		return getPrefix()+modelName;
+	}
+	public String getPrefix() {
+		return prefix;
+	}
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
 	}
 
 	
