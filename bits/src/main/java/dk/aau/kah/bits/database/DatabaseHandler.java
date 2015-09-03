@@ -65,24 +65,31 @@ public class DatabaseHandler {
 			
 			Model ontology = ModelFactory.createDefaultModel();
 			Model dimensions = ModelFactory.createDefaultModel();
+			Model customer = ModelFactory.createDefaultModel();
+			Model nation = ModelFactory.createDefaultModel();
+			Model orders = ModelFactory.createDefaultModel();
+			Model part = ModelFactory.createDefaultModel();
+			Model partsupp = ModelFactory.createDefaultModel();
+			Model region = ModelFactory.createDefaultModel();
+			Model supplier = ModelFactory.createDefaultModel();
 			Model facts = ModelFactory.createDefaultModel();
 			
 			ontology.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getExperimentDataset()+"/onto/tpc-h-qb4o-delivered-version.ttl"));
 	
-			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/customer.ttl"));
-			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/nation.ttl"));
-			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/orders.ttl"));
-			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/part.ttl"));
-			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/partsupp.ttl"));
-			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/region.ttl"));
-			dimensions.add(RDFDataMgr.loadModel(getTPCHPath()+"/supplier.ttl"));
+			customer.add(RDFDataMgr.loadModel((getTPCHPath()+"/customer.ttl")));
+			nation.add(RDFDataMgr.loadModel((getTPCHPath()+"/nation.ttl")));
+			orders.add(RDFDataMgr.loadModel((getTPCHPath()+"/orders.ttl")));
+			part.add(RDFDataMgr.loadModel((getTPCHPath()+"/part.ttl")));
+			partsupp.add(RDFDataMgr.loadModel((getTPCHPath()+"/partsupp.ttl")));
+			region.add(RDFDataMgr.loadModel((getTPCHPath()+"/region.ttl")));
+			supplier.add(RDFDataMgr.loadModel((getTPCHPath()+"/supplier.ttl")));
 			if (databaseConfig.getDimensionModelName().equals("pt")) {
 				//PropertyTable customerPropertyTable = initilizePropertyTable(ontology,getTPCHPath()+"/customer.ttl");
 				//TODO
 			}
 
 			
-			facts.add(RDFDataMgr.loadModel(getTPCHPath()+"/lineitem.ttl"));
+			facts.add(RDFDataMgr.loadModel((getTPCHPath()+"/lineitem.ttl")));
 			if (databaseConfig.getFactStorageModel().equals("pt")) {
 				QB4OLAPFactPropertyTable factTable = new QB4OLAPFactPropertyTable(ontology,facts); 
 				facts = factTable.getModel();
@@ -91,8 +98,20 @@ public class DatabaseHandler {
 			
 			//Concatenate the model with the existing model and add it to the named graph. 
 			dataset.addNamedModel(databaseConfig.getOntologyModelURL(), ontology.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
-			dataset.addNamedModel(databaseConfig.getDimensionModelURL(), dimensions.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
-			dataset.addNamedModel(databaseConfig.getFactModelURL(), facts.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
+			if (databaseConfig.getDimensionModelName()=="#") {
+				//This might overwrite existing named models, this need to be tested further.
+				dataset.addNamedModel(databaseConfig.getPrefix()+"customer", customer);
+				dataset.addNamedModel(databaseConfig.getPrefix()+"nation", nation);
+				dataset.addNamedModel(databaseConfig.getPrefix()+"orders", orders);
+				dataset.addNamedModel(databaseConfig.getPrefix()+"part", part);
+				dataset.addNamedModel(databaseConfig.getPrefix()+"partsupp", partsupp);
+				dataset.addNamedModel(databaseConfig.getPrefix()+"region", region);
+				dataset.addNamedModel(databaseConfig.getPrefix()+"supplier", supplier);
+				
+			} else {
+				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), dimensions.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
+			}
+			dataset.addNamedModel(databaseConfig.getFactModelURL(), facts.add(dataset.getNamedModel(databaseConfig.getFactModelURL())));
 
 			dataset.commit();
 		} finally {
@@ -100,35 +119,21 @@ public class DatabaseHandler {
 		}
 	}
 	
-
 	private String getTPCHPath(){
 		return "src/main/resources/"+databaseConfig.getExperimentDataset()+"/"+databaseConfig.getScaleFactorString();
 	}
 
-	public Model getOntologyModel() {
-		return getDataset(databaseConfig.getOntologyModelURL());
+	public Model getModel() {
+		this.dataset.begin(ReadWrite.READ) ; 
+		Model model = this.dataset.getDefaultModel();
+		this.dataset.end() ;
+		return model;
 	}
 	
-	public Model getFactModel() {
-		return getDataset(databaseConfig.getFactModelURL());
-	}
-	
-	public Model getDimensionModel() {
-		return getDataset(databaseConfig.getDimensionModelURL());
-	}
-	
-	private Model getDataset(String modelType) {
-		Model model;
-		
-		if (modelType == "default") {
-			this.dataset.begin(ReadWrite.READ) ; 
-			model = this.dataset.getDefaultModel();
-			this.dataset.end() ;
-		} else {
-			this.dataset.begin(ReadWrite.READ) ; 
-			model = this.dataset.getNamedModel(modelType);
-			this.dataset.end() ;
-		}
+	public Model getModel(String modelName) {
+		this.dataset.begin(ReadWrite.READ) ; 
+		Model model = this.dataset.getNamedModel(modelName);
+		this.dataset.end() ;
 		return model;
 	}
 		
