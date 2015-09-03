@@ -2,7 +2,9 @@ package da.aau.kah.bits.physical_storage;
 
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.propertytable.Column;
 import org.apache.jena.propertytable.PropertyTable;
+import org.apache.jena.propertytable.Row;
 import org.apache.jena.propertytable.graph.GraphPropertyTable;
 import org.apache.jena.propertytable.impl.PropertyTableArrayImpl;
 import org.apache.jena.query.Query;
@@ -27,7 +29,7 @@ public class QB4OLAPFactPropertyTable extends QB4OLAPPropertyTable {
 	public QB4OLAPFactPropertyTable(Model ontology, Model facts) {
 		this.ontology = ontology;
 		this.facts = facts;
-		this.propertytable = new PropertyTableArrayImpl(countNumberOfSubjects(facts), countAttributeAndComponentPropertyAndLevel(ontology));
+		this.propertytable = new PropertyTableArrayImpl(countNumberOfSubjects(this.facts), countAttributeAndComponentPropertyAndLevel(this.ontology));
 		
 		StmtIterator iter = facts.listStatements();
 		try { 
@@ -37,7 +39,16 @@ public class QB4OLAPFactPropertyTable extends QB4OLAPPropertyTable {
 			    Property  predicate = stmt.getPredicate();   // get the predicate
 			    RDFNode   object    = stmt.getObject();      // get the object
 
-			    propertytable.createRow(getRowNode(subject)).setValue(propertytable.createColumn(getColumnNode(predicate)), object.asNode());
+			    Column column = propertytable.getColumn(getColumnNode(predicate));
+			    if (column == null) {
+			    	column = propertytable.createColumn(getColumnNode(predicate));
+			    }
+			    Row row = propertytable.getRow(getRowNode(subject));
+			    if (row == null) {
+			    	row = propertytable.createRow(getRowNode(subject));
+			    }
+ 			    propertytable.getRow(row.getRowKey()).setValue(column, object.asNode());
+ 			    //System.out.println(propertytable.getRow(getRowNode(subject)).getRowKey().getURI()+" "+ propertytable.getColumn(getColumnNode(predicate)).getColumnKey().getURI() + " " +propertytable.getRow(getRowNode(subject)).getValue(column).getLiteralValue());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,13 +64,7 @@ public class QB4OLAPFactPropertyTable extends QB4OLAPPropertyTable {
 	}
 
 	private int countNumberOfSubjects(Model facts){
-		String sparql = ""
-				+ "prefix rdfh:           <http://lod2.eu/schemas/rdfh#>  "
-				+ "prefix qb:             <http://purl.org/linked-data/cube#>  "
-				+ "select (count(*) as ?count) "
-				+ "where { ?a ?b ?c"
-				+ "}" 
-				+ "group by ?a";
+		String sparql = "select (count(distinct ?a) as ?count) where {?a ?b ?c}";
 
 		Query qry = QueryFactory.create(sparql);
 
