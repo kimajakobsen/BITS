@@ -31,7 +31,7 @@ where {
       ltpch:p_mfgr ?p_mfgr ;
       ltpch:p_size ?size ;
       ltpch:p_type ?p_type .
-  FILTER (?size = str(1) && fn:contains(?p_type, "COPPER"))
+  FILTER (?size = "1" && fn:contains(?p_type, "COPPER")) .
   { select ?part (min(?s_cost) as ?minsc)
     where {
         ?ps a ltpch:partsupp;
@@ -44,7 +44,6 @@ where {
       } 
       group by ?part 
     }
-    
   }
 order by
   desc (?s_acctbal)
