@@ -2,10 +2,19 @@ package dk.aau.kah.bits.database;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.query.Dataset;
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ReadWrite;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RDFDataMgr;
@@ -123,7 +132,7 @@ public class DatabaseHandler {
 		return "src/main/resources/"+databaseConfig.getExperimentDataset()+"/"+databaseConfig.getScaleFactorString();
 	}
 
-	public Model getModel() {
+	public Model getDefaultModel() {
 		this.dataset.begin(ReadWrite.READ) ; 
 		Model model = this.dataset.getDefaultModel();
 		this.dataset.end() ;
@@ -136,7 +145,27 @@ public class DatabaseHandler {
 		this.dataset.end() ;
 		return model;
 	}
+	
+	public List<String> getAllModelNames() {
+		dataset.begin(ReadWrite.READ) ;
+		String qiry = "select distinct ?g { graph ?g { ?s ?p ?o } }";
+
+	    Query query = QueryFactory.create(qiry);
+	    QueryExecution qexec = QueryExecutionFactory.create(query, this.dataset);
+	    /*Execute the Query*/
+	    ResultSet results = qexec.execSelect();
+	    
+	    List<String> models = new ArrayList<String>();
+	    while (results.hasNext()) {
+		    QuerySolution row=results.nextSolution();
+		    models.add(row.get("g").toString());
+		  }
+	    qexec.close();
+	    dataset.close();
+		return models;
 		
+	}
+	
 	public void clearTDBDatabase() throws IOException {
 		FileUtils.cleanDirectory(new File(databaseConfig.getTDBDatasetPath()));
 	}
