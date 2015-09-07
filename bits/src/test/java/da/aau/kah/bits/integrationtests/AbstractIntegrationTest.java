@@ -1,4 +1,4 @@
-package da.aau.kah.bits.abstracttests;
+package da.aau.kah.bits.integrationtests;
 
 import java.util.List;
 
