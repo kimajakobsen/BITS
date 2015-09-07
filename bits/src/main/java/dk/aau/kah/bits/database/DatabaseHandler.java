@@ -66,7 +66,7 @@ public class DatabaseHandler {
 	}
 
 	private void loadTPCHDataset() throws IOException {
-		String directory = databaseConfig.getDatasetPath() ;
+		String directory = databaseConfig.getTDBPath() ;
 		this.dataset = TDBFactory.createDataset(directory);
 		
 		this.dataset.begin(ReadWrite.WRITE) ;
@@ -146,6 +146,11 @@ public class DatabaseHandler {
 		return model;
 	}
 	
+	public Dataset getDataset()
+	{
+		return dataset;
+	}
+	
 	public List<String> getAllModelNames() {
 		dataset.begin(ReadWrite.READ) ;
 		String qiry = "select distinct ?g { graph ?g { ?s ?p ?o } }";
@@ -167,6 +172,6 @@ public class DatabaseHandler {
 	}
 	
 	public void clearTDBDatabase() throws IOException {
-		FileUtils.cleanDirectory(new File(databaseConfig.getDatasetPath()));
+		FileUtils.cleanDirectory(new File(databaseConfig.getTDBPath()));
 	}
 }

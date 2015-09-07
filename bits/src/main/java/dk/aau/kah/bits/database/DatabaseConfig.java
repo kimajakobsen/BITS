@@ -5,6 +5,7 @@ import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseConfig {
 	private String datasetPath;
+	private String TDBPath;
 	private String datasetType;
 	private String configFileName;
 	private String scaleFactor;
@@ -148,6 +149,12 @@ public class DatabaseConfig {
 	}
 	public void setDatasetType(String datasetType) {
 		this.datasetType = datasetType;
+	}
+	public String getTDBPath() {
+		return TDBPath;
+	}
+	public void setTDBPath(String tDBPath) {
+		TDBPath = tDBPath;
 	}
 
 	
