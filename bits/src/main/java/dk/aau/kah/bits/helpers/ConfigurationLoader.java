@@ -16,7 +16,7 @@ public class ConfigurationLoader {
 		Gson gson = new Gson();	
 		DatabaseConfig config = gson.fromJson(configuration, DatabaseConfig.class);
 		config.setConfigFileName(JSONFile);
-		config.setTDBDatasetPath("src/main/resources/tdb/"+JSONFile.substring(0, JSONFile.length()-5)+"/");
+		config.setTDBPath("src/main/resources/tdb/"+JSONFile.substring(0, JSONFile.length()-5)+"/");
 		return config;
 		
 	}
