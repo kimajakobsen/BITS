@@ -1,0 +1,13 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfh: <http://lod2.eu/schemas/rdfh#> .
+@prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> .
+rdfh-inst:customer_1
+    a rdfh:customer ;
+    rdfh:c_custkey 1 ;
+    rdfh:c_name "Customer#000000001" ;
+    rdfh:c_address "IVhzIApeRb ot,c,E" ;
+    rdfh:c_has_nation rdfh-inst:nation_15 ;
+    rdfh:c_phone "25-989-741-2988" ;
+    rdfh:c_acctbal 711.56e0 ;
+    rdfh:c_mktsegment "BUILDING" ;
+    rdfh:c_comment "to the even, regular platelets. regular, ironic epitaphs nag e" .

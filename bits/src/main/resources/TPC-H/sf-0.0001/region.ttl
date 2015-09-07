@@ -1,0 +1,23 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfh: <http://lod2.eu/schemas/rdfh#> .
+@prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> .
+rdfh-inst:region_0
+    a rdfh:region ;
+    rdfh:r_name "AFRICA" ;
+    rdfh:r_comment "lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to" .
+rdfh-inst:region_1
+    a rdfh:region ;
+    rdfh:r_name "AMERICA" ;
+    rdfh:r_comment "hs use ironic, even requests. s" .
+rdfh-inst:region_2
+    a rdfh:region ;
+    rdfh:r_name "ASIA" ;
+    rdfh:r_comment "ges. thinly even pinto beans ca" .
+rdfh-inst:region_3
+    a rdfh:region ;
+    rdfh:r_name "EUROPE" ;
+    rdfh:r_comment "ly final courts cajole furiously final excuse" .
+rdfh-inst:region_4
+    a rdfh:region ;
+    rdfh:r_name "MIDDLE EAST" ;
+    rdfh:r_comment "uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl" .

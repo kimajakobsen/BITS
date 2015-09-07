@@ -1,0 +1,14 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfh: <http://lod2.eu/schemas/rdfh#> .
+@prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> .
+rdfh-inst:part_1
+    a rdfh:part ;
+    rdfh:p_partkey 1 ;
+    rdfh:p_name "goldenrod lavender spring chocolate lace" ;
+    rdfh:p_mfgr "Manufacturer#1" ;
+    rdfh:p_brand "Brand#13" ;
+    rdfh:p_type "PROMO BURNISHED COPPER" ;
+    rdfh:p_size 7 ;
+    rdfh:p_container "JUMBO PKG" ;
+    rdfh:p_retailprice 901.00e0 ;
+    rdfh:p_comment "ly. slyly ironi" .

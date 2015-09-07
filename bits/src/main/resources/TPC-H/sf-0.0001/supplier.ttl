@@ -1,0 +1,12 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfh: <http://lod2.eu/schemas/rdfh#> .
+@prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> .
+rdfh-inst:supplier_1
+    a rdfh:supplier ;
+    rdfh:s_suppkey 1 ;
+    rdfh:s_name "Supplier#000000001" ;
+    rdfh:s_address "N kD4on9OM Ipw3,gf0JBoQDd7tgrzrddZ" ;
+    rdfh:s_has_nation rdfh-inst:nation_17 ;
+    rdfh:s_phone "27-918-335-1736" ;
+    rdfh:s_acctbal 5755.94e0 ;
+    rdfh:s_comment "each slyly above the careful" .

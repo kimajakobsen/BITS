@@ -1,0 +1,111 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfh: <http://lod2.eu/schemas/rdfh#> .
+@prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> .
+rdfh-inst:lineitem_1_1
+    a rdfh:lineitem ;
+    rdfh:l_has_order rdfh-inst:orders_1 ;
+    rdfh:l_has_part rdfh-inst:part_1 ;
+    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:l_linenumber 1 ;
+    rdfh:l_linequantity 17e0 ;
+    rdfh:l_lineextendedprice 15317.00e0 ;
+    rdfh:l_linediscount 0.04e0 ;
+    rdfh:l_linetax 0.02e0 ;
+    rdfh:l_returnflag "N" ;
+    rdfh:l_linestatus "O" ;
+    rdfh:l_shipdate "1996-03-13"^^xsd:dateTime ;
+    rdfh:l_commitdate "1996-02-12"^^xsd:dateTime ;
+    rdfh:l_receiptdate "1996-03-22"^^xsd:dateTime ;
+    rdfh:l_shipinstruct "DELIVER IN PERSON" ;
+    rdfh:l_shipmode "TRUCK" ;
+    rdfh:l_comment "egular courts above the" .
+rdfh-inst:lineitem_1_2
+    a rdfh:lineitem ;
+    rdfh:l_has_order rdfh-inst:orders_1 ;
+    rdfh:l_has_part rdfh-inst:part_1 ;
+    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:l_linenumber 2 ;
+    rdfh:l_linequantity 36e0 ;
+    rdfh:l_lineextendedprice 32436.00e0 ;
+    rdfh:l_linediscount 0.09e0 ;
+    rdfh:l_linetax 0.06e0 ;
+    rdfh:l_returnflag "N" ;
+    rdfh:l_linestatus "O" ;
+    rdfh:l_shipdate "1996-04-12"^^xsd:dateTime ;
+    rdfh:l_commitdate "1996-02-28"^^xsd:dateTime ;
+    rdfh:l_receiptdate "1996-04-20"^^xsd:dateTime ;
+    rdfh:l_shipinstruct "TAKE BACK RETURN" ;
+    rdfh:l_shipmode "MAIL" ;
+    rdfh:l_comment "ly final dependencies: slyly bold" .
+rdfh-inst:lineitem_1_3
+    a rdfh:lineitem ;
+    rdfh:l_has_order rdfh-inst:orders_1 ;
+    rdfh:l_has_part rdfh-inst:part_1 ;
+    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:l_linenumber 3 ;
+    rdfh:l_linequantity 8e0 ;
+    rdfh:l_lineextendedprice 7208.00e0 ;
+    rdfh:l_linediscount 0.10e0 ;
+    rdfh:l_linetax 0.02e0 ;
+    rdfh:l_returnflag "N" ;
+    rdfh:l_linestatus "O" ;
+    rdfh:l_shipdate "1996-01-29"^^xsd:dateTime ;
+    rdfh:l_commitdate "1996-03-05"^^xsd:dateTime ;
+    rdfh:l_receiptdate "1996-01-31"^^xsd:dateTime ;
+    rdfh:l_shipinstruct "TAKE BACK RETURN" ;
+    rdfh:l_shipmode "REG AIR" ;
+    rdfh:l_comment "riously. regular, express dep" .
+rdfh-inst:lineitem_1_4
+    a rdfh:lineitem ;
+    rdfh:l_has_order rdfh-inst:orders_1 ;
+    rdfh:l_has_part rdfh-inst:part_1 ;
+    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:l_linenumber 4 ;
+    rdfh:l_linequantity 28e0 ;
+    rdfh:l_lineextendedprice 25228.00e0 ;
+    rdfh:l_linediscount 0.09e0 ;
+    rdfh:l_linetax 0.06e0 ;
+    rdfh:l_returnflag "N" ;
+    rdfh:l_linestatus "O" ;
+    rdfh:l_shipdate "1996-04-21"^^xsd:dateTime ;
+    rdfh:l_commitdate "1996-03-30"^^xsd:dateTime ;
+    rdfh:l_receiptdate "1996-05-16"^^xsd:dateTime ;
+    rdfh:l_shipinstruct "NONE" ;
+    rdfh:l_shipmode "AIR" ;
+    rdfh:l_comment "lites. fluffily even de" .
+rdfh-inst:lineitem_1_5
+    a rdfh:lineitem ;
+    rdfh:l_has_order rdfh-inst:orders_1 ;
+    rdfh:l_has_part rdfh-inst:part_1 ;
+    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:l_linenumber 5 ;
+    rdfh:l_linequantity 24e0 ;
+    rdfh:l_lineextendedprice 21624.00e0 ;
+    rdfh:l_linediscount 0.10e0 ;
+    rdfh:l_linetax 0.04e0 ;
+    rdfh:l_returnflag "N" ;
+    rdfh:l_linestatus "O" ;
+    rdfh:l_shipdate "1996-03-30"^^xsd:dateTime ;
+    rdfh:l_commitdate "1996-03-14"^^xsd:dateTime ;
+    rdfh:l_receiptdate "1996-04-01"^^xsd:dateTime ;
+    rdfh:l_shipinstruct "NONE" ;
+    rdfh:l_shipmode "FOB" ;
+    rdfh:l_comment "pending foxes. slyly re" .
+rdfh-inst:lineitem_1_6
+    a rdfh:lineitem ;
+    rdfh:l_has_order rdfh-inst:orders_1 ;
+    rdfh:l_has_part rdfh-inst:part_1 ;
+    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:l_linenumber 6 ;
+    rdfh:l_linequantity 32e0 ;
+    rdfh:l_lineextendedprice 28832.00e0 ;
+    rdfh:l_linediscount 0.07e0 ;
+    rdfh:l_linetax 0.02e0 ;
+    rdfh:l_returnflag "N" ;
+    rdfh:l_linestatus "O" ;
+    rdfh:l_shipdate "1996-01-30"^^xsd:dateTime ;
+    rdfh:l_commitdate "1996-02-07"^^xsd:dateTime ;
+    rdfh:l_receiptdate "1996-02-03"^^xsd:dateTime ;
+    rdfh:l_shipinstruct "DELIVER IN PERSON" ;
+    rdfh:l_shipmode "MAIL" ;
+    rdfh:l_comment "arefully slyly ex" .
