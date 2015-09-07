@@ -40,19 +40,19 @@ public class DatabaseHandler {
 			clearTDBDatabase();
 		}
 		
-		if (this.databaseConfig.getExperimentDataset().equals("TPC-H")) {
+		if (this.databaseConfig.getDatasetType().equals("TPC-H")) {
 			loadTPCHDataset();
 		}
-		else if (this.databaseConfig.getExperimentDataset().equals("TPC-DS")) {
+		else if (this.databaseConfig.getDatasetType().equals("TPC-DS")) {
 			//TODO
 		}
 		else {
-			throw new InvalidDatabaseConfig("The Experiment Dataset "+this.databaseConfig.getExperimentDataset()+" is not known, implementation is missing.");
+			throw new InvalidDatabaseConfig("The Experiment Dataset "+this.databaseConfig.getDatasetType()+" is not known, implementation is missing.");
 		}
 	}
 	
 	private void createTDBDirectoryIfNotExist() {
-		File theDir = new File(databaseConfig.getTDBDatasetPath());
+		File theDir = new File(databaseConfig.getDatasetPath());
 
 		// if the directory does not exist, create it
 		if (!theDir.exists()) {
@@ -66,7 +66,7 @@ public class DatabaseHandler {
 	}
 
 	private void loadTPCHDataset() throws IOException {
-		String directory = databaseConfig.getTDBDatasetPath() ;
+		String directory = databaseConfig.getDatasetPath() ;
 		this.dataset = TDBFactory.createDataset(directory);
 		
 		this.dataset.begin(ReadWrite.WRITE) ;
@@ -83,7 +83,7 @@ public class DatabaseHandler {
 			Model supplier = ModelFactory.createDefaultModel();
 			Model facts = ModelFactory.createDefaultModel();
 			
-			ontology.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getExperimentDataset()+"/onto/tpc-h-qb4o-delivered-version.ttl"));
+			ontology.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl"));
 	
 			customer.add(RDFDataMgr.loadModel((getTPCHPath()+"/customer.ttl")));
 			nation.add(RDFDataMgr.loadModel((getTPCHPath()+"/nation.ttl")));
@@ -129,7 +129,7 @@ public class DatabaseHandler {
 	}
 	
 	private String getTPCHPath(){
-		return "src/main/resources/"+databaseConfig.getExperimentDataset()+"/"+databaseConfig.getScaleFactorString();
+		return databaseConfig.getDatasetPath();
 	}
 
 	public Model getDefaultModel() {
@@ -167,6 +167,6 @@ public class DatabaseHandler {
 	}
 	
 	public void clearTDBDatabase() throws IOException {
-		FileUtils.cleanDirectory(new File(databaseConfig.getTDBDatasetPath()));
+		FileUtils.cleanDirectory(new File(databaseConfig.getDatasetPath()));
 	}
 }

@@ -7,7 +7,7 @@
 	"factModelName":"all",
 	"factStorageModel":"st",
 	"freshLoad":true,
-	"experimentDataset":"TPC-H",
+	"datasetType":"TPC-H",
 	"trashDimension":"false",
-	"prefix":"www.example.org/"
+	"prefix":"www.example.org/",
 }

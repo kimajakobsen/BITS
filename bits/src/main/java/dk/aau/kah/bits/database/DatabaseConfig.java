@@ -4,9 +4,9 @@ package dk.aau.kah.bits.database;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseConfig {
-	private String TDBDatasetPath;
+	private String datasetPath;
+	private String datasetType;
 	private String configFileName;
-	private String experimentDataset;
 	private String scaleFactor;
 	private String ontologyModelName;
 	private String ontologyStorageModel;
@@ -18,11 +18,11 @@ public class DatabaseConfig {
 	private boolean trashDimension = false;
 	private String prefix = "http://example.org/";
 
-	public String getTDBDatasetPath() {
-		return TDBDatasetPath;
+	public String getDatasetPath() {
+		return "src/main/resources/"+getDatasetType()+"/"+getScaleFactorString();
 	}
-	public void setTDBDatasetPath(String TDBDatasetFilePath) {
-		this.TDBDatasetPath = TDBDatasetFilePath;
+	public void setDatasetPath(String datasetFilePath) {
+		this.datasetPath = datasetFilePath;
 	}
 	public String getConfigFileName() {
 		return configFileName;
@@ -93,16 +93,10 @@ public class DatabaseConfig {
 	public void setFactStorageModel(String factStorageModel) {
 		this.factStorageModel = factStorageModel;
 	}
-	public String getExperimentDataset() {
-		return experimentDataset;
-	}
-	public void setExperimentDataset(String experimentset) {
-		this.experimentDataset = experimentset;
-	}
 
 	public void validate() throws InvalidDatabaseConfig {
 		
-		if (experimentDataset == null){
+		if (datasetType == null){
 			throw new InvalidDatabaseConfig("experimentDataset is not set, config is not valid");
 		}
 		if (ontologyModelName == null){
@@ -123,23 +117,16 @@ public class DatabaseConfig {
 		if (factStorageModel == null){
 			throw new InvalidDatabaseConfig("factStorageModel is not set, config is not valid");
 		}
-		if (experimentDataset.equals("TPC-H")){
+		if (datasetType.equals("TPC-H")){
 			if (scaleFactor == null) {
 				throw new InvalidDatabaseConfig("The scalefactor is not set, it needs to be specified when using TPCH");
 			}
 		}
-		// TODO
-		// Der er et minimum af hvad der skal sætter, fact, dim, onto. Dette skal tjekkes.
-		if (false) {
-			
-			throw new InvalidDatabaseConfig("Some message TODO");
-		}
-
 	}
 	
 	@Override
 	public String toString () {
-		return this.TDBDatasetPath;
+		return this.datasetPath;
 		
 	}
 	public void setFreshLoad(boolean freshLoad) {
@@ -155,6 +142,12 @@ public class DatabaseConfig {
 	}
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
+	}
+	public String getDatasetType() {
+		return datasetType;
+	}
+	public void setDatasetType(String datasetType) {
+		this.datasetType = datasetType;
 	}
 
 	
