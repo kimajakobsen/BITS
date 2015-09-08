@@ -19,8 +19,6 @@ public class EvaluationFactory {
 		} else {
 			throw new InvalidDatabaseConfig("The Dataset Type "+databaseConfig.getDatasetType()+" is not known, implementation is missing.");
 		}
-		
-		
 		return evaluationhandler;
 	}
 	 
