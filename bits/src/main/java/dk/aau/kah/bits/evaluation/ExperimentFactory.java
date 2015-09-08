@@ -4,9 +4,9 @@ import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
 
-public class EvaluationFactory {
+public class ExperimentFactory {
 
-	public EvaluationFactory() {
+	public ExperimentFactory() {
 		
 	}
 

@@ -3,6 +3,7 @@ package dk.aau.kah.bits.evaluation;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.query.Dataset;
@@ -32,26 +33,29 @@ public class EvaluationHandlerTPCH extends AbstractEvaluationHandler {
 		for (final File fileEntry : new File(queriesPath).listFiles()) {
 			String rawQuery = FileUtils.readFileToString(fileEntry);
 			Query query = QueryFactory.create(rawQuery) ;
+			
+			for (String modelURI : getNamedGraphs(query)) {
+				query.addNamedGraphURI(modelURI);
+			}
 
 			dataset.begin(ReadWrite.READ) ;
 		    QueryExecution qexec = QueryExecutionFactory.create(query, dataset);
+		    
 		    /*Execute the Query*/
 		    System.out.println(fileEntry);
 		    ResultSet resultSet = qexec.execSelect();
 		    //ResultSetFormatter.out(System.out, resultSet, query) ;
 		    while (resultSet.hasNext()) {
 			    QuerySolution row=resultSet.nextSolution();
-			    System.out.println(fileEntry.toString());
-			    System.out.println(row.toString());
 			    results.put(fileEntry.toString(), row.toString());
 			  }
 		    qexec.close();
 		    dataset.commit();
-		    
 	        }
 		dataset.close();
-		
 	    }
+
+
 
 	@Override
 	public HashMap<String, String> getResults() {
