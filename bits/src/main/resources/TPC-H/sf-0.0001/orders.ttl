@@ -7,7 +7,7 @@ rdfh-inst:orders_1
     rdfh:o_has_customer rdfh-inst:customer_1 ;
     rdfh:o_orderstatus "O" ;
     rdfh:o_ordertotalprice 124828.11e0 ;
-    rdfh:o_orderdate "1996-01-02"^^xsd:dateTime ;
+    rdfh:o_orderdate "1996-01-02"^^xsd:date ;
     rdfh:o_orderpriority "5-LOW" ;
     rdfh:o_clerk "Clerk#000000951" ;
     rdfh:o_shippriority 0 ;

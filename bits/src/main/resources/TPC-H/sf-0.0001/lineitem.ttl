@@ -13,9 +13,9 @@ rdfh-inst:lineitem_1_1
     rdfh:l_linetax 0.02e0 ;
     rdfh:l_returnflag "N" ;
     rdfh:l_linestatus "O" ;
-    rdfh:l_shipdate "1996-03-13"^^xsd:dateTime ;
-    rdfh:l_commitdate "1996-02-12"^^xsd:dateTime ;
-    rdfh:l_receiptdate "1996-03-22"^^xsd:dateTime ;
+    rdfh:l_shipdate "1996-03-13"^^xsd:date ;
+    rdfh:l_commitdate "1996-02-12"^^xsd:date ;
+    rdfh:l_receiptdate "1996-03-22"^^xsd:date ;
     rdfh:l_shipinstruct "DELIVER IN PERSON" ;
     rdfh:l_shipmode "TRUCK" ;
     rdfh:l_comment "egular courts above the" .
@@ -31,9 +31,9 @@ rdfh-inst:lineitem_1_2
     rdfh:l_linetax 0.06e0 ;
     rdfh:l_returnflag "N" ;
     rdfh:l_linestatus "O" ;
-    rdfh:l_shipdate "1996-04-12"^^xsd:dateTime ;
-    rdfh:l_commitdate "1996-02-28"^^xsd:dateTime ;
-    rdfh:l_receiptdate "1996-04-20"^^xsd:dateTime ;
+    rdfh:l_shipdate "1996-04-12"^^xsd:date ;
+    rdfh:l_commitdate "1996-02-28"^^xsd:date ;
+    rdfh:l_receiptdate "1996-04-20"^^xsd:date ;
     rdfh:l_shipinstruct "TAKE BACK RETURN" ;
     rdfh:l_shipmode "MAIL" ;
     rdfh:l_comment "ly final dependencies: slyly bold" .
@@ -49,9 +49,9 @@ rdfh-inst:lineitem_1_3
     rdfh:l_linetax 0.02e0 ;
     rdfh:l_returnflag "N" ;
     rdfh:l_linestatus "O" ;
-    rdfh:l_shipdate "1996-01-29"^^xsd:dateTime ;
-    rdfh:l_commitdate "1996-03-05"^^xsd:dateTime ;
-    rdfh:l_receiptdate "1996-01-31"^^xsd:dateTime ;
+    rdfh:l_shipdate "1996-01-29"^^xsd:date ;
+    rdfh:l_commitdate "1996-03-05"^^xsd:date ;
+    rdfh:l_receiptdate "1996-01-31"^^xsd:date ;
     rdfh:l_shipinstruct "TAKE BACK RETURN" ;
     rdfh:l_shipmode "REG AIR" ;
     rdfh:l_comment "riously. regular, express dep" .
@@ -67,9 +67,9 @@ rdfh-inst:lineitem_1_4
     rdfh:l_linetax 0.06e0 ;
     rdfh:l_returnflag "N" ;
     rdfh:l_linestatus "O" ;
-    rdfh:l_shipdate "1996-04-21"^^xsd:dateTime ;
-    rdfh:l_commitdate "1996-03-30"^^xsd:dateTime ;
-    rdfh:l_receiptdate "1996-05-16"^^xsd:dateTime ;
+    rdfh:l_shipdate "1996-04-21"^^xsd:date ;
+    rdfh:l_commitdate "1996-03-30"^^xsd:date ;
+    rdfh:l_receiptdate "1996-05-16"^^xsd:date ;
     rdfh:l_shipinstruct "NONE" ;
     rdfh:l_shipmode "AIR" ;
     rdfh:l_comment "lites. fluffily even de" .
@@ -85,9 +85,9 @@ rdfh-inst:lineitem_1_5
     rdfh:l_linetax 0.04e0 ;
     rdfh:l_returnflag "N" ;
     rdfh:l_linestatus "O" ;
-    rdfh:l_shipdate "1996-03-30"^^xsd:dateTime ;
-    rdfh:l_commitdate "1996-03-14"^^xsd:dateTime ;
-    rdfh:l_receiptdate "1996-04-01"^^xsd:dateTime ;
+    rdfh:l_shipdate "1996-03-30"^^xsd:date ;
+    rdfh:l_commitdate "1996-03-14"^^xsd:date ;
+    rdfh:l_receiptdate "1996-04-01"^^xsd:date ;
     rdfh:l_shipinstruct "NONE" ;
     rdfh:l_shipmode "FOB" ;
     rdfh:l_comment "pending foxes. slyly re" .
@@ -103,9 +103,9 @@ rdfh-inst:lineitem_1_6
     rdfh:l_linetax 0.02e0 ;
     rdfh:l_returnflag "N" ;
     rdfh:l_linestatus "O" ;
-    rdfh:l_shipdate "1996-01-30"^^xsd:dateTime ;
-    rdfh:l_commitdate "1996-02-07"^^xsd:dateTime ;
-    rdfh:l_receiptdate "1996-02-03"^^xsd:dateTime ;
+    rdfh:l_shipdate "1996-01-30"^^xsd:date ;
+    rdfh:l_commitdate "1996-02-07"^^xsd:date ;
+    rdfh:l_receiptdate "1996-02-03"^^xsd:date ;
     rdfh:l_shipinstruct "DELIVER IN PERSON" ;
     rdfh:l_shipmode "MAIL" ;
     rdfh:l_comment "arefully slyly ex" .
