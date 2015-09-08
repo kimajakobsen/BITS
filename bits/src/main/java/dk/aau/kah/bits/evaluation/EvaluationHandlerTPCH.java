@@ -23,7 +23,6 @@ public class EvaluationHandlerTPCH extends AbstractEvaluationHandler {
 		super(dh);
 	}
 
-
 	private String queriesPath = "src/test/resources/TPC-H/QueriesSeed100/";
 	
 	@Override
@@ -39,7 +38,7 @@ public class EvaluationHandlerTPCH extends AbstractEvaluationHandler {
 		    /*Execute the Query*/
 		    System.out.println(fileEntry);
 		    ResultSet resultSet = qexec.execSelect();
-		    ResultSetFormatter.out(System.out, resultSet, query) ;
+		    //ResultSetFormatter.out(System.out, resultSet, query) ;
 		    while (resultSet.hasNext()) {
 			    QuerySolution row=resultSet.nextSolution();
 			    System.out.println(fileEntry.toString());
@@ -53,7 +52,6 @@ public class EvaluationHandlerTPCH extends AbstractEvaluationHandler {
 		dataset.close();
 		
 	    }
-		// TODO Auto-generated method stub
 
 	@Override
 	public HashMap<String, String> getResults() {
