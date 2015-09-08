@@ -1,5 +1,6 @@
 prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
-prefix ltpch: <http://extbi.lab.aau.dk/ontology/ltpch/>
+prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
+prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> 
 
 select
   ?bigpspart
@@ -10,13 +11,13 @@ where {
           (sum(xsd:decimal(?b_supplycost) * xsd:decimal(?b_availqty)) as ?bigpsvalue)
         where
           {
-            ?bigps a ltpch:partsupp ;
-                   ltpch:ps_has_part ?bigpspart ;
-                   ltpch:ps_supplycost ?b_supplycost ;
-                   ltpch:ps_availqty ?b_availqty ;
-                   ltpch:ps_has_supplier ?b_supplier .
-            ?b_supplier ltpch:s_has_nation ?b_nation .
-            ?b_nation ltpch:n_name "BRAZIL" .
+            ?bigps a rdfh:partsupp ;
+                   rdfh:ps_has_part ?bigpspart ;
+                   rdfh:ps_supplycost ?b_supplycost ;
+                   rdfh:ps_availqty ?b_availqty ;
+                   rdfh:ps_has_supplier ?b_supplier .
+            ?b_supplier rdfh:s_has_nation ?b_nation .
+            ?b_nation rdfh:n_name "BRAZIL" .
           }
           group by ?bigpspart
       }
@@ -25,12 +26,12 @@ where {
           (sum(xsd:decimal(?t_supplycost) * xsd:decimal(?t_availqty)) * 0.000100 as ?threshold)
         where
           {
-            ?thr_ps a ltpch:partsupp ;
-                    ltpch:ps_supplycost ?t_supplycost ;
-                    ltpch:ps_availqty ?t_availqty ;
-                    ltpch:ps_has_supplier ?t_supplier .
-            ?t_supplier ltpch:s_has_nation ?t_nation .
-            ?t_nation ltpch:n_name "BRAZIL" .
+            ?thr_ps a rdfh:partsupp ;
+                    rdfh:ps_supplycost ?t_supplycost ;
+                    rdfh:ps_availqty ?t_availqty ;
+                    rdfh:ps_has_supplier ?t_supplier .
+            ?t_supplier rdfh:s_has_nation ?t_nation .
+            ?t_nation rdfh:n_name "BRAZIL" .
           }
       }
       filter (?bigpsvalue > ?threshold )

@@ -1,4 +1,5 @@
-prefix ltpch: <http://extbi.lab.aau.dk/ontology/ltpch/>
+prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
+prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> 
 prefix qb: <http://purl.org/linked-data/cube#>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
 
@@ -13,12 +14,12 @@ where
       ?ord
     where 
     {
-      ?li qb:dataSet ltpch:lineitemCube ;
-          ltpch:l_has_order ?ord ;
-          ltpch:l_commitdate ?l_commitdate ;
-          ltpch:l_receiptdate ?l_receiptdate .
-      ?ord ltpch:o_orderpriority ?o_orderpriority ;
-           ltpch:o_orderdate ?o_orderdate .
+      ?li qb:dataSet rdfh:lineitemCube ;
+          rdfh:l_has_order ?ord ;
+          rdfh:l_commitdate ?l_commitdate ;
+          rdfh:l_receiptdate ?l_receiptdate .
+      ?ord rdfh:o_orderpriority ?o_orderpriority ;
+           rdfh:o_orderdate ?o_orderdate .
       filter (
         (xsd:date(?l_commitdate) < xsd:date(?l_receiptdate)) &&
         (xsd:date(?o_orderdate) >= "1995-10-01"^^xsd:date) &&

@@ -1,5 +1,6 @@
 prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
-prefix ltpch: <http://extbi.lab.aau.dk/ontology/ltpch/>
+prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
+prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> 
 prefix qb: <http://purl.org/linked-data/cube#>
 
 select
@@ -12,21 +13,21 @@ select
   ?c_phone
   ?c_comment
 where  {
-  ?li qb:dataSet ltpch:lineitemCube ;
-      ltpch:l_returnflag ?l_returnflag ;
-      ltpch:l_has_order ?ord ;
-      ltpch:l_lineextendedprice ?l_lineextendedprice ;
-      ltpch:l_linediscount ?l_linediscount .
-  ?ord ltpch:o_has_customer ?cust ;
-       ltpch:o_orderdate ?o_orderdate .
-  ?cust ltpch:c_address ?c_address ;
-      ltpch:c_phone ?c_phone ;
-      ltpch:c_comment ?c_comment ;
-      ltpch:c_acctbal ?c_acctbal ;
-      ltpch:c_custkey ?c_custkey ;
-      ltpch:c_has_nation ?c_nation ;
-      ltpch:c_name ?c_companyName .
-   ?c_nation ltpch:n_name ?nation .
+  ?li qb:dataSet rdfh:lineitemCube ;
+      rdfh:l_returnflag ?l_returnflag ;
+      rdfh:l_has_order ?ord ;
+      rdfh:l_lineextendedprice ?l_lineextendedprice ;
+      rdfh:l_linediscount ?l_linediscount .
+  ?ord rdfh:o_has_customer ?cust ;
+       rdfh:o_orderdate ?o_orderdate .
+  ?cust rdfh:c_address ?c_address ;
+      rdfh:c_phone ?c_phone ;
+      rdfh:c_comment ?c_comment ;
+      rdfh:c_acctbal ?c_acctbal ;
+      rdfh:c_custkey ?c_custkey ;
+      rdfh:c_has_nation ?c_nation ;
+      rdfh:c_name ?c_companyName .
+   ?c_nation rdfh:n_name ?nation .
    filter ((xsd:date(?o_orderdate) >= xsd:date("1994-04-01"^^xsd:date)) &&
       (xsd:date(?o_orderdate) < xsd:date("1994-04-01"^^xsd:date + "P3M"^^xsd:duration)) &&
       (?l_returnflag = "R") 

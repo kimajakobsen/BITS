@@ -1,5 +1,6 @@
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>  
-prefix ltpch: <http://extbi.lab.aau.dk/ontology/ltpch/>
+prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
+prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> 
 prefix qb: <http://purl.org/linked-data/cube#>
 prefix fn: <http://www.w3.org/2005/xpath-functions#>
 
@@ -13,13 +14,13 @@ select
       fn:starts-with(?o_orderpriority, "2-HIGH") ) ) as ?low_line_count)
 where  {
     
-    ?li qb:dataSet ltpch:lineitemCube ;
-       ltpch:l_has_order ?ord ;
-       ltpch:l_commitdate ?l_commitdate ;
-       ltpch:l_receiptdate ?l_receiptdate ;
-       ltpch:l_shipmode ?l_shipmode ;
-       ltpch:l_shipdate ?l_shipdate .
-    ?ord ltpch:o_orderpriority ?o_orderpriority .
+    ?li qb:dataSet rdfh:lineitemCube ;
+       rdfh:l_has_order ?ord ;
+       rdfh:l_commitdate ?l_commitdate ;
+       rdfh:l_receiptdate ?l_receiptdate ;
+       rdfh:l_shipmode ?l_shipmode ;
+       rdfh:l_shipdate ?l_shipdate .
+    ?ord rdfh:o_orderpriority ?o_orderpriority .
     filter (?l_shipmode in ("REG AIR", "AIR") &&
       (xsd:date(?l_commitdate) < xsd:date(?l_receiptdate)) &&
       (xsd:date(?l_shipdate) < xsd:date(?l_commitdate)) &&

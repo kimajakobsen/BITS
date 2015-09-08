@@ -1,5 +1,5 @@
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>  
-prefix ltpch: <http://extbi.lab.aau.dk/ontology/ltpch/>
+prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
 prefix qb: <http://purl.org/linked-data/cube#>
 
 select
@@ -9,21 +9,21 @@ select
   ?s_phone
   ?total_revenue
 where  {
-    ?supplier a ltpch:supplier ;
-        ltpch:s_suppkey ?s_suppkey ;
-        ltpch:s_name ?s_name ;
-        ltpch:s_address ?s_address ;
-        ltpch:s_phone ?s_phone .
+    ?supplier a rdfh:supplier ;
+        rdfh:s_suppkey ?s_suppkey ;
+        rdfh:s_name ?s_name ;
+        rdfh:s_address ?s_address ;
+        rdfh:s_phone ?s_phone .
     { select
           ?supplier
           (sum(xsd:decimal(?l_extendedprice) * (1 - xsd:decimal(?l_discount))) as ?total_revenue)
        where {
-            ?li1 qb:dataSet ltpch:lineitemCube ;
-                 ltpch:l_shipdate ?l_shipdate ;
-                 ltpch:l_lineextendedprice ?l_extendedprice ;
-                 ltpch:l_linediscount ?l_discount ;
-                 ltpch:l_has_partsupplier ?ps1 .
-            ?ps1 ltpch:ps_has_supplier ?supplier .
+            ?li1 qb:dataSet rdfh:lineitemCube ;
+                 rdfh:l_shipdate ?l_shipdate ;
+                 rdfh:l_lineextendedprice ?l_extendedprice ;
+                 rdfh:l_linediscount ?l_discount ;
+                 rdfh:l_has_partsupplier ?ps1 .
+            ?ps1 rdfh:ps_has_supplier ?supplier .
             filter (
                 xsd:date(?l_shipdate) >= xsd:date("1994-04-01"^^xsd:date) &&
                 xsd:date(?l_shipdate) < xsd:date("1994-04-01"^^xsd:date + "P3M"^^xsd:duration) )
@@ -37,12 +37,12 @@ where  {
                   ?supplier2
                   (sum(xsd:decimal(?l2_extendedprice) * (1 - xsd:decimal(?l2_discount))) as ?l2_total_revenue)
                where {
-                    ?li2 qb:dataSet ltpch:lineitemCube ;
-                      ltpch:l_shipdate ?l2_shipdate ;
-                      ltpch:l_lineextendedprice ?l2_extendedprice ;
-                      ltpch:l_linediscount ?l2_discount ;
-                       ltpch:l_has_partsupplier ?ps2 .
-                  ?ps2 ltpch:ps_has_supplier ?supplier2 .
+                    ?li2 qb:dataSet rdfh:lineitemCube ;
+                      rdfh:l_shipdate ?l2_shipdate ;
+                      rdfh:l_lineextendedprice ?l2_extendedprice ;
+                      rdfh:l_linediscount ?l2_discount ;
+                       rdfh:l_has_partsupplier ?ps2 .
+                  ?ps2 rdfh:ps_has_supplier ?supplier2 .
                     filter (
                         xsd:date(?l2_shipdate) >= xsd:date("1994-04-01"^^xsd:date) &&
                         xsd:date(?l2_shipdate) < xsd:date("1994-04-01"^^xsd:date + "P3M"^^xsd:duration) )

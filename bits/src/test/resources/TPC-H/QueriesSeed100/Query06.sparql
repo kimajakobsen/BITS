@@ -1,5 +1,6 @@
 prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
-prefix ltpch: <http://extbi.lab.aau.dk/ontology/ltpch/>
+prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
+prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> 
 prefix qb: <http://purl.org/linked-data/cube#>
 
 select
@@ -12,19 +13,19 @@ where {
       ?o_year
       ((xsd:decimal(?l_lineextendedprice) * (1 - xsd:decimal(?l_linediscount)) - xsd:decimal(?ps_supplycost) * xsd:decimal(?l_linequantity)) as ?amount)
     where {
-      ?li qb:dataSet ltpch:lineitemCube ;
-          ltpch:l_has_order ?ord ;
-          ltpch:l_has_partsupplier ?ps ;
-          ltpch:l_linequantity ?l_linequantity ;
-          ltpch:l_lineextendedprice ?l_lineextendedprice ;
-          ltpch:l_linediscount ?l_linediscount .
-      ?ps ltpch:ps_has_part ?part ;
-          ltpch:ps_has_supplier ?supp .
-      ?supp ltpch:s_has_nation ?s_nation .
-      ?s_nation ltpch:n_name ?nation .
-      ?ord ltpch:o_orderdate ?o_orderdate .
-      ?ps ltpch:ps_supplycost ?ps_supplycost .
-      ?part ltpch:p_name ?p_name .
+      ?li qb:dataSet rdfh:lineitemCube ;
+          rdfh:l_has_order ?ord ;
+          rdfh:l_has_partsupplier ?ps ;
+          rdfh:l_linequantity ?l_linequantity ;
+          rdfh:l_lineextendedprice ?l_lineextendedprice ;
+          rdfh:l_linediscount ?l_linediscount .
+      ?ps rdfh:ps_has_part ?part ;
+          rdfh:ps_has_supplier ?supp .
+      ?supp rdfh:s_has_nation ?s_nation .
+      ?s_nation rdfh:n_name ?nation .
+      ?ord rdfh:o_orderdate ?o_orderdate .
+      ?ps rdfh:ps_supplycost ?ps_supplycost .
+      ?part rdfh:p_name ?p_name .
       filter (REGEX (?p_name, "khaki"))
       BIND (SUBSTR(STR(?o_orderdate), 1,4) as ?o_year)
     } 

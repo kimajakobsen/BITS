@@ -1,6 +1,6 @@
 prefix afn: <http://jena.hpl.hp.com/ARQ/function#>
 prefix fn: <http://www.w3.org/2005/xpath-functions#>
-prefix ltpch: <http://extbi.lab.aau.dk/ontology/ltpch/>
+prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
 prefix qb: <http://purl.org/linked-data/cube#>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 
@@ -9,13 +9,13 @@ select
 where
 {
 
-    ?li qb:dataSet ltpch:lineitemCube ;
-        ltpch:l_lineextendedprice ?l_lineextendedprice ;
-        ltpch:l_linediscount ?l_linediscount ;
-        ltpch:l_shipdate ?l_shipdate ;
-        ltpch:l_has_partsupplier ?ps .
-    ?ps ltpch:ps_has_part ?part .
-    ?part ltpch:p_type ?p_type .
+    ?li qb:dataSet rdfh:lineitemCube ;
+        rdfh:l_lineextendedprice ?l_lineextendedprice ;
+        rdfh:l_linediscount ?l_linediscount ;
+        rdfh:l_shipdate ?l_shipdate ;
+        rdfh:l_has_partsupplier ?ps .
+    ?ps rdfh:ps_has_part ?part .
+    ?part rdfh:p_type ?p_type .
     filter (xsd:date(?l_shipdate) >= xsd:date("1997-08-01"^^xsd:date) &&
       (xsd:date(?l_shipdate) < xsd:date("1997-08-01"^^xsd:date + "P1M"^^xsd:duration)) )
 

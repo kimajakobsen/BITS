@@ -1,5 +1,5 @@
 prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
-prefix ltpch: <http://extbi.lab.aau.dk/ontology/ltpch/>
+prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
 prefix qb: <http://purl.org/linked-data/cube#>
 
 select
@@ -11,11 +11,11 @@ where {
         (count (?ord) as ?c_count)
       where
         {
-          ?cust ltpch:c_custkey ?c_custkey .
+          ?cust rdfh:c_custkey ?c_custkey .
            optional {
-             ?ord a ltpch:orders ;
-                  ltpch:o_has_customer ?cust ;
-                  ltpch:o_comment ?o_comment .
+             ?ord a rdfh:orders ;
+                  rdfh:o_has_customer ?cust ;
+                  rdfh:o_comment ?o_comment .
               filter (!( REGEX (?o_comment , "pending.*deposits" ) ) ) . 
           }
         }
