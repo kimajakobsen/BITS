@@ -9,5 +9,5 @@
 	"freshLoad":true,
 	"datasetType":"TPC-H",
 	"trashDimension":"false",
-	"prefix":"www.example.org/",
+	"prefix":"http://example.org/"
 }
