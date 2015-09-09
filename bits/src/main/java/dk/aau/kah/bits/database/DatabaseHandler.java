@@ -3,7 +3,10 @@ package dk.aau.kah.bits.database;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.query.Dataset;
@@ -17,6 +20,10 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.tdb.TDBFactory;
 
@@ -69,74 +76,61 @@ public class DatabaseHandler {
 		String directory = databaseConfig.getTDBPath() ;
 		this.dataset = TDBFactory.createDataset(directory);
 		
-		this.dataset.begin(ReadWrite.WRITE) ;
-		try {
-			//TODO
-			//loop through the models, get model from onto, instead of all this repeat stuff.
-			Model ontology = ModelFactory.createDefaultModel();
-			Model dimensions = ModelFactory.createDefaultModel();
-			Model facts = ModelFactory.createDefaultModel();
-			
-			Model customer = ModelFactory.createDefaultModel();
-			Model nation = ModelFactory.createDefaultModel();
-			Model orders = ModelFactory.createDefaultModel();
-			Model part = ModelFactory.createDefaultModel();
-			Model partsupp = ModelFactory.createDefaultModel();
-			Model region = ModelFactory.createDefaultModel();
-			Model supplier = ModelFactory.createDefaultModel();
-			
-			
-			
-			ontology.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl"));
-	
-			customer.add(RDFDataMgr.loadModel((getTPCHPath()+"/customer.ttl")));
-			nation.add(RDFDataMgr.loadModel((getTPCHPath()+"/nation.ttl")));
-			orders.add(RDFDataMgr.loadModel((getTPCHPath()+"/orders.ttl")));
-			part.add(RDFDataMgr.loadModel((getTPCHPath()+"/part.ttl")));
-			partsupp.add(RDFDataMgr.loadModel((getTPCHPath()+"/partsupp.ttl")));
-			region.add(RDFDataMgr.loadModel((getTPCHPath()+"/region.ttl")));
-			supplier.add(RDFDataMgr.loadModel((getTPCHPath()+"/supplier.ttl")));
-			if (databaseConfig.getDimensionModelName().equals("pt")) {
-				//PropertyTable customerPropertyTable = initilizePropertyTable(ontology,getTPCHPath()+"/customer.ttl");
-				//TODO
-			}
-
-			
-			facts.add(RDFDataMgr.loadModel((getTPCHPath()+"/lineitem.ttl")));
-			if (databaseConfig.getFactStorageModel().equals("pt")) {
-				QB4OLAPFactPropertyTable factTable = new QB4OLAPFactPropertyTable(ontology,facts); 
-				facts = factTable.getModel();
-			}
-			
-			
-			//Concatenate the model with the existing model and add it to the named graph. 
-			dataset.addNamedModel(databaseConfig.getOntologyModelURL(), ontology.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
-			dataset.addNamedModel(databaseConfig.getFactModelURL(), facts.add(dataset.getNamedModel(databaseConfig.getFactModelURL())));
 		
-			if (databaseConfig.getDimensionModelName().equals("#")) {
-				//This might overwrite existing named models, this need to be tested further.
-				dataset.addNamedModel(databaseConfig.getPrefix()+"customer", customer);
-				dataset.addNamedModel(databaseConfig.getPrefix()+"nation", nation);
-				dataset.addNamedModel(databaseConfig.getPrefix()+"orders", orders);
-				dataset.addNamedModel(databaseConfig.getPrefix()+"part", part);
-				dataset.addNamedModel(databaseConfig.getPrefix()+"partsupp", partsupp);
-				dataset.addNamedModel(databaseConfig.getPrefix()+"region", region);
-				dataset.addNamedModel(databaseConfig.getPrefix()+"supplier", supplier);
-			} else {
-				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), customer.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
-				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), nation.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
-				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), orders.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
-				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), part.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
-				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), partsupp.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
-				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), region.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
-				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), supplier.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
-			}
+		try {
+
+			Model ontology = ModelFactory.createDefaultModel();
+			ontology.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl"));
+			dataset.begin(ReadWrite.WRITE) ;
+			dataset.addNamedModel(databaseConfig.getOntologyModelURL(), ontology.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
 			dataset.commit();
+			
+			
+			Model facts = ModelFactory.createDefaultModel();
+			facts.add(RDFDataMgr.loadModel((getTPCHPath()+"/lineitem.ttl")));
+			dataset.begin(ReadWrite.WRITE) ;
+			dataset.addNamedModel(databaseConfig.getFactModelURL(), facts.add(dataset.getNamedModel(databaseConfig.getFactModelURL())));
+			dataset.commit();
+			
+			HashMap<String,Model> levelModels = new HashMap<String,Model>();
+			for (Resource resource : getDistinctLevelProperties()) {
+				levelModels.put(resource.toString(), ModelFactory.createDefaultModel());
+			}
+			
+			for (Entry<String, Model> resource : levelModels.entrySet()) {
+				String filePath = pairLevelsWithFilesTPCH(resource.getKey()); 
+				if (databaseConfig.getDimensionModelName().equals("#")) {
+					dataset.begin(ReadWrite.WRITE) ;
+					dataset.addNamedModel(resource.getKey(), RDFDataMgr.loadModel(filePath));
+					dataset.commit();
+				} else {
+					//This might overwrite existing named models, this need to be tested further.
+					dataset.begin(ReadWrite.WRITE) ;
+					dataset.addNamedModel(databaseConfig.getDimensionModelURL(), RDFDataMgr.loadModel(filePath));
+					dataset.commit();
+				}
+			}
+			
+//			if (databaseConfig.getDimensionModelName().equals("pt")) {
+//				//PropertyTable customerPropertyTable = initilizePropertyTable(ontology,getTPCHPath()+"/customer.ttl");
+//				//TODO
+//			}
+
+//			if (databaseConfig.getFactStorageModel().equals("pt")) {
+//				QB4OLAPFactPropertyTable factTable = new QB4OLAPFactPropertyTable(ontology,facts); 
+//				facts = factTable.getModel();
+//			}
 		} finally {
 			dataset.end();
 		}
 	}
 	
+	private String pairLevelsWithFilesTPCH(String resource) {
+		String[] split = resource.split("_");
+		
+		return getTPCHPath()+"/"+split[split.length-1]+".ttl";
+	}
+
 	private String getTPCHPath(){
 		return databaseConfig.getDatasetPath();
 	}
@@ -167,11 +161,19 @@ public class DatabaseHandler {
 		return databaseConfig.getFactModelURL();
 	}
 	
-	public List<String> getDimensionModelURI() {
+	public List<String> getAllDimensionModelURI() {
 		List<String> modelURIs = getAllModelNames();
 		modelURIs.remove(getFactModelURI());
 		modelURIs.remove(getOntologyModelURI());
 		return modelURIs;
+	}
+	
+	public String getDimensionModelURI()
+	{
+		if (databaseConfig.getDimensionModelName().equals("#")) {
+			return null;
+		}
+		return databaseConfig.getDimensionModelURL();
 	}
 	
 	public Model getModel(String modelName) {
@@ -198,8 +200,8 @@ public class DatabaseHandler {
 		  }
 	    qexec.close();
 	    dataset.commit();
+	    
 		return models;
-		
 	}
 	
 	public void clearTDBDatabase() throws IOException {
@@ -212,5 +214,15 @@ public class DatabaseHandler {
 	    ResultSet resultSet = qexec.execSelect();
 	    dataset.commit();
 		return resultSet;
+	}
+	
+	public HashSet<Resource> getDistinctLevelProperties()
+	{
+		HashSet<Resource> levelProperties = new HashSet<Resource>();
+		Model ontologyModel = getOntologyModel();
+		Property a = ResourceFactory.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+		RDFNode levelProperty = ResourceFactory.createResource("http://publishing-multidimensional-data.googlecode.com/git/index.html#ref_qbplus_LevelProperty");
+		levelProperties.addAll(ontologyModel.listSubjectsWithProperty(a, levelProperty).toList());
+		return levelProperties;
 	}
 }
