@@ -10,12 +10,12 @@ public class ExperimentFactory {
 		
 	}
 
-	public AbstractEvaluationHandler makeEvaluation(DatabaseHandler databaseHandle, DatabaseConfig databaseConfig) throws InvalidDatabaseConfig {
+	public AbstractExperimentHandler makeEvaluation(DatabaseHandler databaseHandle, DatabaseConfig databaseConfig) throws InvalidDatabaseConfig {
 		String datasetType = databaseConfig.getDatasetType();
-		AbstractEvaluationHandler evaluationhandler;
+		AbstractExperimentHandler evaluationhandler;
 		
 		if (datasetType.equals("TPC-H")) {
-			evaluationhandler = new EvaluationHandlerTPCH(databaseHandle);
+			evaluationhandler = new ExperimentHandlerTPCH(databaseHandle);
 		} else {
 			throw new InvalidDatabaseConfig("The Dataset Type "+databaseConfig.getDatasetType()+" is not known, implementation is missing.");
 		}
