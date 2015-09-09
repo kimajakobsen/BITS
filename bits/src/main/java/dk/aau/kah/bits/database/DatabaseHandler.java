@@ -25,7 +25,7 @@ import da.aau.kah.bits.physical_storage.QB4OLAPFactPropertyTable;
 
 public class DatabaseHandler {
 
-	public DatabaseConfig databaseConfig;
+	private DatabaseConfig databaseConfig;
 	private Dataset dataset;
 	//String assemblerFile = "src/main/resources/assembler.ttl" ;
 	
@@ -71,9 +71,12 @@ public class DatabaseHandler {
 		
 		this.dataset.begin(ReadWrite.WRITE) ;
 		try {
-			
+			//TODO
+			//loop through the models, get model from onto, instead of all this repeat stuff.
 			Model ontology = ModelFactory.createDefaultModel();
 			Model dimensions = ModelFactory.createDefaultModel();
+			Model facts = ModelFactory.createDefaultModel();
+			
 			Model customer = ModelFactory.createDefaultModel();
 			Model nation = ModelFactory.createDefaultModel();
 			Model orders = ModelFactory.createDefaultModel();
@@ -81,7 +84,8 @@ public class DatabaseHandler {
 			Model partsupp = ModelFactory.createDefaultModel();
 			Model region = ModelFactory.createDefaultModel();
 			Model supplier = ModelFactory.createDefaultModel();
-			Model facts = ModelFactory.createDefaultModel();
+			
+			
 			
 			ontology.add(RDFDataMgr.loadModel("src/main/resources/"+databaseConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl"));
 	
@@ -107,7 +111,9 @@ public class DatabaseHandler {
 			
 			//Concatenate the model with the existing model and add it to the named graph. 
 			dataset.addNamedModel(databaseConfig.getOntologyModelURL(), ontology.add(dataset.getNamedModel(databaseConfig.getOntologyModelURL())));
-			if (databaseConfig.getDimensionModelName()=="#") {
+			dataset.addNamedModel(databaseConfig.getFactModelURL(), facts.add(dataset.getNamedModel(databaseConfig.getFactModelURL())));
+		
+			if (databaseConfig.getDimensionModelName().equals("#")) {
 				//This might overwrite existing named models, this need to be tested further.
 				dataset.addNamedModel(databaseConfig.getPrefix()+"customer", customer);
 				dataset.addNamedModel(databaseConfig.getPrefix()+"nation", nation);
@@ -116,12 +122,15 @@ public class DatabaseHandler {
 				dataset.addNamedModel(databaseConfig.getPrefix()+"partsupp", partsupp);
 				dataset.addNamedModel(databaseConfig.getPrefix()+"region", region);
 				dataset.addNamedModel(databaseConfig.getPrefix()+"supplier", supplier);
-				
 			} else {
-				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), dimensions.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
+				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), customer.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
+				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), nation.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
+				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), orders.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
+				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), part.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
+				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), partsupp.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
+				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), region.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
+				dataset.addNamedModel(databaseConfig.getDimensionModelURL(), supplier.add(dataset.getNamedModel(databaseConfig.getDimensionModelURL())));
 			}
-			dataset.addNamedModel(databaseConfig.getFactModelURL(), facts.add(dataset.getNamedModel(databaseConfig.getFactModelURL())));
-
 			dataset.commit();
 		} finally {
 			dataset.end();
@@ -135,21 +144,43 @@ public class DatabaseHandler {
 	public Model getDefaultModel() {
 		this.dataset.begin(ReadWrite.READ) ; 
 		Model model = this.dataset.getDefaultModel();
-		this.dataset.end() ;
+		this.dataset.commit() ;
 		return model;
+	}
+	
+	public Model getOntologyModel()
+	{
+		return getModel(databaseConfig.getOntologyModelURL());
+	}
+	
+	public String getOntologyModelURI()
+	{
+		return databaseConfig.getOntologyModelURL();
+	}
+	
+	public Model getFactModel()
+	{
+		return getModel(databaseConfig.getFactModelURL());
+	}
+	
+	public String getFactModelURI() {
+		return databaseConfig.getFactModelURL();
+	}
+	
+	public List<String> getDimensionModelURI() {
+		List<String> modelURIs = getAllModelNames();
+		modelURIs.remove(getFactModelURI());
+		modelURIs.remove(getOntologyModelURI());
+		return modelURIs;
 	}
 	
 	public Model getModel(String modelName) {
 		this.dataset.begin(ReadWrite.READ) ; 
 		Model model = this.dataset.getNamedModel(modelName);
-		this.dataset.end() ;
+		this.dataset.commit() ;
 		return model;
 	}
 	
-	public Dataset getDataset()
-	{
-		return dataset;
-	}
 	
 	public List<String> getAllModelNames() {
 		dataset.begin(ReadWrite.READ) ;
@@ -166,12 +197,20 @@ public class DatabaseHandler {
 		    models.add(row.get("g").toString());
 		  }
 	    qexec.close();
-	    dataset.close();
+	    dataset.commit();
 		return models;
 		
 	}
 	
 	public void clearTDBDatabase() throws IOException {
 		FileUtils.cleanDirectory(new File(databaseConfig.getTDBPath()));
+	}
+
+	public ResultSet executeQuery(Query query) {
+		dataset.begin(ReadWrite.READ);
+	    QueryExecution qexec = QueryExecutionFactory.create(query, dataset);
+	    ResultSet resultSet = qexec.execSelect();
+	    dataset.commit();
+		return resultSet;
 	}
 }
