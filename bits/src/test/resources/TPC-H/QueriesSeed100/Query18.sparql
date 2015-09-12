@@ -8,9 +8,9 @@ select
    ?o_orderkey
    ?o_orderdate
    ?o_ordertotalprice
-   (sum(xsd:decimal(?l_linequantity)) as ?l_quantity)
+   (sum((?l_linequantity)) as ?l_quantity)
 where {
-    ?li qb:dataSet rdfh:lineitemCube  ;
+    ?li 
         rdfh:l_linequantity ?l_linequantity ;
         rdfh:l_has_order ?ord .
     ?ord rdfh:o_orderkey ?o_orderkey ;
@@ -21,15 +21,15 @@ where {
           rdfh:c_name ?c_name .  
     { select 
          ?ord 
-         (sum (xsd:decimal(?l2_linequantity)) as ?sum_q)
+         (sum ((?l2_linequantity)) as ?sum_q)
        where {
-           ?li2 qb:dataSet rdfh:lineitemCube ;
+           ?li2 
                 rdfh:l_linequantity ?l2_linequantity ;
                 rdfh:l_has_order ?ord .
        }
        group by ?ord 
     } .
-    filter (xsd:decimal(?sum_q) > xsd:decimal(312))
+    filter ((?sum_q) > (312))
 }
 group by
    ?c_name

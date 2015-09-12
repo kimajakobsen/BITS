@@ -6,14 +6,14 @@ prefix qb: <http://purl.org/linked-data/cube#>
 select
   ?c_custkey
   ?c_companyName
-  (sum(xsd:decimal(?l_lineextendedprice) * (1 - xsd:decimal(?l_linediscount))) as ?revenue)
+  (sum((?l_lineextendedprice) * (1 - (?l_linediscount))) as ?revenue)
   ?c_acctbal
   ?nation
   ?c_address
   ?c_phone
   ?c_comment
 where  {
-  ?li qb:dataSet rdfh:lineitemCube ;
+  ?li 
       rdfh:l_returnflag ?l_returnflag ;
       rdfh:l_has_order ?ord ;
       rdfh:l_lineextendedprice ?l_lineextendedprice ;
@@ -42,5 +42,5 @@ group by
   ?c_phone
   ?c_comment
 order by
-  desc (sum(xsd:decimal(?l_lineextendedprice) * (1 - xsd:decimal(?l_linediscount))))
+  desc (sum((?l_lineextendedprice) * (1 - (?l_linediscount))))
 limit 20

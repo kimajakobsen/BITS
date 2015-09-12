@@ -3,9 +3,9 @@ prefix rdfh: <http://lod2.eu/schemas/rdfh#>
 prefix qb: <http://purl.org/linked-data/cube#>
 
 select
-  ((sum(xsd:decimal(?l_lineextendedprice)) / 7.0) as ?avg_yearly)
+  ((sum((?l_lineextendedprice)) / 7.0) as ?avg_yearly)
 where {
-    ?li qb:dataSet rdfh:lineitemCube ;
+    ?li 
         rdfh:l_lineextendedprice ?l_lineextendedprice ;
         rdfh:l_linequantity ?l_linequantity ;
         rdfh:l_has_partsupplier ?ps .
@@ -15,7 +15,7 @@ where {
           {
             select 
               ?part
-              ((0.2 * avg(xsd:decimal(?l2_linequantity))) as ?threshold)
+              ((0.2 * avg((?l2_linequantity))) as ?threshold)
             where { 
               ?li2  a rdfh:lineitem ;
                     rdfh:l_linequantity ?l2_linequantity ; 
@@ -25,5 +25,5 @@ where {
           group by
             ?part
         }
-    filter (xsd:decimal(?l_linequantity) < ?threshold && REGEX(?p_brand,"BRAND#32","i") && ?p_container = "MED JAR") 
+    filter ((?l_linequantity) < ?threshold && REGEX(?p_brand,"BRAND#32","i") && ?p_container = "MED JAR") 
 }

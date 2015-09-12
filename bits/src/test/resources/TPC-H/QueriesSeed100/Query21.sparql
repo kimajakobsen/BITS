@@ -6,7 +6,7 @@ select
     ?s_name
     (count(1) as ?numwait)
 where {
-          ?li1 qb:dataSet rdfh:lineitemCube;
+          ?li1 
               rdfh:l_receiptdate ?l1_receiptdate ;
               rdfh:l_commitdate ?l1_commitdate ;
               rdfh:l_has_partsupplier ?ps ;

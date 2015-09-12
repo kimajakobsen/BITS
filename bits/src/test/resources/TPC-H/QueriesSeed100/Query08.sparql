@@ -16,10 +16,10 @@ where {
     where {
       { select
            ((YEAR (xsd:date(?o_orderdate))) as ?o_year)
-           ((xsd:decimal(?l_lineextendedprice) * (1 - xsd:decimal(?l_linediscount))) as ?volume)
+           (((?l_lineextendedprice) * (1 - (?l_linediscount))) as ?volume)
            ?nation
          where {
-           ?li qb:dataSet rdfh:lineitemCube ;
+           ?li 
                rdfh:l_has_partsupplier ?ps ;
                rdfh:l_has_order ?ord ;
                rdfh:l_has_partsupplier ?ps ;

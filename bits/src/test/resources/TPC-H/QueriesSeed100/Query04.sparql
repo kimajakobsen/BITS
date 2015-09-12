@@ -14,16 +14,16 @@ where
       ?ord
     where 
     {
-      ?li qb:dataSet rdfh:lineitemCube ;
+      ?li 
           rdfh:l_has_order ?ord ;
           rdfh:l_commitdate ?l_commitdate ;
           rdfh:l_receiptdate ?l_receiptdate .
       ?ord rdfh:o_orderpriority ?o_orderpriority ;
            rdfh:o_orderdate ?o_orderdate .
       filter (
-        (xsd:date(?l_commitdate) < xsd:date(?l_receiptdate)) &&
-        (xsd:date(?o_orderdate) >= "1995-10-01"^^xsd:date) &&
-        (xsd:date(?o_orderdate) < ("1995-10-01"^^xsd:date + "P3M"^^xsd:duration))
+        (?l_commitdate < ?l_receiptdate) &&
+        (?o_orderdate >= "1995-10-01"^^xsd:date) &&
+        (?o_orderdate < ("1995-10-01"^^xsd:date + "P3M"^^xsd:duration))
       )
     }
   }

@@ -5,11 +5,11 @@ prefix qb: <http://purl.org/linked-data/cube#>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 
 select
-       ((100 * sum(xsd:integer(fn:starts-with(?p_type, "PROMO")) * xsd:decimal(?l_lineextendedprice) *  (xsd:decimal(1) - xsd:decimal(?l_linediscount)))  / sum(xsd:decimal(?l_lineextendedprice) *  (xsd:decimal(1) - xsd:decimal(?l_linediscount)))) as ?promo_revenue)
+       ((100 * sum(xsd:integer(fn:starts-with(?p_type, "PROMO")) * (?l_lineextendedprice) *  ((1) - (?l_linediscount)))  / sum((?l_lineextendedprice) *  ((1) - (?l_linediscount)))) as ?promo_revenue)
 where
 {
 
-    ?li qb:dataSet rdfh:lineitemCube ;
+    ?li 
         rdfh:l_lineextendedprice ?l_lineextendedprice ;
         rdfh:l_linediscount ?l_linediscount ;
         rdfh:l_shipdate ?l_shipdate ;

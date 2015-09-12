@@ -22,14 +22,14 @@ where
       ?part rdfh:p_name ?p_name . 
       filter (REGEX (?p_name , "^brown") && 
               ?n_name = "EGYPT" && 
-              xsd:decimal(?big_ps_availqty) > ?qty_threshold)
+              (?big_ps_availqty) > ?qty_threshold)
       {
         select 
-          ((0.5 * sum(xsd:decimal(?l_linequantity))) as ?qty_threshold)
+          ((0.5 * sum((?l_linequantity))) as ?qty_threshold)
           ?big_ps
         where
         {
-          ?li qb:dataSet rdfh:lineitemCube ;
+          ?li 
               rdfh:l_shipdate ?l_shipdate ;
               rdfh:l_linequantity ?l_linequantity ;
               rdfh:l_has_partsupplier ?big_ps .

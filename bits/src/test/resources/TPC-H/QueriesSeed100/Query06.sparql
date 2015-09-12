@@ -11,9 +11,9 @@ where {
   { select
       ?nation
       ?o_year
-      ((xsd:decimal(?l_lineextendedprice) * (1 - xsd:decimal(?l_linediscount)) - xsd:decimal(?ps_supplycost) * xsd:decimal(?l_linequantity)) as ?amount)
+      (((?l_lineextendedprice) * (1 - (?l_linediscount)) - (?ps_supplycost) * (?l_linequantity)) as ?amount)
     where {
-      ?li qb:dataSet rdfh:lineitemCube ;
+      ?li 
           rdfh:l_has_order ?ord ;
           rdfh:l_has_partsupplier ?ps ;
           rdfh:l_linequantity ?l_linequantity ;

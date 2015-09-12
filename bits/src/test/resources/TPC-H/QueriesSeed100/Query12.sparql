@@ -14,7 +14,7 @@ select
       fn:starts-with(?o_orderpriority, "2-HIGH") ) ) as ?low_line_count)
 where  {
     
-    ?li qb:dataSet rdfh:lineitemCube ;
+    ?li 
        rdfh:l_has_order ?ord ;
        rdfh:l_commitdate ?l_commitdate ;
        rdfh:l_receiptdate ?l_receiptdate ;

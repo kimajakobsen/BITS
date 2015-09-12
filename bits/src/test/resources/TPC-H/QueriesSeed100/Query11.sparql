@@ -8,7 +8,7 @@ select
 where {
       { select
           ?bigpspart
-          (sum(xsd:decimal(?b_supplycost) * xsd:decimal(?b_availqty)) as ?bigpsvalue)
+          (sum((?b_supplycost) * (?b_availqty)) as ?bigpsvalue)
         where
           {
             ?bigps a rdfh:partsupp ;
@@ -23,7 +23,7 @@ where {
       }
       {
        select
-          (sum(xsd:decimal(?t_supplycost) * xsd:decimal(?t_availqty)) * 0.000100 as ?threshold)
+          (sum((?t_supplycost) * (?t_availqty)) * 0.000100 as ?threshold)
         where
           {
             ?thr_ps a rdfh:partsupp ;

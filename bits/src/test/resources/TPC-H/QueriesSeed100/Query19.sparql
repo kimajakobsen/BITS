@@ -4,9 +4,9 @@ prefix qb: <http://purl.org/linked-data/cube#>
 
 
 select
-  ((sum(xsd:decimal(?l_lineextendedprice) * (1 - xsd:decimal(?l_linediscount)))) as ?revenue)
+  ((sum((?l_lineextendedprice) * (1 - (?l_linediscount)))) as ?revenue)
 where {
-    ?li qb:dataSet rdfh:lineitemCube ;
+    ?li 
         rdfh:l_lineextendedprice ?l_lineextendedprice ;
         rdfh:l_linediscount ?l_linediscount ;
         rdfh:l_linequantity ?l_linequantity ;

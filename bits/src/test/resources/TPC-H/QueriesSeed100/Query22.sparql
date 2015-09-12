@@ -4,31 +4,29 @@ prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix rdfh: <http://lod2.eu/schemas/rdfh#> 
 prefix qb: <http://purl.org/linked-data/cube#>
 
-
-
 select
   ?cntrycode
   (count (1) as ?numcust)
-  (sum (xsd:decimal(?c_acctbal)) as ?totacctbal)
+  (sum ((?c_acctbal)) as ?totacctbal)
 where {
     ?cust a rdfh:customer ;
       rdfh:c_acctbal ?c_acctbal ;
       rdfh:c_phone ?c_phone .
       BIND (fn:substring(?c_phone,0, 3) as ?cntrycode)
     {
-      select (avg (xsd:decimal(?c_acctbal2)) as ?acctbal_threshold)
+      select (avg ((?c_acctbal2)) as ?acctbal_threshold)
           where
             {
               ?cust2 a rdfh:customer ;
                  rdfh:c_acctbal ?c_acctbal2 ;
                  rdfh:c_phone ?c_phone2 .
-              filter ((xsd:decimal(?c_acctbal2) > 0.00) &&
+              filter (((?c_acctbal2) > 0.00) &&
                 fn:substring(?c_phone2,0, 3) in ('16', '27', '32', '33', '28', '25', '17') )
             }
     }
     filter (
       ?cntrycode in ('16', '27', '32', '33', '28', '25', '17') &&
-      (xsd:decimal(?c_acctbal) > ?acctbal_threshold ) )
+      ((?c_acctbal) > ?acctbal_threshold ) )
     filter not exists { ?ord rdfh:o_has_customer ?cust }
   }
 group by ?cntrycode

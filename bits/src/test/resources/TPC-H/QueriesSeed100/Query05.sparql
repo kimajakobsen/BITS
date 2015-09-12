@@ -5,9 +5,9 @@ prefix qb: <http://purl.org/linked-data/cube#>
 
 select
   ?nation
-  (sum(xsd:decimal(?l_lineextendedprice) * (1 - xsd:decimal(?l_linediscount))) as ?revenue)
+  (sum((?l_lineextendedprice) * (1 - (?l_linediscount))) as ?revenue)
 where  {
-   ?li qb:dataSet rdfh:lineitemCube ;
+   ?li 
        rdfh:l_has_order ?ord ;
        rdfh:l_has_partsupplier ?ps ;
        rdfh:l_lineextendedprice ?l_lineextendedprice ;
@@ -28,4 +28,4 @@ where  {
 group by
   ?nation
 order by
-  desc (sum(xsd:decimal(?l_lineextendedprice) * (1 - xsd:decimal(?l_linediscount))))
+  desc (sum((?l_lineextendedprice) * (1 - (?l_linediscount))))

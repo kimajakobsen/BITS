@@ -6,16 +6,16 @@ prefix qb: <http://purl.org/linked-data/cube#>
 select
   ?l_returnflag 
   ?l_linestatus 
-  (sum(xsd:decimal(?l_linequantity)) as ?sum_qty) 
-  (sum(xsd:decimal(?l_lineextendedprice)) as ?sum_base_price) 
-  (sum(xsd:decimal(?l_lineextendedprice)*(1 - xsd:decimal(?l_linediscount))) as ?sum_disc_price) 
-  (sum(xsd:decimal(?l_lineextendedprice)*(1 - xsd:decimal(?l_linediscount))*(1 + xsd:decimal(?l_linetax))) as ?sum_charge) 
-  (avg(xsd:decimal(?l_linequantity)) as ?avg_qty) 
-  (avg(xsd:decimal(?l_lineextendedprice)) as ?avg_price) 
-  (avg(xsd:decimal(?l_linediscount)) as ?avg_disc) 
+  (sum((?l_linequantity)) as ?sum_qty) 
+  (sum((?l_lineextendedprice)) as ?sum_base_price) 
+  (sum((?l_lineextendedprice)*(1 - (?l_linediscount))) as ?sum_disc_price) 
+  (sum((?l_lineextendedprice)*(1 - (?l_linediscount))*(1 + (?l_linetax))) as ?sum_charge) 
+  (avg((?l_linequantity)) as ?avg_qty) 
+  (avg((?l_lineextendedprice)) as ?avg_price) 
+  (avg((?l_linediscount)) as ?avg_disc) 
   (count(1) as ?count_order)
 where {
-    ?li qb:dataSet rdfh:lineitemCube ;
+    ?li 
        rdfh:l_returnflag ?l_returnflag ;
        rdfh:l_linestatus ?l_linestatus ;
        rdfh:l_linequantity ?l_linequantity ;
