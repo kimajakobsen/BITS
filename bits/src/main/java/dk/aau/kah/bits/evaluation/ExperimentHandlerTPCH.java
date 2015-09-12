@@ -25,15 +25,17 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 		
 		for (final File fileEntry : new File(queriesPath).listFiles()) {
 			String rawQuery = FileUtils.readFileToString(fileEntry);
+			System.out.println(fileEntry);
 			Query query = QueryFactory.create(rawQuery) ;
 			
 			for (String modelURI : getNamedGraphs(query)) {
-				query.addNamedGraphURI(modelURI);
+				query.addGraphURI(modelURI);
 			}
 
 			ResultSet resultSet = databaseHandler.executeQuery(query);
 		    
 		    /*Execute the Query*/
+			
 		    System.out.println(query);
 		    ResultSetFormatter.out(System.out, resultSet, query) ;
 //		    while (resultSet.hasNext()) {
