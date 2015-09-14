@@ -1,7 +1,7 @@
 package dk.aau.kah.bits.evaluation;
 
+import da.aau.kah.bits.config.DatabaseConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
-import dk.aau.kah.bits.database.DatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
 
 public class ExperimentFactory {

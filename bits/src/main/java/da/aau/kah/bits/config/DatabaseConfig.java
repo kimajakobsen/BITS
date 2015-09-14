@@ -1,4 +1,4 @@
-package dk.aau.kah.bits.database;
+package da.aau.kah.bits.config;
 
 
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;

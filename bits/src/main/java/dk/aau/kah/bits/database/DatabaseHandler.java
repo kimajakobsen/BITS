@@ -24,6 +24,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.tdb.TDBFactory;
 
+import da.aau.kah.bits.config.DatabaseConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseHandler {

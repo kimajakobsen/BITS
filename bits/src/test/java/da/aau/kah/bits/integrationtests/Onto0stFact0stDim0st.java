@@ -16,8 +16,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import da.aau.kah.bits.config.DatabaseConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
-import dk.aau.kah.bits.database.DatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
 import dk.aau.kah.bits.helpers.ConfigurationLoader;
 
@@ -29,7 +29,7 @@ public class Onto0stFact0stDim0st extends AbstractIntegrationTest {
 	@Before
 	public void setup(){
 		try {
-			databaseConfig = ConfigurationLoader.load(fileName);
+			databaseConfig = ConfigurationLoader.loadDatabaseConfig(fileName);
 			databaseHandler = new DatabaseHandler(databaseConfig);
 		} catch (FileNotFoundException e) {
 			fail("File not found");
