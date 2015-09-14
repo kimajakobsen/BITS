@@ -25,14 +25,18 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.tdb.TDBFactory;
 
 import da.aau.kah.bits.config.DatabaseConfig;
+import da.aau.kah.bits.config.GeneralConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseHandler {
 
 	private DatabaseConfig databaseConfig;
 	private Dataset dataset;
+	private GeneralConfig config;
 	
 	public DatabaseHandler(DatabaseConfig databaseConfig) throws IOException, InvalidDatabaseConfig {
+		
+		this.config = GeneralConfig.getInstance();
 		
 		databaseConfig.validate();
 		this.databaseConfig = databaseConfig;
@@ -42,9 +46,12 @@ public class DatabaseHandler {
 		if (this.databaseConfig.isFreshLoad()) {
 			clearTDBDatabase();
 		}
-		
+	
 		if (this.databaseConfig.getDatasetType().equals("TPC-H")) {
-			loadTPCHDataset();
+			if (doesTDBExist(databaseConfig.getTDBPath())) {
+				System.out.println("loading dataset");
+				loadTPCHDataset();
+			}
 		}
 		else if (this.databaseConfig.getDatasetType().equals("TPC-DS")) {
 			//TODO
@@ -53,7 +60,6 @@ public class DatabaseHandler {
 			throw new InvalidDatabaseConfig("The Experiment Dataset "+this.databaseConfig.getDatasetType()+" is not known, implementation is missing.");
 		}
 		dataset = TDBFactory.createDataset(databaseConfig.getTDBPath());
-		dataset.end();
 	}
 	
 	private void createTDBDirectoryIfNotExist() {
@@ -72,31 +78,31 @@ public class DatabaseHandler {
 
 	private void loadTPCHDataset() throws IOException {
 		String directory = databaseConfig.getDatasetPath();
-			String tdbloader = "/usr/local/apache-jena-2.12.1/bin/tdbloader";
+		String tdbloader = "/usr/local/apache-jena-2.12.1/bin/tdbloader";
 			
-			String ontologyPath = "src/main/resources/"+databaseConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl";
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getOntologyModelURL()+" "+ontologyPath , true);
-			
-			
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getFactModelURL()+" "+getTPCHPath()+"/lineitem.ttl" , true);
-			
-			if (databaseConfig.getDimensionModelName().equals("#")) {
-				executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_customer "+getTPCHPath()+"/customer.ttl" , true);
-				executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_nation "+getTPCHPath()+"/nation.ttl" , true);
-				executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_orders "+getTPCHPath()+"/order.ttl" , true);
-				executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_part "+getTPCHPath()+"/part.ttl" , true);
-				executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_partsupp "+getTPCHPath()+"/partsupplier.ttl" , true);
-				executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_region "+getTPCHPath()+"/region.ttl" , true);
-				executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_supplier "+getTPCHPath()+"/supplier.ttl" , true);
-			} else {
-		        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/customer.ttl" , true);
-		        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/nation.ttl" , true);
-		        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/order.ttl" , true);
-		        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/part.ttl" , true);
-		        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/partsupplier.ttl" , true);
-		        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/region.ttl" , true);
-		        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/supplier.ttl" , true);
-			}
+		String ontologyPath = "src/main/resources/"+databaseConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl";
+		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getOntologyModelURL()+" "+ontologyPath , config.isVerbose());
+		
+		
+		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getFactModelURL()+" "+getTPCHPath()+"/lineitem.ttl" , config.isVerbose());
+		
+		if (databaseConfig.getDimensionModelName().equals("#")) {
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_customer "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_nation "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_orders "+getTPCHPath()+"/order.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_part "+getTPCHPath()+"/part.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_partsupp "+getTPCHPath()+"/partsupplier.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_region "+getTPCHPath()+"/region.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_supplier "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
+		} else {
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/order.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/part.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/partsupplier.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/region.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
+		}
 	}
 
 	private String getTPCHPath(){
@@ -232,7 +238,21 @@ public class DatabaseHandler {
             System.out.println("exception happened - here's what I know: ");
             e.printStackTrace();
         }
-
+	}
+	
+	public void closeConnection() {
+		dataset.close();
 	}
 
+	private boolean doesTDBExist(String folder) {
+		
+		int numberOfFiles = new File(folder).list().length;
+		//The number five is selected by random. I know that there can be some random files remaining in the folders.
+		if (numberOfFiles > 5) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
