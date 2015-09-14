@@ -22,7 +22,7 @@ public class ConfigurationLoader {
 		
 	}
 	
-	public static GeneralConfig loadSystem(String JSONFile) throws FileNotFoundException {
+	public static GeneralConfig loadSystemConfig(String JSONFile) throws FileNotFoundException {
 		String path = "src/main/resources/systemConfigurations/";
 		BufferedReader configuration = new BufferedReader(new FileReader(path+JSONFile));
 		Gson gson = new Gson();	
