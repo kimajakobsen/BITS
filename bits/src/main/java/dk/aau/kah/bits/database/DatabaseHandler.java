@@ -86,13 +86,13 @@ public class DatabaseHandler {
 		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getOntologyModelURL()+" "+ontologyPath , config.isVerbose());
 		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getFactModelURL()+" "+getTPCHPath()+"/lineitem.ttl" , config.isVerbose());
 		if (databaseConfig.getDimensionModelName().equals("#")) {
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_customer "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_nation "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_orders "+getTPCHPath()+"/order.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_part "+getTPCHPath()+"/part.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_partsupp "+getTPCHPath()+"/partsupplier.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_region "+getTPCHPath()+"/region.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_supplier "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_customer "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_nation "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_order "+getTPCHPath()+"/order.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_part "+getTPCHPath()+"/part.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_partsupp "+getTPCHPath()+"/partsupplier.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_region "+getTPCHPath()+"/region.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_supplier "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
 		} else {
 	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
 	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
