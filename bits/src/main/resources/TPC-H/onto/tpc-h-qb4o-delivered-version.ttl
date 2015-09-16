@@ -43,7 +43,7 @@ rdfh:c_nationkey a owl:DatatypeProperty ;
   rdfs:domain rdfh:customer ;
   rdfs:range xsd:integer .
 
-rdfh:c_has_nation a owl:ObjectProperty ;
+rdfh:has_nation a owl:ObjectProperty ;
   rdfs:domain rdfh:customer ;
   rdfs:range rdfh:nation .
 
@@ -72,7 +72,7 @@ rdfh:l_orderkey a owl:DatatypeProperty  ;
   rdfs:domain rdfh:lineitem  ;
   rdfs:range xsd:integer .
 
-rdfh:l_has_order a owl:ObjectProperty ;
+rdfh:has_order a owl:ObjectProperty ;
   rdfs:domain rdfh:lineitem ;
   rdfs:range rdfh:orders .
 
@@ -80,7 +80,7 @@ rdfh:l_partkey a owl:DatatypeProperty  ;
   rdfs:domain rdfh:lineitem  ;
   rdfs:range xsd:integer .
 
-rdfh:l_has_part a owl:ObjectProperty ;
+rdfh:has_part a owl:ObjectProperty ;
   rdfs:domain rdfh:lineitem ;
   rdfs:range rdfh:part .
 
@@ -88,11 +88,11 @@ rdfh:l_suppkey a owl:DatatypeProperty  ;
   rdfs:domain rdfh:lineitem  ;
   rdfs:range xsd:integer .
 
-rdfh:l_has_supplier a owl:ObjectProperty ;
+rdfh:has_supplier a owl:ObjectProperty ;
   rdfs:domain rdfh:lineitem ;
   rdfs:range rdfh:supplier .
 
-rdfh:l_has_partsupplier a owl:ObjectProperty ;
+rdfh:has_partsupplier a owl:ObjectProperty ;
   rdfs:domain rdfh:lineitem ;
   rdfs:range rdfh:partsupp .
 
@@ -181,7 +181,7 @@ rdfh:n_regionkey a owl:DatatypeProperty  ;
   rdfs:domain rdfh:nation  ;
   rdfs:range xsd:integer .
 
-rdfh:n_has_region a owl:ObjectProperty  ;
+rdfh:has_region a owl:ObjectProperty  ;
   rdfs:domain rdfh:nation  ;
   rdfs:range rdfh:region .
 
@@ -202,7 +202,7 @@ rdfh:o_custkey a owl:DatatypeProperty  ;
   rdfs:domain rdfh:orders  ;
   rdfs:range xsd:integer .
 
-rdfh:o_has_customer a owl:ObjectProperty  ;
+rdfh:has_customer a owl:ObjectProperty  ;
   rdfs:domain rdfh:orders  ;
   rdfs:range rdfh:customer .
 
@@ -287,7 +287,7 @@ rdfh:ps_partkey a owl:DatatypeProperty  ;
   rdfs:domain rdfh:partsupp  ;
   rdfs:range xsd:integer .
 
-rdfh:ps_has_part a owl:ObjectProperty  ;
+rdfh:has_part a owl:ObjectProperty  ;
   rdfs:domain rdfh:partsupp  ;
   rdfs:range rdfh:part .
 
@@ -295,7 +295,7 @@ rdfh:ps_suppkey a owl:DatatypeProperty  ;
   rdfs:domain rdfh:partsupp  ;
   rdfs:range xsd:integer .
 
-rdfh:ps_has_supplier a owl:ObjectProperty  ;
+rdfh:has_supplier a owl:ObjectProperty  ;
   rdfs:domain rdfh:partsupp  ;
   rdfs:range rdfh:supplier .
 
@@ -347,7 +347,7 @@ rdfh:s_nationkey a owl:DatatypeProperty  ;
   rdfs:domain rdfh:supplier  ;
   rdfs:range xsd:integer .
 
-rdfh:s_has_nation a owl:ObjectProperty  ;
+rdfh:has_nation a owl:ObjectProperty  ;
   rdfs:domain rdfh:supplier  ;
   rdfs:range rdfh:nation .
 
@@ -405,9 +405,9 @@ rdfh:y_year a owl:DatatypeProperty ;
 rdfh:ordersDim a qb:DimensionProperty .
 rdfh:partSupplierDim a qb:DimensionProperty .
 
-rdfh:l_has_order a qb4o:LevelProperty ;
+rdfh:has_order a qb4o:LevelProperty ;
   qb4o:inDimension rdfh:ordersDim ;
-  qb4o:parentLevel rdfh:o_has_customer ;
+  qb4o:parentLevel rdfh:has_customer ;
   qb4o:hasAttribute rdfh:o_orderkey ,
                     rdfh:o_custkey ,
                     rdfh:o_orderstatus ,
@@ -418,9 +418,9 @@ rdfh:l_has_order a qb4o:LevelProperty ;
                     rdfh:o_shippriorit ,
                     rdfh:o_comment .
 
-rdfh:o_has_customer a qb4o:LevelProperty ;
+rdfh:has_customer a qb4o:LevelProperty ;
   qb4o:inDimension rdfh:ordersDim ;
-  qb4o:parentLevel rdfh:c_has_nation ;
+  qb4o:parentLevel rdfh:has_nation ;
   qb4o:hasAttribute rdfh:c_custkey ,
                     rdfh:c_name ,
                     rdfh:c_address ,
@@ -430,40 +430,40 @@ rdfh:o_has_customer a qb4o:LevelProperty ;
                     rdfh:c_mktsegment ,
                     rdfh:c_comment .
 
-rdfh:c_has_nation a qb4o:LevelProperty ;
+rdfh:has_nation a qb4o:LevelProperty ;
   qb4o:inDimension rdfh:ordersDim ;
-  qb4o:parentLevel rdfh:n_has_region ;
+  qb4o:parentLevel rdfh:has_region ;
   qb4o:hasAttribute rdfh:n_nationkey ,
                     rdfh:n_name ,
                     rdfh:n_regionkey ,
                     rdfh:n_comment .
 
-rdfh:s_has_nation a qb4o:LevelProperty ;
+rdfh:has_nation a qb4o:LevelProperty ;
   qb4o:inDimension rdfh:partSupplierDim ;
-  qb4o:parentLevel rdfh:n_has_region ;
+  qb4o:parentLevel rdfh:has_region ;
   qb4o:hasAttribute rdfh:n_nationkey ,
                     rdfh:n_name ,
                     rdfh:n_regionkey ,
                     rdfh:n_comment .
 
-rdfh:n_has_region a qb4o:LevelProperty ;
+rdfh:has_region a qb4o:LevelProperty ;
   qb4o:inDimension rdfh:ordersDim ,
                    rdfh:partSupplierDim ; 
   qb4o:hasAttribute rdfh:r_regionkey ,
                     rdfh:r_name ,
                     rdfh:r_comment .
 
-rdfh:l_has_partsupplier a qb4o:LevelProperty ;
+rdfh:has_partsupplier a qb4o:LevelProperty ;
   qb4o:inDimension rdfh:partSupplierDim ;
-  qb4o:parentLevel rdfh:ps_has_part ,
-                   rdfh:ps_has_supplier ;
+  qb4o:parentLevel rdfh:has_part ,
+                   rdfh:has_supplier ;
   qb4o:hasAttribute rdfh:ps_partkey ,
                     rdfh:ps_suppkey ,
                     rdfh:ps_availqty ,
                     rdfh:ps_supplycost ,
                     rdfh:ps_comment .
 
-rdfh:ps_has_part a qb4o:LevelProperty ;
+rdfh:has_part a qb4o:LevelProperty ;
   qb4o:inDimension rdfh:partSupplierDim ;
   qb4o:hasAttribute rdfh:p_partkey ,
                     rdfh:p_name ,
@@ -475,9 +475,9 @@ rdfh:ps_has_part a qb4o:LevelProperty ;
                     rdfh:p_retailprice ,
                     rdfh:p_comment .
 
-rdfh:ps_has_supplier a qb4o:LevelProperty ;
+rdfh:has_supplier a qb4o:LevelProperty ;
   qb4o:inDimension rdfh:partSupplierDim ;
-  qb4o:parentLevel rdfh:s_has_nation ;
+  qb4o:parentLevel rdfh:has_nation ;
   qb4o:hasAttribute rdfh:s_suppkey ,
                     rdfh:s_name ,
                     rdfh:s_address ,
@@ -490,10 +490,10 @@ rdfh:ps_has_supplier a qb4o:LevelProperty ;
 # Line Item Data Cube
 ##################################################################
 rdfh:lineitemStructure a qb:DataStructureDefinition ;
-  qb:component [ qb4o:level rdfh:l_has_order ; qb:order 1 ] ;
-  qb:component [ qb4o:level rdfh:l_has_partsupplier ; qb:order 2 ] ;
-  qb:component [ qb4o:level rdfh:l_has_supplier ; qb:order 3 ] ;	
-  qb:component [ qb4o:level rdfh:l_has_part ; qb:order 4 ] ;	
+  qb:component [ qb4o:level rdfh:has_order ; qb:order 1 ] ;
+  qb:component [ qb4o:level rdfh:has_partsupplier ; qb:order 2 ] ;
+  qb:component [ qb4o:level rdfh:has_supplier ; qb:order 3 ] ;	
+  qb:component [ qb4o:level rdfh:has_part ; qb:order 4 ] ;	
   qb:component [ qb:measure rdfh:l_linequantity ; qb:hasAggregateFunction qb4o:sum ] ;
   qb:component [ qb:measure rdfh:l_lineextendedprice ; 
                  qb4o:hasAggregateFunction qb4o:sum ] ;
@@ -517,8 +517,8 @@ rdfh:lineitemCube a qb:DataSet ;
 # Part Supplier Data Cube
 ##################################################################
 #rdfh:partSupplierStructure a qb:DataStructureDefinition ;
-#  qb:component [ qb4o:level rdfh:ps_has_part ; qb:order 1 ] ;
-#  qb:component [ qb4o:level rdfh:ps_has_supplier ; qb:order 2 ] ;
+#  qb:component [ qb4o:level rdfh:has_part ; qb:order 1 ] ;
+#  qb:component [ qb4o:level rdfh:has_supplier ; qb:order 2 ] ;
 #  qb:component [ qb:measure rdfh:ps_availqty ; 
 #                 qb4o:hasAggregateFunction qb4o:sum ] ;
 #  qb:component [ qb:measure rdfh:sp_supplycost ; 
@@ -532,7 +532,7 @@ rdfh:lineitemCube a qb:DataSet ;
 # Orders Data Cube
 ##################################################################
 #rdfh:ordersStructure a qb:DataStructureDefinition ;
-#  qb:component [ qb4o:level rdfh:o_has_customer ; qb:order 1 ] ;
+#  qb:component [ qb4o:level rdfh:has_customer ; qb:order 1 ] ;
 #  qb:component [ qb:measure rdfh:o_totalprice ; 
 #                 qb4o:hasAggregateFunction qb4o:sum ] .
 #

@@ -14,10 +14,10 @@ where
       ?supp 
     where 
     {
-      ?big_ps rdfh:ps_has_part ?part ;
+      ?big_ps rdfh:has_part ?part ;
               rdfh:ps_availqty ?big_ps_availqty ;
-              rdfh:ps_has_supplier ?supp .
-      ?supp rdfh:s_has_nation ?s_nation .
+              rdfh:has_supplier ?supp .
+      ?supp rdfh:has_nation ?s_nation .
       ?s_nation rdfh:n_name ?n_name .
       ?part rdfh:p_name ?p_name . 
       filter (REGEX (?p_name , "^brown") && 
@@ -32,7 +32,7 @@ where
           ?li 
               rdfh:l_shipdate ?l_shipdate ;
               rdfh:l_linequantity ?l_linequantity ;
-              rdfh:l_has_partsupplier ?big_ps .
+              rdfh:has_partsupplier ?big_ps .
           filter ((xsd:date(?l_shipdate) >= xsd:date("1997-01-01"^^xsd:date)) &&
             (xsd:date(?l_shipdate) < xsd:date("1997-01-01"^^xsd:date + "P1Y"^^xsd:duration))
           )

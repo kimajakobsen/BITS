@@ -15,7 +15,7 @@ where
     where 
     {
       ?li 
-          rdfh:l_has_order ?ord ;
+          rdfh:has_order ?ord ;
           rdfh:l_commitdate ?l_commitdate ;
           rdfh:l_receiptdate ?l_receiptdate .
       ?ord rdfh:o_orderpriority ?o_orderpriority ;

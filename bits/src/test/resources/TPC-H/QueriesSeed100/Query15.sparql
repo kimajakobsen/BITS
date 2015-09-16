@@ -22,8 +22,8 @@ where  {
                  rdfh:l_shipdate ?l_shipdate ;
                  rdfh:l_lineextendedprice ?l_extendedprice ;
                  rdfh:l_linediscount ?l_discount ;
-                 rdfh:l_has_partsupplier ?ps1 .
-            ?ps1 rdfh:ps_has_supplier ?supplier .
+                 rdfh:has_partsupplier ?ps1 .
+            ?ps1 rdfh:has_supplier ?supplier .
             filter (
                 xsd:date(?l_shipdate) >= xsd:date("1994-04-01"^^xsd:date) &&
                 xsd:date(?l_shipdate) < xsd:date("1994-04-01"^^xsd:date + "P3M"^^xsd:duration) )
@@ -41,8 +41,8 @@ where  {
                       rdfh:l_shipdate ?l2_shipdate ;
                       rdfh:l_lineextendedprice ?l2_extendedprice ;
                       rdfh:l_linediscount ?l2_discount ;
-                       rdfh:l_has_partsupplier ?ps2 .
-                  ?ps2 rdfh:ps_has_supplier ?supplier2 .
+                       rdfh:has_partsupplier ?ps2 .
+                  ?ps2 rdfh:has_supplier ?supplier2 .
                     filter (
                         xsd:date(?l2_shipdate) >= xsd:date("1994-04-01"^^xsd:date) &&
                         xsd:date(?l2_shipdate) < xsd:date("1994-04-01"^^xsd:date + "P3M"^^xsd:duration) )

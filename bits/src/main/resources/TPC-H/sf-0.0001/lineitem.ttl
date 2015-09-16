@@ -3,9 +3,9 @@
 @prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> .
 rdfh-inst:lineitem_1_1
     a rdfh:lineitem ;
-    rdfh:l_has_order rdfh-inst:orders_1 ;
-    rdfh:l_has_part rdfh-inst:part_1 ;
-    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_order rdfh-inst:orders_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:l_linenumber 1 ;
     rdfh:l_linequantity 17e0 ;
     rdfh:l_lineextendedprice 15317.00e0 ;
@@ -21,9 +21,9 @@ rdfh-inst:lineitem_1_1
     rdfh:l_comment "egular courts above the" .
 rdfh-inst:lineitem_1_2
     a rdfh:lineitem ;
-    rdfh:l_has_order rdfh-inst:orders_1 ;
-    rdfh:l_has_part rdfh-inst:part_1 ;
-    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_order rdfh-inst:orders_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:l_linenumber 2 ;
     rdfh:l_linequantity 36e0 ;
     rdfh:l_lineextendedprice 32436.00e0 ;
@@ -39,9 +39,9 @@ rdfh-inst:lineitem_1_2
     rdfh:l_comment "ly final dependencies: slyly bold" .
 rdfh-inst:lineitem_1_3
     a rdfh:lineitem ;
-    rdfh:l_has_order rdfh-inst:orders_1 ;
-    rdfh:l_has_part rdfh-inst:part_1 ;
-    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_order rdfh-inst:orders_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:l_linenumber 3 ;
     rdfh:l_linequantity 8e0 ;
     rdfh:l_lineextendedprice 7208.00e0 ;
@@ -57,9 +57,9 @@ rdfh-inst:lineitem_1_3
     rdfh:l_comment "riously. regular, express dep" .
 rdfh-inst:lineitem_1_4
     a rdfh:lineitem ;
-    rdfh:l_has_order rdfh-inst:orders_1 ;
-    rdfh:l_has_part rdfh-inst:part_1 ;
-    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_order rdfh-inst:orders_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:l_linenumber 4 ;
     rdfh:l_linequantity 28e0 ;
     rdfh:l_lineextendedprice 25228.00e0 ;
@@ -75,9 +75,9 @@ rdfh-inst:lineitem_1_4
     rdfh:l_comment "lites. fluffily even de" .
 rdfh-inst:lineitem_1_5
     a rdfh:lineitem ;
-    rdfh:l_has_order rdfh-inst:orders_1 ;
-    rdfh:l_has_part rdfh-inst:part_1 ;
-    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_order rdfh-inst:orders_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:l_linenumber 5 ;
     rdfh:l_linequantity 24e0 ;
     rdfh:l_lineextendedprice 21624.00e0 ;
@@ -93,9 +93,9 @@ rdfh-inst:lineitem_1_5
     rdfh:l_comment "pending foxes. slyly re" .
 rdfh-inst:lineitem_1_6
     a rdfh:lineitem ;
-    rdfh:l_has_order rdfh-inst:orders_1 ;
-    rdfh:l_has_part rdfh-inst:part_1 ;
-    rdfh:l_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_order rdfh-inst:orders_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:l_linenumber 6 ;
     rdfh:l_linequantity 32e0 ;
     rdfh:l_lineextendedprice 28832.00e0 ;

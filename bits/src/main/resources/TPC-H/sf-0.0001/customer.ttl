@@ -6,7 +6,7 @@ rdfh-inst:customer_1
     rdfh:c_custkey 1 ;
     rdfh:c_name "Customer#000000001" ;
     rdfh:c_address "IVhzIApeRb ot,c,E" ;
-    rdfh:c_has_nation rdfh-inst:nation_15 ;
+    rdfh:has_nation rdfh-inst:nation_15 ;
     rdfh:c_phone "25-989-741-2988" ;
     rdfh:c_acctbal 711.56e0 ;
     rdfh:c_mktsegment "BUILDING" ;

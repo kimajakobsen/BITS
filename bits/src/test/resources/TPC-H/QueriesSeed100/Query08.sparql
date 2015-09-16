@@ -20,20 +20,20 @@ where {
            ?nation
          where {
            ?li 
-               rdfh:l_has_partsupplier ?ps ;
-               rdfh:l_has_order ?ord ;
-               rdfh:l_has_partsupplier ?ps ;
+               rdfh:has_partsupplier ?ps ;
+               rdfh:has_order ?ord ;
+               rdfh:has_partsupplier ?ps ;
                rdfh:l_lineextendedprice ?l_lineextendedprice ;
                rdfh:l_linediscount ?l_linediscount .
-           ?ps rdfh:ps_has_supplier ?s_supplier .
-           ?s_supplier rdfh:s_has_nation ?n2 .
+           ?ps rdfh:has_supplier ?s_supplier .
+           ?s_supplier rdfh:has_nation ?n2 .
            ?n2 rdfh:n_name ?nation .
-           ?ps rdfh:ps_has_part ?part .
+           ?ps rdfh:has_part ?part .
            ?part rdfh:p_type ?type .
            ?ord rdfh:o_orderdate ?o_orderdate ;
-             rdfh:o_has_customer ?c_customer .
-           ?c_customer rdfh:c_has_nation ?n_nation .
-           ?n_nation rdfh:n_has_region ?r_region .
+             rdfh:has_customer ?c_customer .
+           ?c_customer rdfh:has_nation ?n_nation .
+           ?n_nation rdfh:has_region ?r_region .
            ?r_region rdfh:r_name ?region.
            filter ((xsd:date(?o_orderdate) >= xsd:date("1995-01-01"^^xsd:date)) &&
              (xsd:date(?o_orderdate) <= xsd:date("1996-12-31"^^xsd:date)) &&

@@ -14,7 +14,7 @@ where {
           ?cust rdfh:c_custkey ?c_custkey .
            optional {
              ?ord a rdfh:orders ;
-                  rdfh:o_has_customer ?cust ;
+                  rdfh:has_customer ?cust ;
                   rdfh:o_comment ?o_comment .
               filter (!( REGEX (?o_comment , "pending.*deposits" ) ) ) . 
           }

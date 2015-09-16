@@ -12,12 +12,12 @@ where  {
   ?li 
           rdfh:l_lineextendedprice ?l_lineextendedprice ;
     rdfh:l_linediscount ?l_linediscount ;
-    rdfh:l_has_order ?ord ;
+    rdfh:has_order ?ord ;
     rdfh:l_shipdate ?l_shipdate .
   ?ord rdfh:o_orderdate ?o_orderdate ;
     rdfh:o_shippriority ?o_shippriority ;
     rdfh:o_orderkey ?o_orderkey ;
-    rdfh:o_has_customer ?cust .
+    rdfh:has_customer ?cust .
   ?cust rdfh:c_mktsegment ?c_mktsegment .
   filter ((xsd:date(?o_orderdate) < "1995-03-30"^^xsd:date) &&
     (xsd:date(?l_shipdate) > "1995-03-30"^^xsd:date) &&

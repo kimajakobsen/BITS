@@ -12,8 +12,8 @@ where {
         rdfh:l_linequantity ?l_linequantity ;
         rdfh:l_shipmode ?l_shipmode ;
         rdfh:l_shipinstruct ?l_shipinstruct ;
-        rdfh:l_has_partsupplier ?ps .
-    ?ps rdfh:ps_has_part ?part .
+        rdfh:has_partsupplier ?ps .
+    ?ps rdfh:has_part ?part .
      ?part rdfh:p_brand ?p_brand ;
           rdfh:p_size ?p_size ;
           rdfh:p_container ?p_container .

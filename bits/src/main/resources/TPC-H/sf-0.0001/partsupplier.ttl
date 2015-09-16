@@ -3,29 +3,29 @@
 @prefix rdfh-inst: <http://lod2.eu/schemas/rdfh-inst#> .
 rdfh-inst:partsupp_1_1
     a rdfh:partsupp ;
-    rdfh:ps_has_part rdfh-inst:part_1 ;
-    rdfh:ps_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:ps_availqty 3325 ;
     rdfh:ps_supplycost 771.64e0 ;
     rdfh:ps_comment ", even theodolites. regular, final theodolites eat after the carefully pending foxes. furiously regular deposits sleep slyly. carefully bold realms above the ironic dependencies haggle careful" .
 rdfh-inst:partsupp_1_1
     a rdfh:partsupp ;
-    rdfh:ps_has_part rdfh-inst:part_1 ;
-    rdfh:ps_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:ps_availqty 8076 ;
     rdfh:ps_supplycost 993.49e0 ;
     rdfh:ps_comment "ven ideas. quickly even packages print. pending multipliers must have to are fluff" .
 rdfh-inst:partsupp_1_1
     a rdfh:partsupp ;
-    rdfh:ps_has_part rdfh-inst:part_1 ;
-    rdfh:ps_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:ps_availqty 3956 ;
     rdfh:ps_supplycost 337.09e0 ;
     rdfh:ps_comment "after the fluffily ironic deposits? blithely special dependencies integrate furiously even excuses. blithely silent theodolites could have to haggle pending, express requests; fu" .
 rdfh-inst:partsupp_1_1
     a rdfh:partsupp ;
-    rdfh:ps_has_part rdfh-inst:part_1 ;
-    rdfh:ps_has_supplier rdfh-inst:supplier_1 ;
+    rdfh:has_part rdfh-inst:part_1 ;
+    rdfh:has_supplier rdfh-inst:supplier_1 ;
     rdfh:ps_availqty 4069 ;
     rdfh:ps_supplycost 357.84e0 ;
     rdfh:ps_comment "al, regular dependencies serve carefully after the quickly final pinto beans. furiously even deposits sleep quickly final, silent pinto beans. fluffily reg" .

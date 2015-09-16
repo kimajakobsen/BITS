@@ -15,7 +15,7 @@ select
 where  {
     
     ?li 
-       rdfh:l_has_order ?ord ;
+       rdfh:has_order ?ord ;
        rdfh:l_commitdate ?l_commitdate ;
        rdfh:l_receiptdate ?l_receiptdate ;
        rdfh:l_shipmode ?l_shipmode ;

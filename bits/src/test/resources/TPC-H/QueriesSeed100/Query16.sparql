@@ -10,8 +10,8 @@ select
   (count(distinct ?supp) as ?supplier_cnt)
 where {
     ?ps a rdfh:partsupp ;
-        rdfh:ps_has_part ?part ;
-        rdfh:ps_has_supplier ?supp .
+        rdfh:has_part ?part ;
+        rdfh:has_supplier ?supp .
     ?part rdfh:p_brand ?p_brand ;
         rdfh:p_type ?p_type ;
         rdfh:p_size ?p_size .    

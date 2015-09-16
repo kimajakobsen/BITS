@@ -6,7 +6,7 @@ rdfh-inst:supplier_1
     rdfh:s_suppkey 1 ;
     rdfh:s_name "Supplier#000000001" ;
     rdfh:s_address "N kD4on9OM Ipw3,gf0JBoQDd7tgrzrddZ" ;
-    rdfh:s_has_nation rdfh-inst:nation_17 ;
+    rdfh:has_nation rdfh-inst:nation_17 ;
     rdfh:s_phone "27-918-335-1736" ;
     rdfh:s_acctbal 5755.94e0 ;
     rdfh:s_comment "each slyly above the careful" .

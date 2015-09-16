@@ -4,7 +4,7 @@
 rdfh-inst:orders_1
     a rdfh:orders ;
     rdfh:o_orderkey 1 ;
-    rdfh:o_has_customer rdfh-inst:customer_1 ;
+    rdfh:has_customer rdfh-inst:customer_1 ;
     rdfh:o_orderstatus "O" ;
     rdfh:o_ordertotalprice 124828.11e0 ;
     rdfh:o_orderdate "1996-01-02"^^xsd:date ;

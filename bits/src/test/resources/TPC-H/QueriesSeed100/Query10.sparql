@@ -15,17 +15,17 @@ select
 where  {
   ?li 
       rdfh:l_returnflag ?l_returnflag ;
-      rdfh:l_has_order ?ord ;
+      rdfh:has_order ?ord ;
       rdfh:l_lineextendedprice ?l_lineextendedprice ;
       rdfh:l_linediscount ?l_linediscount .
-  ?ord rdfh:o_has_customer ?cust ;
+  ?ord rdfh:has_customer ?cust ;
        rdfh:o_orderdate ?o_orderdate .
   ?cust rdfh:c_address ?c_address ;
       rdfh:c_phone ?c_phone ;
       rdfh:c_comment ?c_comment ;
       rdfh:c_acctbal ?c_acctbal ;
       rdfh:c_custkey ?c_custkey ;
-      rdfh:c_has_nation ?c_nation ;
+      rdfh:has_nation ?c_nation ;
       rdfh:c_name ?c_companyName .
    ?c_nation rdfh:n_name ?nation .
    filter ((xsd:date(?o_orderdate) >= xsd:date("1994-04-01"^^xsd:date)) &&

@@ -27,7 +27,7 @@ where {
     filter (
       ?cntrycode in ('16', '27', '32', '33', '28', '25', '17') &&
       ((?c_acctbal) > ?acctbal_threshold ) )
-    filter not exists { ?ord rdfh:o_has_customer ?cust }
+    filter not exists { ?ord rdfh:has_customer ?cust }
   }
 group by ?cntrycode
 order by ?cntrycode

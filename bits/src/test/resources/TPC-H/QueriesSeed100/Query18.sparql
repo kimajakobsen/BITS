@@ -12,11 +12,11 @@ select
 where {
     ?li 
         rdfh:l_linequantity ?l_linequantity ;
-        rdfh:l_has_order ?ord .
+        rdfh:has_order ?ord .
     ?ord rdfh:o_orderkey ?o_orderkey ;
          rdfh:o_orderdate ?o_orderdate ;
          rdfh:o_ordertotalprice ?o_ordertotalprice ;
-         rdfh:o_has_customer ?cust .
+         rdfh:has_customer ?cust .
     ?cust rdfh:c_custkey ?c_custkey ;
           rdfh:c_name ?c_name .  
     { select 
@@ -25,7 +25,7 @@ where {
        where {
            ?li2 
                 rdfh:l_linequantity ?l2_linequantity ;
-                rdfh:l_has_order ?ord .
+                rdfh:has_order ?ord .
        }
        group by ?ord 
     } .
