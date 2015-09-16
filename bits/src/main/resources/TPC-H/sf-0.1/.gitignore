@@ -5,3 +5,6 @@
 /partsuppler.ttl
 /region.ttl
 /supplier.ttl
+/part.ttl
+/partsupplier.ttl
+*.swp
