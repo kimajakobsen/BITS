@@ -1,0 +1,10 @@
+sed -i -- 's/l_has_order/has_order/g' *
+sed -i -- 's/l_has_part/has_part/g' *
+sed -i -- 's/l_has_supplier/has_supplier/g' *
+sed -i -- 's/c_has_nation/has_nation/g' *
+sed -i -- 's/o_has_customer/has_customer/g' *
+sed -i -- 's/ps_has_part/has_part/g' *
+sed -i -- 's/ps_has_supplier/has_supplier/g' *
+sed -i -- 's/s_has_nation/has_nation/g' *
+sed -i -- 's/n_has_region/has_region/g' *
+
