@@ -1,4 +1,4 @@
-package dk.aau.kah.bits.evaluation;
+package dk.aau.kah.bits.experiment;
 
 import da.aau.kah.bits.config.DatabaseConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;

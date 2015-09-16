@@ -1,4 +1,4 @@
-package dk.aau.kah.bits.evaluation;
+package dk.aau.kah.bits.experiment;
 
 import java.io.File;
 import java.io.IOException;
