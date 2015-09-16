@@ -46,10 +46,11 @@ public class DatabaseHandler {
 		if (this.databaseConfig.isFreshLoad()) {
 			clearTDBDatabase();
 		}
-	
+		
 		if (this.databaseConfig.getDatasetType().equals("TPC-H")) {
-			if (doesTDBExist(databaseConfig.getTDBPath())) {
-				System.out.println("loading dataset");
+			if (!doesTDBExist(databaseConfig.getTDBPath())) {
+				dataset = TDBFactory.createDataset(databaseConfig.getTDBPath());
+				TDBFactory.release(dataset);
 				loadTPCHDataset();
 			}
 		}
@@ -60,6 +61,7 @@ public class DatabaseHandler {
 			throw new InvalidDatabaseConfig("The Experiment Dataset "+this.databaseConfig.getDatasetType()+" is not known, implementation is missing.");
 		}
 		dataset = TDBFactory.createDataset(databaseConfig.getTDBPath());
+			
 	}
 	
 	private void createTDBDirectoryIfNotExist() {
@@ -77,15 +79,12 @@ public class DatabaseHandler {
 	}
 
 	private void loadTPCHDataset() throws IOException {
-		String directory = databaseConfig.getDatasetPath();
-		String tdbloader = "/usr/local/apache-jena-2.12.1/bin/tdbloader";
-			
+		String directory = databaseConfig.getTDBPath();
+		String tdbloader = config.getTdbLoaderPath();
 		String ontologyPath = "src/main/resources/"+databaseConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl";
+		
 		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getOntologyModelURL()+" "+ontologyPath , config.isVerbose());
-		
-		
 		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getFactModelURL()+" "+getTPCHPath()+"/lineitem.ttl" , config.isVerbose());
-		
 		if (databaseConfig.getDimensionModelName().equals("#")) {
 			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_customer "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
 			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#l_has_nation "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
@@ -243,16 +242,26 @@ public class DatabaseHandler {
 	public void closeConnection() {
 		dataset.close();
 	}
+	
+	private int countNumberOfFilesInFolder(String folder){
+		return new File(folder).list().length;
+	}
 
 	private boolean doesTDBExist(String folder) {
-		
-		int numberOfFiles = new File(folder).list().length;
 		//The number five is selected by random. I know that there can be some random files remaining in the folders.
-		if (numberOfFiles > 5) {
+		if (countNumberOfFilesInFolder(folder) > 5) {
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+	
+	private boolean doesLockExist(String folder) {
+		File f = new File(folder+"/tdb.lock");
+		if(f.exists() && !f.isDirectory()) { 
+			return true;
+			}
+		return false;
 	}
 }
