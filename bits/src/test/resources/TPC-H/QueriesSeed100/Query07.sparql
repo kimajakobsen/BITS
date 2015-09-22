@@ -18,14 +18,13 @@ where {
     where {
       ?li 
         rdfh:has_order ?ord ;
-        rdfh:has_partsupplier ?ps ;
+        rdfh:has_supplier ?supp ;
         rdfh:l_shipdate ?l_shipdate ;
         rdfh:l_lineextendedprice ?l_lineextendedprice ;
         rdfh:l_linediscount ?l_linediscount .
       ?ord rdfh:has_customer ?cust .
       ?cust rdfh:has_nation ?custn .
       ?custn rdfh:n_name ?cust_nation .
-      ?ps rdfh:has_supplier ?supp .
       ?supp rdfh:has_nation ?suppn .
       ?suppn rdfh:n_name ?supp_nation .
       BIND (SUBSTR(STR(?l_shipdate), 1,4) as ?li_year)
