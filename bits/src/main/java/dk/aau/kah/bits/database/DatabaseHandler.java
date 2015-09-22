@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class DatabaseHandler {
 	private Dataset dataset;
 	private GeneralConfig config;
 	
+
 	public DatabaseHandler(DatabaseConfig databaseConfig) throws IOException, InvalidDatabaseConfig {
 		
 		this.config = GeneralConfig.getInstance();
@@ -263,5 +265,12 @@ public class DatabaseHandler {
 			return true;
 			}
 		return false;
+	}
+
+
+
+
+	public List<File> getQueries() {
+		return databaseConfig.getQueries();
 	}
 }
