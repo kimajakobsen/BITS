@@ -1,6 +1,11 @@
 package da.aau.kah.bits.config;
 
 
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseConfig {
@@ -15,6 +20,7 @@ public class DatabaseConfig {
 	private String dimensionStorageModel;
 	private String factModelName;
 	private String factStorageModel;
+	private String queries;
 	private boolean freshLoad = false;
 	private boolean trashDimension = false;
 	private String prefix = "http://example.org/";
@@ -155,6 +161,18 @@ public class DatabaseConfig {
 	}
 	public void setTDBPath(String tDBPath) {
 		TDBPath = tDBPath;
+	}
+	public List<File> getQueries() {
+		String queriesPath = "src/test/resources/TPC-H/QueriesSeed100/";
+		List<File> queryFiles = new ArrayList<File>();
+		String[] split = this.queries.split(",");
+		for (String pathname : split) {
+			queryFiles.add(new File(queriesPath+pathname+".sparql"));
+		}
+		return queryFiles;
+	}
+	public void setQueries(String queries) {
+		this.queries = queries;
 	}
 
 	
