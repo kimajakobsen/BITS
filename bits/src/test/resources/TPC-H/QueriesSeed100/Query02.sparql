@@ -32,7 +32,7 @@ where {
       rdfh:p_mfgr ?p_mfgr ;
       rdfh:p_size ?size ;
       rdfh:p_type ?p_type .
-  FILTER (?size = "1" && fn:contains(?p_type, "COPPER")) .
+  FILTER (?size = 1 && fn:contains(?p_type, "COPPER")) .
   { select ?part (min(?s_cost) as ?minsc)
     where {
         ?ps a rdfh:partsupp;
