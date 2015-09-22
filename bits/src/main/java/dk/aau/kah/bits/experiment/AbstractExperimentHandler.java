@@ -30,7 +30,7 @@ public abstract class AbstractExperimentHandler {
 		namedGraphs.add(databaseHandler.getOntologyModelURI());
 		namedGraphs.add(databaseHandler.getFactModelURI());
 		
-		if (databaseHandler.getDimensionModelURI() == null) {
+		if (databaseHandler.getDimensionModelURI() == null) { // in case of #
 			HashSet<Resource> levelProperties = databaseHandler.getDistinctLevelProperties();
 			for (Resource resource : levelProperties) {
 				Pattern p = Pattern.compile("(.)*"+resource.toString()+"(.)*", Pattern.DOTALL);
@@ -38,6 +38,36 @@ public abstract class AbstractExperimentHandler {
 				if (m.find()) { //if property is in query
 					namedGraphs.add(resource.toString());
 				}
+			}
+			
+			Pattern lineitemPattern = Pattern.compile("(.)*http://lod2.eu/schemas/rdfh#lineitem(.)*", Pattern.DOTALL);
+			Matcher lineitemMatcher = lineitemPattern.matcher(query.getQueryPattern().toString());
+			Boolean lineitemMatch = lineitemMatcher.find();
+			
+			Pattern partsuppPattern = Pattern.compile("(.)*http://lod2.eu/schemas/rdfh#partsupp(.)*", Pattern.DOTALL);
+			Matcher partsuppMatcher = partsuppPattern.matcher(query.getQueryPattern().toString());
+			Boolean partsuppMatch = partsuppMatcher.find();
+			
+			Pattern orderPattern = Pattern.compile("(.)*http://lod2.eu/schemas/rdfh#orders(.)*", Pattern.DOTALL);
+			Matcher orderMatcher = orderPattern.matcher(query.getQueryPattern().toString());
+			Boolean orderMatch = orderMatcher.find();
+			
+			Pattern customerPattern = Pattern.compile("(.)*http://lod2.eu/schemas/rdfh#orders(.)*", Pattern.DOTALL);
+			Matcher customerMatcher = customerPattern.matcher(query.getQueryPattern().toString());
+			Boolean customerMatch = customerMatcher.find();
+			
+			if (lineitemMatch == false && partsuppMatch == true) {
+				//Special case where cube is based on partsupp and not lineitem
+				namedGraphs.add("http://lod2.eu/schemas/rdfh#has_partsupp");
+				namedGraphs.remove(databaseHandler.getFactModelURI());
+			} else if (lineitemMatch == false && orderMatch == true) {
+				namedGraphs.add("http://lod2.eu/schemas/rdfh#has_order");
+				namedGraphs.remove(databaseHandler.getFactModelURI());
+			} else if (lineitemMatch == true && partsuppMatch == true) {
+				namedGraphs.add("http://lod2.eu/schemas/rdfh#has_partsupp");
+			} else if (lineitemMatch == false && customerMatch == true) {
+				namedGraphs.add("http://lod2.eu/schemas/rdfh#has_customer");
+				namedGraphs.remove(databaseHandler.getFactModelURI());
 			}
 		} else {
 			namedGraphs.add(databaseHandler.getDimensionModelURI());
