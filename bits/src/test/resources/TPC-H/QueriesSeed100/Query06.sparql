@@ -15,7 +15,8 @@ where {
     where {
       ?li 
           rdfh:has_order ?ord ;
-          rdfh:has_partsupplier ?ps ;
+          rdfh:has_part ?part ;
+          rdfh:has_supplier ?supp ;
           rdfh:l_linequantity ?l_linequantity ;
           rdfh:l_lineextendedprice ?l_lineextendedprice ;
           rdfh:l_linediscount ?l_linediscount .
