@@ -9,32 +9,29 @@ where {
           ?li1 
               rdfh:l_receiptdate ?l1_receiptdate ;
               rdfh:l_commitdate ?l1_commitdate ;
-              rdfh:has_partsupplier ?ps ;
-              rdfh:has_order ?ord .
-          ?ps rdfh:has_supplier ?supp .
+              rdfh:has_order ?ord ; 
+              rdfh:has_supplier ?supp .
           ?supp rdfh:s_name ?s_name ;
                rdfh:has_nation ?s_nation .
           ?ord rdfh:o_orderstatus ?orderstatus .
           ?s_nation rdfh:n_name ?name
           filter ( 
-            xsd:date(?l1_receiptdate) > xsd:date(?l1_commitdate) && 
+           ?l1_receiptdate > ?l1_commitdate && 
             ?name = "CANADA" && 
             ?orderstatus = "F"
             ) 
           filter exists {
             ?li2 rdfh:has_order ?ord ;
-                 rdfh:has_partsupplier ?ps2 .
-            ?ps2 rdfh:has_supplier ?supp2 .
+                 rdfh:has_supplier ?supp2 .
             filter (?supp != ?supp2)
           }
           filter not exists {
               ?li3 rdfh:has_order ?ord ;
                    rdfh:l_receiptdate ?l3_receiptdate ;
                    rdfh:l_commitdate ?l3_commitdate ;
-                   rdfh:has_partsupplier ?ps3 .
-              ?ps3 rdfh:has_supplier ?supp3 .
+                   rdfh:has_supplier ?supp3 .
               filter (
-                 xsd:date(?l3_receiptdate) > xsd:date(?l3_commitdate) &&
+                 ?l3_receiptdate > ?l3_commitdate &&
                  ?supp3 != ?supp
               )
          }
