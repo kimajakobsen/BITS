@@ -9,13 +9,12 @@ select
 where  {
    ?li 
        rdfh:has_order ?ord ;
-       rdfh:has_partsupplier ?ps ;
+       rdfh:has_supplier ?supp ;
        rdfh:l_lineextendedprice ?l_lineextendedprice ;
        rdfh:l_linediscount ?l_linediscount .
     ?ord rdfh:has_customer ?cust ;
          rdfh:o_orderdate ?o_orderdate .
-    ?ps rdfh:has_supplier ?supp .
-          ?supp rdfh:has_nation ?s_nation .
+    ?supp rdfh:has_nation ?s_nation .
     ?s_nation rdfh:has_region ?s_region ;
               rdfh:n_name ?nation .
     ?s_region rdfh:r_name ?r_name .
