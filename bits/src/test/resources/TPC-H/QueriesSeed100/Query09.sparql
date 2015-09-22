@@ -13,13 +13,15 @@ where {
       ?o_year
       (((?l_lineextendedprice) * (1 - (?l_linediscount)) - (?ps_supplycost) * (?l_linequantity)) as ?amount)
     where {
-      ?li 
+      ?li a rdfh:lineitem ;
           rdfh:has_order ?ord ;
-          rdfh:has_partsupplier ?ps ;
+          rdfh:has_part ?part ;
+          rdfh:has_supplier ?supp ;
           rdfh:l_linequantity ?l_linequantity ;
           rdfh:l_lineextendedprice ?l_lineextendedprice ;
           rdfh:l_linediscount ?l_linediscount .
-      ?ps rdfh:has_part ?part ;
+      ?ps a rdfh:partsupp;
+      		rdfh:has_part ?part ;
           rdfh:has_supplier ?supp .
       ?supp rdfh:has_nation ?s_nation .
       ?s_nation rdfh:n_name ?nation .
