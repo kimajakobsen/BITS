@@ -9,20 +9,33 @@ import java.util.regex.Pattern;
 import org.apache.jena.query.Query;
 import org.apache.jena.rdf.model.Resource;
 
+import da.aau.kah.bits.config.GeneralConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
 
 public abstract class AbstractExperimentHandler {
 	protected DatabaseHandler databaseHandler;
+	protected GeneralConfig generalConfig;
 	
 	AbstractExperimentHandler(DatabaseHandler databaseHandler){
 		this.databaseHandler = databaseHandler;
+		this.generalConfig = GeneralConfig.getInstance();
 	}
 
 	public abstract void run() throws IOException;
 	
-	public abstract HashMap<String, String> getResults();
+	public abstract HashMap<String, String> getResults() throws IOException;
 	
-	public abstract void getResultTimes();
+	public abstract String getResult(String queryName) throws IOException;
+	
+	public abstract HashMap<String, Long> getResultTimes() throws IOException;
+	
+	public abstract Long getResultTime(String queryName) throws IOException;
+	
+	public abstract HashMap<String,Query> getQueries() throws IOException;
+	
+	public abstract String getQuery(String queryName) throws IOException;
+	
+	public abstract void printResults() throws IOException;
 	
 	protected HashSet<String> getNamedGraphs(Query query) {
 		HashSet<String> namedGraphs = new HashSet<String>(); 
