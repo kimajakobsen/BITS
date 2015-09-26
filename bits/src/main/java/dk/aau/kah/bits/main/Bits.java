@@ -27,12 +27,9 @@ public class Bits {
 		
 			databaseHandler = new DatabaseHandler(databaseConfig);
 			
-			//System.out.println("all models: "+databaseHandler.getAllModelNames());
-			
 			ExperimentFactory experimentFactory = new ExperimentFactory();
 			AbstractExperimentHandler experimentHandler = experimentFactory.makeEvaluation(databaseHandler, databaseConfig);
 			experimentHandler.run();
-			experimentHandler.getResults();
 			
 			databaseHandler.closeConnection();
 		} catch (IOException e) {
@@ -40,13 +37,6 @@ public class Bits {
 		} catch (InvalidDatabaseConfig e) {
 			e.printStackTrace();
 		}
-
-		
-		
-		// Query database
-
-		// display/save results
-
 	}
 
 }
