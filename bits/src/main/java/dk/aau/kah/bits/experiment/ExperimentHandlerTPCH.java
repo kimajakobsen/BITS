@@ -79,8 +79,9 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 		for(Entry<String, ResultSet> entry : resultSetMap.entrySet()) {
 			String key = entry.getKey();
 			ResultSet value = entry.getValue();
-			//TODO check if the value is already known, if then do not recompute. (will return null)
-			resultsMap.put(key, getQuerySolution(value));
+			if (!resultsMap.containsKey(key)) {
+				resultsMap.put(key, getQuerySolution(value));
+			}
 		}
 		return resultsMap;
 	}
@@ -94,15 +95,10 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 		return results;
 	}
 
-
-	
-
 	@Override
 	public HashMap<String, Long> getResultTimes() throws IOException {
 		checkIfRunHasBeenExecuted();
 		return timeMap;
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -112,23 +108,27 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 		for(Entry<String, ResultSet> entry : resultSetMap.entrySet()) {
 			String key = entry.getKey();
 			ResultSet value = entry.getValue();
+			System.out.println();
 			ResultSetFormatter.out(System.out, value, queryMap.get(key)) ;
 		}
-		 
 	}
+	
+	
 
 	@Override
 	public HashMap<String, Query> getQueries() throws IOException {
 		checkIfRunHasBeenExecuted();
-		// TODO Auto-generated method stub
-		return null;
+		return queryMap;
 	}
 
 	@Override
 	public String getResult(String queryName) throws IOException {
 		checkIfRunHasBeenExecuted();
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (!resultsMap.containsKey(queryName)) {
+			resultsMap.put(queryName, getQuerySolution(resultSetMap.get(queryName)));
+		}
+		return getQuerySolution(resultSetMap.get(queryName));
 	}
 
 	private void checkIfRunHasBeenExecuted() throws IOException {
@@ -149,6 +149,12 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 		checkIfRunHasBeenExecuted();
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getResultHumanReadable(String queryName) throws IOException {
+		checkIfRunHasBeenExecuted();
+		return ResultSetFormatter.asText(resultSetMap.get(queryName));
 	}
 
 }

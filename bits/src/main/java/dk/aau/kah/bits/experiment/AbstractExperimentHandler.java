@@ -37,6 +37,8 @@ public abstract class AbstractExperimentHandler {
 	
 	public abstract void printResults() throws IOException;
 	
+	public abstract String getResultHumanReadable(String queryName) throws IOException;
+	
 	protected HashSet<String> getNamedGraphs(Query query) {
 		HashSet<String> namedGraphs = new HashSet<String>(); 
 		
