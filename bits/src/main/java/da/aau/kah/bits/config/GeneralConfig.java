@@ -4,7 +4,6 @@ public class GeneralConfig {
 	
 	private static GeneralConfig instance = null;
 	protected GeneralConfig() {}
-	
 	private String tdbLoaderPath;
 	private Boolean Verbose = false;
 	
@@ -14,23 +13,16 @@ public class GeneralConfig {
 		}
 		return instance;
 	}
-
 	public String getTdbLoaderPath() {
 		return instance.tdbLoaderPath;
 	}
-
 	public void setTdbLoaderPath(String tdbLoader) {
 		instance.tdbLoaderPath = tdbLoader;
 	}
-
 	public Boolean isVerbose() {
 		return instance.Verbose;
 	}
-
 	public void setVerbose(Boolean verbose) {
 		instance.Verbose = verbose;
 	}
-
-
-	
 }
