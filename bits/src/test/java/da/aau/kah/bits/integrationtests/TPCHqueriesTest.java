@@ -1,17 +1,18 @@
 package da.aau.kah.bits.integrationtests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import da.aau.kah.bits.config.PhysicalStorageConfig;
+import da.aau.kah.bits.config.DatasetConfig;
 import da.aau.kah.bits.config.GeneralConfig;
+import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
 import dk.aau.kah.bits.experiment.AbstractExperimentHandler;
@@ -19,9 +20,9 @@ import dk.aau.kah.bits.experiment.ExperimentFactory;
 import dk.aau.kah.bits.helpers.ConfigurationLoader;
 
 public class TPCHqueriesTest {
-	private PhysicalStorageConfig databaseConfig;
+	private PhysicalStorageConfig physicalStorageConfig;
+	private DatasetConfig datasetConfig;
 	private DatabaseHandler databaseHandler;
-	private String fileName = "onto0st-fact0st-dim0st.json";
 	private GeneralConfig generalConfig;
 	private ExperimentFactory experimentFactory;
 	private AbstractExperimentHandler experimentHandler;
@@ -29,15 +30,16 @@ public class TPCHqueriesTest {
 	@Before
 	public void setup(){
 		try {
-			databaseConfig = ConfigurationLoader.loadDatabaseConfig(fileName);
-			databaseHandler = new DatabaseHandler(databaseConfig);
+			physicalStorageConfig = ConfigurationLoader.loadPhysicalStorageConfig("base.json");
+			datasetConfig = ConfigurationLoader.loadDatasetConfig("TPCH-sf0.1.json");
+			databaseHandler = new DatabaseHandler(physicalStorageConfig, datasetConfig);
 			
 			generalConfig = GeneralConfig.getInstance();
 			generalConfig.setTdbLoaderPath("/usr/local/apache-jena-2.12.1/bin/tdbloader");
 			generalConfig.setVerbose(false);
 			
 			experimentFactory = new ExperimentFactory();
-			experimentHandler = experimentFactory.makeEvaluation(databaseHandler, databaseConfig);
+			experimentHandler = experimentFactory.makeEvaluation(databaseHandler);
 			experimentHandler.run();
 		} catch (FileNotFoundException e) {
 			fail("File not found");
