@@ -33,22 +33,25 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 		for (final File fileEntry : queries) {
 			String rawQuery = FileUtils.readFileToString(fileEntry);
 			Query query = QueryFactory.create(rawQuery) ;
+			String queryName = getQueryName(fileEntry);
+			
+//			IF (GENERALCONFIG.ISVERBOSE()) {
+//				SYSTEM.OUT.PRINTLN(QUERYNAME+"\N" + QUERY);
+//			}
 			
 			addNamedGraphsToQuery(query);
-			
-			String queryName = getQueryName(fileEntry);
 			
 			long startTime = System.nanoTime();
 			ResultSet resultSet = databaseHandler.executeQuery(query);
 			long endTime = System.nanoTime();
-			long timeInMilliseconds = (endTime-startTime)/1000000;
+			long timeInMilliseconds = (endTime-startTime)/1000000; //convert to ms
 			
 			if (generalConfig.isVerbose()) {
-				System.out.println(queryName+": "+timeInMilliseconds);
+				System.out.println(queryName+": "+timeInMilliseconds+"ms");
 			}
 			
 			resultSetMap.put(queryName, resultSet);
-			timeMap.put(queryName,timeInMilliseconds) ; //convert to ms
+			timeMap.put(queryName,timeInMilliseconds) ; 
 			queryMap.put(queryName, query);
 		    
 			
@@ -76,7 +79,7 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 		for(Entry<String, ResultSet> entry : resultSetMap.entrySet()) {
 			String key = entry.getKey();
 			ResultSet value = entry.getValue();
-			//TODO check if the value is already know, if then do not recompute. (will return null)
+			//TODO check if the value is already known, if then do not recompute. (will return null)
 			resultsMap.put(key, getQuerySolution(value));
 		}
 		return resultsMap;
