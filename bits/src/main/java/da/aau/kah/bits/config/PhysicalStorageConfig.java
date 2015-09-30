@@ -1,71 +1,25 @@
 package da.aau.kah.bits.config;
 
-
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class PhysicalStorageConfig {
-	private String datasetPath;
-	private String TDBPath;
-	private String datasetType;
-	private String configFileName;
-	private String scaleFactor;
 	private String ontologyModelName;
 	private String ontologyStorageModel;
 	private String dimensionModelName;
 	private String dimensionStorageModel;
 	private String factModelName;
 	private String factStorageModel;
-	private String queries;
-	private boolean freshLoad = false;
-	private boolean trashDimension = false;
 	private String prefix = "http://example.org/";
+	private String configFileName;
 
-	public String getDatasetPath() {
-		return "src/main/resources/"+getDatasetType()+"/"+getScaleFactorString();
-	}
-	public void setDatasetPath(String datasetFilePath) {
-		this.datasetPath = datasetFilePath;
-	}
-	public String getConfigFileName() {
-		return configFileName;
-	}
-	public void setConfigFileName(String ConfigFileName) {
-		this.configFileName = ConfigFileName;
-	}
-	public boolean isFreshLoad() {
-		return freshLoad;
-	}
-	public boolean isTrashDimension() {
-		return trashDimension;
-	}
-	public void setTrashDimension(boolean trashDimension) {
-		this.trashDimension = trashDimension;
-	}
-	public String getScaleFactor() {
-		return scaleFactor;
-	}
-	public String getScaleFactorString() {
-		return "sf-"+getScaleFactor();
-	}
 	public String getOntologyModelName() {
 		return ontologyModelName;
-	}
-	public String getOntologyModelURL() {
-		return addURLToModelName(ontologyModelName);
 	}
 	public String getOntologyStorageModel() {
 		return ontologyStorageModel;
 	}
 	public String getDimensionModelName() {
 		return dimensionModelName;
-	}
-	public String getDimensionModelURL() {
-		return addURLToModelName(dimensionModelName);
 	}
 	public String getDimensionStorageModel() {
 		return dimensionStorageModel;
@@ -75,12 +29,6 @@ public class PhysicalStorageConfig {
 	}
 	public String getFactStorageModel() {
 		return factStorageModel;
-	}
-	public String getFactModelURL() {
-		return addURLToModelName(factModelName);
-	}
-	public void setScaleFactor(String d) {
-		this.scaleFactor = d;
 	}
 	public void setOntologyModelName(String ontologyModelName) {
 		this.ontologyModelName = ontologyModelName;
@@ -100,12 +48,32 @@ public class PhysicalStorageConfig {
 	public void setFactStorageModel(String factStorageModel) {
 		this.factStorageModel = factStorageModel;
 	}
-
+	public String getPrefix() {
+		return prefix;
+	}
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+	private String addURLToModelName(String modelName)
+	{
+		return getPrefix()+modelName;
+	}
+	public String getOntologyModelURL() {
+		return addURLToModelName(ontologyModelName);
+	}
+	public String getDimensionModelURL() {
+		return addURLToModelName(dimensionModelName);
+	}
+	public String getFactModelURL() {
+		return addURLToModelName(factModelName);
+	}
+	public String getConfigFileName() {
+		return configFileName;
+	}
+	public void setConfigFileName(String configFileName) {
+		this.configFileName = configFileName;
+	}
 	public void validate() throws InvalidDatabaseConfig {
-		
-		if (datasetType == null){
-			throw new InvalidDatabaseConfig("experimentDataset is not set, config is not valid");
-		}
 		if (ontologyModelName == null){
 			throw new InvalidDatabaseConfig("ontologyModelName is not set, config is not valid");
 		}
@@ -124,58 +92,7 @@ public class PhysicalStorageConfig {
 		if (factStorageModel == null){
 			throw new InvalidDatabaseConfig("factStorageModel is not set, config is not valid");
 		}
-		if (datasetType.equals("TPC-H")){
-			if (scaleFactor == null) {
-				throw new InvalidDatabaseConfig("The scalefactor is not set, it needs to be specified when using TPCH");
-			}
-		}
 	}
-	
-	@Override
-	public String toString () {
-		return this.datasetPath;
-		
-	}
-	public void setFreshLoad(boolean freshLoad) {
-		this.freshLoad = freshLoad;
-	}
-	
-	private String addURLToModelName(String modelName)
-	{
-		return getPrefix()+modelName;
-	}
-	public String getPrefix() {
-		return prefix;
-	}
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-	public String getDatasetType() {
-		return datasetType;
-	}
-	public void setDatasetType(String datasetType) {
-		this.datasetType = datasetType;
-	}
-	public String getTDBPath() {
-		return TDBPath;
-	}
-	public void setTDBPath(String tDBPath) {
-		TDBPath = tDBPath;
-	}
-	public List<File> getQueries() {
-		String queriesPath = "src/test/resources/TPC-H/QueriesSeed100/";
-		List<File> queryFiles = new ArrayList<File>();
-		String[] split = this.queries.split(",");
-		for (String pathname : split) {
-			queryFiles.add(new File(queriesPath+pathname+".sparql"));
-		}
-		return queryFiles;
-	}
-	public void setQueries(String queries) {
-		this.queries = queries;
-	}
-
-	
 
 
 }

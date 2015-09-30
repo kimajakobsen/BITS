@@ -24,49 +24,54 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.tdb.TDBFactory;
 
+import da.aau.kah.bits.config.DatasetConfig;
 import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.config.GeneralConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseHandler {
 
-	private PhysicalStorageConfig databaseConfig;
+	private PhysicalStorageConfig physicalStorageConfig;
+	private DatasetConfig datasetConfig;
 	private Dataset dataset;
 	private GeneralConfig config;
 	
 
-	public DatabaseHandler(PhysicalStorageConfig databaseConfig) throws IOException, InvalidDatabaseConfig {
+	public DatabaseHandler(PhysicalStorageConfig physicalStorageConfig, DatasetConfig datasetConfig) throws IOException, InvalidDatabaseConfig {
 		
 		this.config = GeneralConfig.getInstance();
 		
-		databaseConfig.validate();
-		this.databaseConfig = databaseConfig;
+		physicalStorageConfig.validate();
+		datasetConfig.validate();
+		
+		this.datasetConfig = datasetConfig;
+		this.physicalStorageConfig = physicalStorageConfig;
 		
 		createTDBDirectoryIfNotExist();
 		
-		if (this.databaseConfig.isFreshLoad()) {
+		if (this.datasetConfig.isFreshLoad()) {
 			clearTDBDatabase();
 		}
 		
-		if (this.databaseConfig.getDatasetType().equals("TPC-H")) {
-			if (!doesTDBExist(databaseConfig.getTDBPath())) {
-				dataset = TDBFactory.createDataset(databaseConfig.getTDBPath());
+		if (this.datasetConfig.getDatasetType().equals("TPC-H")) {
+			if (!doesTDBExist(getTDBPath())) {
+				dataset = TDBFactory.createDataset(getTDBPath());
 				TDBFactory.release(dataset);
 				loadTPCHDataset();
 			}
 		}
-		else if (this.databaseConfig.getDatasetType().equals("TPC-DS")) {
+		else if (this.datasetConfig.getDatasetType().equals("TPC-DS")) {
 			//TODO
 		}
 		else {
-			throw new InvalidDatabaseConfig("The Experiment Dataset "+this.databaseConfig.getDatasetType()+" is not known, implementation is missing.");
+			throw new InvalidDatabaseConfig("The Experiment Dataset "+this.datasetConfig.getDatasetType()+" is not known, implementation is missing.");
 		}
-		dataset = TDBFactory.createDataset(databaseConfig.getTDBPath());
+		dataset = TDBFactory.createDataset(getTDBPath());
 			
 	}
 	
 	private void createTDBDirectoryIfNotExist() {
-		File theDir = new File(databaseConfig.getDatasetPath());
+		File theDir = new File(getTDBPath());
 
 		// if the directory does not exist, create it
 		if (!theDir.exists()) {
@@ -80,13 +85,13 @@ public class DatabaseHandler {
 	}
 
 	private void loadTPCHDataset() throws IOException {
-		String directory = databaseConfig.getTDBPath();
+		String directory = getTDBPath();
 		String tdbloader = config.getTdbLoaderPath();
-		String ontologyPath = "src/main/resources/"+databaseConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl";
+		String ontologyPath = "src/main/resources/"+datasetConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl";
 		
-		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getOntologyModelURL()+" "+ontologyPath , config.isVerbose());
-		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getFactModelURL()+" "+getTPCHPath()+"/lineitem.ttl" , config.isVerbose());
-		if (databaseConfig.getDimensionModelName().equals("#")) {
+		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getOntologyModelURL()+" "+ontologyPath , config.isVerbose());
+		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getFactModelURL()+" "+getTPCHPath()+"/lineitem.ttl" , config.isVerbose());
+		if (physicalStorageConfig.getDimensionModelName().equals("#")) {
 			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_customer "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
 			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_nation "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
 			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_order "+getTPCHPath()+"/order.ttl" , config.isVerbose());
@@ -95,18 +100,18 @@ public class DatabaseHandler {
 			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_region "+getTPCHPath()+"/region.ttl" , config.isVerbose());
 			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_supplier "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
 		} else {
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/order.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/part.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/partsupplier.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/region.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+databaseConfig.getDimensionModelURL()+" "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/order.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/part.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/partsupplier.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/region.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
 		}
 	}
 
 	private String getTPCHPath(){
-		return databaseConfig.getDatasetPath();
+		return datasetConfig.getDatasetPath();
 	}
 
 	public Model getDefaultModel() {
@@ -118,21 +123,21 @@ public class DatabaseHandler {
 	
 	public Model getOntologyModel()
 	{
-		return getModel(databaseConfig.getOntologyModelURL());
+		return getModel(physicalStorageConfig.getOntologyModelURL());
 	}
 	
 	public String getOntologyModelURI()
 	{
-		return databaseConfig.getOntologyModelURL();
+		return physicalStorageConfig.getOntologyModelURL();
 	}
 	
 	public Model getFactModel()
 	{
-		return getModel(databaseConfig.getFactModelURL());
+		return getModel(physicalStorageConfig.getFactModelURL());
 	}
 	
 	public String getFactModelURI() {
-		return databaseConfig.getFactModelURL();
+		return physicalStorageConfig.getFactModelURL();
 	}
 	
 	public List<String> getAllDimensionModelURI() {
@@ -144,10 +149,10 @@ public class DatabaseHandler {
 	
 	public String getDimensionModelURI()
 	{
-		if (databaseConfig.getDimensionModelName().equals("#")) {
+		if (physicalStorageConfig.getDimensionModelName().equals("#")) {
 			return null;
 		}
-		return databaseConfig.getDimensionModelURL();
+		return physicalStorageConfig.getDimensionModelURL();
 	}
 	
 	public Model getModel(String modelName) {
@@ -178,8 +183,15 @@ public class DatabaseHandler {
 		return models;
 	}
 	
+	private String getTDBPath() {
+		String part1 = physicalStorageConfig.getConfigFileName().substring(0, physicalStorageConfig.getConfigFileName().length()-1);
+		String part2 = datasetConfig.getConfigFileName();
+		
+		return "src/main/resources/tdb/"+ part1 + "_" + part2;
+	}
+	
 	public void clearTDBDatabase() throws IOException {
-		FileUtils.cleanDirectory(new File(databaseConfig.getTDBPath()));
+		FileUtils.cleanDirectory(new File(getTDBPath()));
 	}
 
 	public ResultSet executeQuery(Query query) {
@@ -255,6 +267,10 @@ public class DatabaseHandler {
 	}
 
 	public List<File> getQueries() {
-		return databaseConfig.getQueries();
+		return datasetConfig.getQueries();
+	}
+	
+	public String getDatasetType() {
+		return datasetConfig.getDatasetType();
 	}
 }
