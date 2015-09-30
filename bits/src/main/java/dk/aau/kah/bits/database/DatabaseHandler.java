@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -202,11 +201,9 @@ public class DatabaseHandler {
 	}
 	
 	private void executeBashCommand(String command, Boolean verbose) {
-
 		String s = null;
 		 
         try {
-             
             // using the Runtime exec method:
         	//"/usr/local/apache-jena-2.12.1/bin/tdbloader --help"
             Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
@@ -232,8 +229,6 @@ public class DatabaseHandler {
                     System.out.println(s);
                 }
 			}
-            
-             
         }
         catch (IOException e) {
             System.out.println("exception happened - here's what I know: ");
@@ -258,17 +253,6 @@ public class DatabaseHandler {
 			return false;
 		}
 	}
-	
-	private boolean doesLockExist(String folder) {
-		File f = new File(folder+"/tdb.lock");
-		if(f.exists() && !f.isDirectory()) { 
-			return true;
-			}
-		return false;
-	}
-
-
-
 
 	public List<File> getQueries() {
 		return databaseConfig.getQueries();
