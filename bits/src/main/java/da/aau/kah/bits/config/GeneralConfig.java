@@ -15,7 +15,6 @@ public class GeneralConfig {
 		return instance;
 	}
 
-
 	public String getTdbLoaderPath() {
 		return instance.tdbLoaderPath;
 	}
