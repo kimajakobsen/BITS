@@ -16,13 +16,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import da.aau.kah.bits.config.DatabaseConfig;
+import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
 import dk.aau.kah.bits.helpers.ConfigurationLoader;
 
-public class Onto0stFact0stDim0st extends AbstractIntegrationTest {
-	private DatabaseConfig databaseConfig;
+public class Onto0stFact0stDim0stTest extends AbstractIntegrationTest {
+	private PhysicalStorageConfig databaseConfig;
 	private DatabaseHandler databaseHandler;
 	private String fileName = "onto0st-fact0st-dim0st.json";
 	
