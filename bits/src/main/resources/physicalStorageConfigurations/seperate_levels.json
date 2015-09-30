@@ -1,16 +1,9 @@
 {
-	"scaleFactor":"0.1",
 	"ontologyModelName":"onto",
 	"ontologyStorageModel":"st",
 	"dimensionModelName":"#",
 	"dimensionStorageModel":"st",
 	"factModelName":"fact",
 	"factStorageModel":"st",
-	"freshLoad":false,
-	"datasetType":"TPC-H",
-	"trashDimension":"false",
-	"prefix":"http://example.org/",
-	"queries_that_does_not_work":",Query06,Query09,Query18,Query20",
-	"queries_that_works":"Query01,Query02,Query03,Query04,Query05,Query07,Query08,Query10,Query11,Query12,Query13,Query14,Query15,Query16,Query17,Query19,Query21,Query22",
-	"queries":"Query01,Query02,Query03,Query04,Query05,Query07,Query08,Query10,Query11,Query12,Query13,Query14,Query15,Query16,Query17,Query19,Query21,Query22"
+	"prefix":"http://example.org/"
 }

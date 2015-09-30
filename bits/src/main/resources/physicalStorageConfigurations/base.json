@@ -1,14 +1,9 @@
 {
-	"scaleFactor":"0.1",
 	"ontologyModelName":"all",
 	"ontologyStorageModel":"st",
 	"dimensionModelName":"all",
 	"dimensionStorageModel":"st",
 	"factModelName":"all",
 	"factStorageModel":"st",
-	"freshLoad":false,
-	"datasetType":"TPC-H",
-	"trashDimension":"true",
-	"prefix":"http://example.org/",
-	"queries":"Query01,Query02,Query03,Query04,Query05,Query07,Query08,Query10,Query11,Query12,Query13,Query14,Query15,Query16,Query17,Query19,Query21,Query22"
+	"prefix":"http://example.org/"
 }

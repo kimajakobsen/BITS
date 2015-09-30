@@ -1,13 +1,9 @@
 {
-	"scaleFactor":"0.0001",
 	"ontologyModelName":"onto",
 	"ontologyStorageModel":"st",
 	"dimensionModelName":"dimension",
 	"dimensionStorageModel":"st",
 	"factModelName":"fact",
 	"factStorageModel":"st",
-	"freshLoad":true,
-	"datasetType":"TPC-H",
-	"trashDimension":"false",
 	"prefix":"http://example.org/"
 }
