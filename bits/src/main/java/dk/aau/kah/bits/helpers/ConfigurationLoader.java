@@ -6,16 +6,16 @@ import java.io.FileReader;
 
 import com.google.gson.Gson;
 
-import da.aau.kah.bits.config.DatabaseConfig;
+import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.config.GeneralConfig;
 
 public class ConfigurationLoader {
 
-	public static DatabaseConfig loadDatabaseConfig(String JSONFile) throws FileNotFoundException {
+	public static PhysicalStorageConfig loadDatabaseConfig(String JSONFile) throws FileNotFoundException {
 		String path = "src/main/resources/databaseConfigurations/";
 		BufferedReader configuration = new BufferedReader(new FileReader(path+JSONFile));
 		Gson gson = new Gson();	
-		DatabaseConfig config = gson.fromJson(configuration, DatabaseConfig.class);
+		PhysicalStorageConfig config = gson.fromJson(configuration, PhysicalStorageConfig.class);
 		config.setConfigFileName(JSONFile);
 		config.setTDBPath("src/main/resources/tdb/"+JSONFile.substring(0, JSONFile.length()-5)+"/");
 		return config;

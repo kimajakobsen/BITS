@@ -24,18 +24,18 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.tdb.TDBFactory;
 
-import da.aau.kah.bits.config.DatabaseConfig;
+import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.config.GeneralConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
 public class DatabaseHandler {
 
-	private DatabaseConfig databaseConfig;
+	private PhysicalStorageConfig databaseConfig;
 	private Dataset dataset;
 	private GeneralConfig config;
 	
 
-	public DatabaseHandler(DatabaseConfig databaseConfig) throws IOException, InvalidDatabaseConfig {
+	public DatabaseHandler(PhysicalStorageConfig databaseConfig) throws IOException, InvalidDatabaseConfig {
 		
 		this.config = GeneralConfig.getInstance();
 		

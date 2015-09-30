@@ -1,6 +1,6 @@
 package dk.aau.kah.bits.experiment;
 
-import da.aau.kah.bits.config.DatabaseConfig;
+import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
 
@@ -10,7 +10,7 @@ public class ExperimentFactory {
 		
 	}
 
-	public AbstractExperimentHandler makeEvaluation(DatabaseHandler databaseHandle, DatabaseConfig databaseConfig) throws InvalidDatabaseConfig {
+	public AbstractExperimentHandler makeEvaluation(DatabaseHandler databaseHandle, PhysicalStorageConfig databaseConfig) throws InvalidDatabaseConfig {
 		String datasetType = databaseConfig.getDatasetType();
 		AbstractExperimentHandler evaluationhandler;
 		

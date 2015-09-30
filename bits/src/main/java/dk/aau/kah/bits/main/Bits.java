@@ -1,8 +1,10 @@
 package dk.aau.kah.bits.main;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
-import da.aau.kah.bits.config.DatabaseConfig;
+import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.config.GeneralConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
@@ -15,10 +17,11 @@ public class Bits {
 	public static void main(String[] args) {
 
 		DatabaseHandler databaseHandler;
-		DatabaseConfig databaseConfig;
+		PhysicalStorageConfig databaseConfig;
 
 		try {
-			databaseConfig = ConfigurationLoader.loadDatabaseConfig("onto0st-fact1st-dim#st.json");
+			//databaseConfig = ConfigurationLoader.loadDatabaseConfig("onto0st-fact1st-dim#st.json");
+			databaseConfig = ConfigurationLoader.loadDatabaseConfig("onto0st-fact0st-dim0st.json");
 			
 			//ConfigurationLoader.loadSystemConfig("kah-ThinkPad-X220.json");
 			GeneralConfig generalConfig = GeneralConfig.getInstance();
@@ -30,6 +33,8 @@ public class Bits {
 			ExperimentFactory experimentFactory = new ExperimentFactory();
 			AbstractExperimentHandler experimentHandler = experimentFactory.makeEvaluation(databaseHandler, databaseConfig);
 			experimentHandler.run();
+			
+			experimentHandler.printResults();
 			
 			databaseHandler.closeConnection();
 		} catch (IOException e) {

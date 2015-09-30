@@ -8,7 +8,7 @@ import java.util.List;
 
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 
-public class DatabaseConfig {
+public class PhysicalStorageConfig {
 	private String datasetPath;
 	private String TDBPath;
 	private String datasetType;
