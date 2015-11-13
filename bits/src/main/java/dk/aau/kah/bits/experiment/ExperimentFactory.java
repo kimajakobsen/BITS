@@ -15,6 +15,8 @@ public class ExperimentFactory {
 		
 		if (datasetType.equals("TPC-H")) {
 			evaluationhandler = new ExperimentHandlerTPCH(databaseHandle);
+		} else if (datasetType.equals("TPC-DS")) {
+			evaluationhandler = new ExperimentHandlerTPCDS(databaseHandle);
 		} else {
 			throw new InvalidDatabaseConfig("The Dataset Type "+databaseHandle.getDatasetType()+" is not known, implementation is missing.");
 		}

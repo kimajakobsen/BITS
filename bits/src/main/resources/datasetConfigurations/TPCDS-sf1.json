@@ -1,0 +1,6 @@
+{
+	"scaleFactor":"1",
+	"freshLoad":true,
+	"datasetType":"TPC-DS",
+	"queries":"Query01"
+}

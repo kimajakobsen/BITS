@@ -9,7 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.jena.propertytable.graph.GraphCSV;
+import org.apache.jena.propertytable.lang.CSV2RDF;
 import org.apache.jena.query.Dataset;
+import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -18,6 +21,7 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
@@ -61,7 +65,11 @@ public class DatabaseHandler {
 			}
 		}
 		else if (this.datasetConfig.getDatasetType().equals("TPC-DS")) {
-			//TODO
+			if (!doesTDBExist(getTDBPath())) {
+				dataset = TDBFactory.createDataset(getTDBPath());
+				TDBFactory.release(dataset);
+				loadTPCDSDataset();
+			}
 		}
 		else {
 			throw new InvalidDatabaseConfig("The Experiment Dataset "+this.datasetConfig.getDatasetType()+" is not known, implementation is missing.");
@@ -83,6 +91,17 @@ public class DatabaseHandler {
 		    }        
 		}
 	}
+	
+	private void loadTPCDSDataset() {
+		CSV2RDF.init() ;
+		String directory = getTDBPath();
+		Model model_csv_array_impl = ModelFactory.createModelForGraph(new GraphCSV(getDatasetPath()+"/item.dat")); // PropertyTableArrayImpl
+		Dataset dataset = TDBFactory.createDataset(directory) ;
+		dataset.begin(ReadWrite.WRITE);
+		dataset.addNamedModel("http://example/table1", model_csv_array_impl) ;
+		dataset.commit();
+		
+	}
 
 	private void loadTPCHDataset() throws IOException {
 		String directory = getTDBPath();
@@ -90,27 +109,37 @@ public class DatabaseHandler {
 		String ontologyPath = "src/main/resources/"+datasetConfig.getDatasetType()+"/onto/tpc-h-qb4o-delivered-version.ttl";
 		
 		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getOntologyModelURL()+" "+ontologyPath , config.isVerbose());
-		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getFactModelURL()+" "+getTPCHPath()+"/lineitem.ttl" , config.isVerbose());
-		if (physicalStorageConfig.getDimensionModelName().equals("#")) {
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_customer "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_nation "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_order "+getTPCHPath()+"/order.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_part "+getTPCHPath()+"/part.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_partsupp "+getTPCHPath()+"/partsupplier.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_region "+getTPCHPath()+"/region.ttl" , config.isVerbose());
-			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_supplier "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
+		executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getFactModelURL()+" "+getDatasetPath()+"/lineitem.ttl" , config.isVerbose());
+		if (physicalStorageConfig.getDimensionModelName().equals("level")) {
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_customer "+getDatasetPath()+"/customer.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_nation "+getDatasetPath()+"/nation.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_order "+getDatasetPath()+"/order.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_part "+getDatasetPath()+"/part.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_partsupp "+getDatasetPath()+"/partsupplier.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_region "+getDatasetPath()+"/region.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#has_supplier "+getDatasetPath()+"/supplier.ttl" , config.isVerbose());
+		} else if(physicalStorageConfig.getDimensionModelName().equals("dimension")) {
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#orderDim "+getDatasetPath()+"/customer.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#orderDim "+getDatasetPath()+"/nation.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#orderDim "+getDatasetPath()+"/order.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#partDim "+getDatasetPath()+"/part.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#supplierDim "+getDatasetPath()+"/partsupplier.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#orderDim "+getDatasetPath()+"/region.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#supplierDim "+getDatasetPath()+"/supplier.ttl" , config.isVerbose());
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#supplierDim "+getDatasetPath()+"/nation.ttl" , config.isVerbose()); //duplicate data
+			executeBashCommand(tdbloader+" --loc="+directory+" --graph=http://lod2.eu/schemas/rdfh#supplierDim "+getDatasetPath()+"/region.ttl" , config.isVerbose()); //duplicate data
 		} else {
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/customer.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/nation.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/order.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/part.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/partsupplier.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/region.ttl" , config.isVerbose());
-	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getTPCHPath()+"/supplier.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getDatasetPath()+"/customer.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getDatasetPath()+"/nation.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getDatasetPath()+"/order.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getDatasetPath()+"/part.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getDatasetPath()+"/partsupplier.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getDatasetPath()+"/region.ttl" , config.isVerbose());
+	        executeBashCommand(tdbloader+" --loc="+directory+" --graph="+physicalStorageConfig.getDimensionModelURL()+" "+getDatasetPath()+"/supplier.ttl" , config.isVerbose());
 		}
 	}
 
-	private String getTPCHPath(){
+	private String getDatasetPath(){
 		return datasetConfig.getDatasetPath();
 	}
 
