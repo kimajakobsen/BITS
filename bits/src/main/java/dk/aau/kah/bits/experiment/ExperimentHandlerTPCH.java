@@ -16,11 +16,6 @@ import org.apache.jena.query.ResultSetFormatter;
 import dk.aau.kah.bits.database.DatabaseHandler;
 
 public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
-	private HashMap <String, String> resultsMap = new HashMap<String,String>();
-	private HashMap <String,ResultSet> resultSetMap = new HashMap<String,ResultSet>();
-	private HashMap <String,Long> timeMap = new HashMap<String, Long>();
-	private HashMap <String,Query> queryMap = new HashMap<String, Query>();
-	private Boolean runHasBeenExecuted = false;
 	
 	ExperimentHandlerTPCH(DatabaseHandler dh) {
 		super(dh);
@@ -82,6 +77,7 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 			if (!resultsMap.containsKey(key)) {
 				resultsMap.put(key, getQuerySolution(value));
 			}
+			//System.out.println(key+": "+resultsMap.get(key));
 		}
 		return resultsMap;
 	}
@@ -129,12 +125,6 @@ public class ExperimentHandlerTPCH extends AbstractExperimentHandler {
 			resultsMap.put(queryName, getQuerySolution(resultSetMap.get(queryName)));
 		}
 		return getQuerySolution(resultSetMap.get(queryName));
-	}
-
-	private void checkIfRunHasBeenExecuted() throws IOException {
-		if (!runHasBeenExecuted) {
-			run();
-		}
 	}
 
 	@Override

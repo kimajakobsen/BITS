@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.jena.query.Query;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Resource;
 
 import da.aau.kah.bits.config.GeneralConfig;
@@ -15,6 +16,11 @@ import dk.aau.kah.bits.database.DatabaseHandler;
 public abstract class AbstractExperimentHandler {
 	protected DatabaseHandler databaseHandler;
 	protected GeneralConfig generalConfig;
+	protected HashMap <String, String> resultsMap = new HashMap<String,String>();
+	protected HashMap <String,ResultSet> resultSetMap = new HashMap<String,ResultSet>();
+	protected HashMap <String,Long> timeMap = new HashMap<String, Long>();
+	protected HashMap <String,Query> queryMap = new HashMap<String, Query>();
+	protected Boolean runHasBeenExecuted = false;
 	
 	AbstractExperimentHandler(DatabaseHandler databaseHandler){
 		this.databaseHandler = databaseHandler;
@@ -88,5 +94,11 @@ public abstract class AbstractExperimentHandler {
 			namedGraphs.add(databaseHandler.getDimensionModelURI());
 		}
 		return namedGraphs;
+	}
+	
+	protected void checkIfRunHasBeenExecuted() throws IOException {
+		if (!runHasBeenExecuted) {
+			run();
+		}
 	}
 }
