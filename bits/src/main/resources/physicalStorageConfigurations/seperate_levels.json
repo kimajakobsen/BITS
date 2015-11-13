@@ -1,7 +1,7 @@
 {
 	"ontologyModelName":"onto",
 	"ontologyStorageModel":"st",
-	"dimensionModelName":"#",
+	"dimensionModelName":"level",
 	"dimensionStorageModel":"st",
 	"factModelName":"fact",
 	"factStorageModel":"st",
