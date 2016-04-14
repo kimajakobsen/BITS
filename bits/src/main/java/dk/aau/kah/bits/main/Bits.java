@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import da.aau.kah.bits.config.DatasetConfig;
 import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.config.GeneralConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
@@ -18,20 +19,23 @@ public class Bits {
 
 		DatabaseHandler databaseHandler;
 		PhysicalStorageConfig databaseConfig;
+		DatasetConfig datasetConfig;
 
 		try {
 			//databaseConfig = ConfigurationLoader.loadDatabaseConfig("onto0st-fact1st-dim#st.json");
-			databaseConfig = ConfigurationLoader.loadDatabaseConfig("onto0st-fact0st-dim0st.json");
+			databaseConfig = ConfigurationLoader.loadPhysicalStorageConfig("base.json");
+			
+			datasetConfig = ConfigurationLoader.loadDatasetConfig("TPCH-sf0.0001.json");
 			
 			//ConfigurationLoader.loadSystemConfig("kah-ThinkPad-X220.json");
 			GeneralConfig generalConfig = GeneralConfig.getInstance();
 			generalConfig.setTdbLoaderPath("/usr/local/apache-jena-2.12.1/bin/tdbloader");
 			generalConfig.setVerbose(true);
 		
-			databaseHandler = new DatabaseHandler(databaseConfig);
+			databaseHandler = new DatabaseHandler(databaseConfig,datasetConfig);
 			
 			ExperimentFactory experimentFactory = new ExperimentFactory();
-			AbstractExperimentHandler experimentHandler = experimentFactory.makeEvaluation(databaseHandler, databaseConfig);
+			AbstractExperimentHandler experimentHandler = experimentFactory.makeEvaluation(databaseHandler);
 			experimentHandler.run();
 			
 			experimentHandler.printResults();
