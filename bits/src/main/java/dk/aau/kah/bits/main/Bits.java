@@ -1,12 +1,10 @@
 package dk.aau.kah.bits.main;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import da.aau.kah.bits.config.DatasetConfig;
-import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.config.GeneralConfig;
+import da.aau.kah.bits.config.PhysicalStorageConfig;
 import da.aau.kah.bits.exceptions.InvalidDatabaseConfig;
 import dk.aau.kah.bits.database.DatabaseHandler;
 import dk.aau.kah.bits.experiment.AbstractExperimentHandler;

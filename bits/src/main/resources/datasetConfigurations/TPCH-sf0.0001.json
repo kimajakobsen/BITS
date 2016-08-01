@@ -1,6 +1,6 @@
 {
 	"scaleFactor":"0.0001",
-	"freshLoad":false,
+	"freshLoad":true,
 	"datasetType":"TPC-H",
 	"queries_that_does_not_work":",Query06,Query09,Query18,Query20",
 	"queries_that_works":"Query01,Query02,Query03,Query04,Query05,Query07,Query08,Query10,Query11,Query12,Query13,Query14,Query15,Query16,Query17,Query19,Query21,Query22",

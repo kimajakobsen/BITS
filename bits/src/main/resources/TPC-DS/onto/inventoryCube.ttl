@@ -1,0 +1,358 @@
+schema:tpch-ds_structure rdf:type qb:DataStructureDefinition ;
+      qb:component [ qb:measure measure:inv_quantity_on_hand; qb4o:aggregateFunction qb4o:sum ] ;
+      qb:component [ qb4o:level property:warehouse ; qb4o:cardinality qb4o:ManyToOne         ] ;
+      qb:component [ qb4o:level property:date_dim ; qb4o:cardinality qb4o:ManyToOne           ] ;
+      qb:component [ qb4o:level property:item ; qb4o:cardinality qb4o:ManyToOne          ] ;
+      dct:conformsTo <http://purl.org/qb4olap/cubes>.
+
+
+#states that eurostat instances are described by the schema defined in QB4OLAP
+data:inventory_cube qb:structure schema:tpch-ds_structure;
+#    dct:title       "Asylum and first time asylum applicants to European countries by citizenship, age and sex Monthly data"@en;
+#    dct:source  <http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=migr_asyappctzm>;
+#    rdfs:label      "Asylum and first time asylum applicants to European countries by citizenship, age and sex Monthly data"@en;
+#    rdfs:comment    "Asylum and first time asylum applicants to European countries by citizenship, age and sex Monthly data"@en;
+#    dct:description "Asylum and first time asylum applicants to European countries by citizenship, age and sex Monthly data"@en.
+
+
+#-----------------------------------------------------------------------------------------------------
+# -- Measures definition
+
+measure:inv_quantity_on_hand a qb:MeasureProperty;
+    rdfs:label "Quantity of items in stock"@en;
+    rdfs:range xsd:integer .
+
+#-----------------------------------------------------------------------------------------------------
+# -- Dimensions definition
+
+# Warehouse dimension
+
+schema:warehouseDim a qb:DimensionProperty ;
+ rdfs:label "Warehouse class dimension"@en ;
+ qb4o:hasHierarchy schema:warehouseHier.
+
+schema:warehouseHier a qb4o:Hierarchy ;
+   rdfs:label "Warehouse Hierarchy"@en ;
+   qb4o:inDimension schema:warehouseDim;
+   qb4o:hasLevel property:warehouse.
+
+property:warehouse a qb4o:LevelProperty;
+   rdfs:label "Warehouse class"@en;
+   qb4o:hasAttribute  schema:w_warehouse_sk ,
+                      schema:w_warehouse_id ,
+                      schema:w_warehouse_name ,
+                      schema:w_warehouse_sq_ft ,
+                      schema:w_street_number ,
+                      schema:w_street_name ,
+                      schema:w_street_type ,
+                      schema:w_suite_number ,
+                      schema:w_city ,
+                      schema:w_county ,
+                      schema:w_state ,
+                      schema:w_zip ,
+                      schema:w_country ,
+                      schema:w_gmt_offset .
+
+schema:w_warehouse_sk a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:integer .
+
+schema:w_warehouse_id a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_warehouse_name a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_warehouse_sq_ft a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:integer .
+
+  schema:w_street_number a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_street_name a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_street_type a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_suite_number a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_city a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_county a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_state a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_zip a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_country a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_warehouse_sk a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:string .
+
+  schema:w_gmt_offset a qb4o:LevelAttribute ;
+  #rdfs:domain rdfh:orders  ;
+  rdfs:range xsd:double .
+
+#-----------------------------------------------------------------------------------------------------
+# Date dimension
+
+schema:dateDim a qb:DimensionProperty ;
+ rdfs:label "date dimension"@en ;
+ qb4o:hasHierarchy schema:dateHier.
+
+#dimension hierarchies
+schema:dateHier a qb4o:Hierarchy ;
+   rdfs:label "Date Hierarchy"@en ;
+   qb4o:inDimension schema:dateDim;
+   qb4o:hasLevel schema:date.
+
+#hierarchy levels and attributes
+schema:date a qb4o:LevelProperty;
+   rdfs:label "Date Class"@en;
+   qb4o:hasAttribute  schema:d_date_sk ,
+                      schema:d_date_id ,
+                      schema:d_date ,
+                      schema:d_month_seq ,
+                      schema:d_week_seq ,
+                      schema:d_quarter_seq ,
+                      schema:d_year ,
+                      schema:d_dow ,
+                      schema:d_moy ,
+                      schema:d_dom ,
+                      schema:d_qoy ,
+                      schema:d_fy_year ,
+                      schema:d_fy_quarter_seq ,
+                      schema:d_fy_week_seq ,
+                      schema:d_day_name ,
+                      schema:d_quarter_name ,
+                      schema:d_holiday ,
+                      schema:d_weekend ,
+                      schema:d_following_holiday ,
+                      schema:d_first_dom ,
+                      schema:d_last_dom ,
+                      schema:d_same_day_ly ,
+                      schema:d_same_day_lq ,
+                      schema:d_current_day ,
+                      schema:d_current_week ,
+                      schema:d_current_month ,
+                      schema:d_current_quarter ,
+                      schema:d_current_year .
+
+
+
+schema:d_date_sk a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_date_id a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_date a qb4o:LevelAttribute ;
+rdfs:range xsd:date .
+
+schema:d_month_seq a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_week_seq a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_quarter_seq a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_year a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_dow a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_moy a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_dom a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_qoy a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_fy_year a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_fy_quarter_seq a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_fy_week_seq a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_day_name a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_quarter_name a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_holiday a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_weekend a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_following_holiday a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_first_dom a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_last_dom a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_same_day_ly a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_same_day_lq a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:d_current_day a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_current_week a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_current_month a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_current_quarter a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:d_current_year a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+
+
+schema:yearNum  a qb4o:LevelAttribute;
+    rdfs:label "Year number"@en ;
+    rdfs:range xsd:integer.
+
+
+#-----------------------------------------------------------------------------------------------------
+# Item dimension
+
+schema:item a qb:DimensionProperty;
+   rdfs:label "Item"@en ;
+   qb4o:hasHierarchy schema:itemHier.
+
+schema:itemHier a qb4o:Hierarchy ;
+   rdfs:label "Item Hierarchy"@en ;
+   qb4o:inDimension schema:item;
+   qb4o:hasLevel property:item.
+
+property:item a qb4o:LevelProperty;
+  rdfs:label "Item"@en;
+  qb4o:hasAttribute schema:i_item_sk ,
+                    schema:i_item_id ,
+                    schema:i_rec_start_date ,
+                    schema:i_rec_end_date ,
+                    schema:i_item_desc ,
+                    schema:i_current_price ,
+                    schema:i_wholesale_cost ,
+                    schema:i_brand_id ,
+                    schema:i_brand ,
+                    schema:i_class_id ,
+                    schema:i_class ,
+                    schema:i_category_id ,
+                    schema:i_category ,
+                    schema:i_manufact_id ,
+                    schema:i_manufact ,
+                    schema:i_size ,
+                    schema:i_formulation ,
+                    schema:i_color ,
+                    schema:i_units ,
+                    schema:i_container ,
+                    schema:i_manager_id ,
+                    schema:i_product_name .
+
+schema:i_item_sk a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:i_item_id a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_rec_start_date a qb4o:LevelAttribute ;
+rdfs:range xsd:date .
+
+schema:i_rec_end_date a qb4o:LevelAttribute ;
+rdfs:range xsd:date .
+
+schema:i_item_desc a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_current_price a qb4o:LevelAttribute ;
+rdfs:range xsd:double .
+
+schema:i_wholesale_cost a qb4o:LevelAttribute ;
+rdfs:range xsd:double .
+
+schema:i_brand_id a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:i_brand a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_class_id a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:i_class a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_category_id a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:i_category a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_manufact_id a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:i_manufact a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_size a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_formulation a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_color a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_units a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_container a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+schema:i_manager_id a qb4o:LevelAttribute ;
+rdfs:range xsd:integer .
+
+schema:i_product_name a qb4o:LevelAttribute ;
+rdfs:range xsd:string .
+
+
+
